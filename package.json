@@ -1,0 +1,24 @@
+{
+  "name": "mtg-vk-prices-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node public/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gorefistus/mtg-vk-prices-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gorefistus/mtg-vk-prices-bot/issues"
+  },
+  "homepage": "https://github.com/Gorefistus/mtg-vk-prices-bot#readme",
+  "dependencies": {
+    "node-vk-bot": "^0.2.6",
+    "scryfall-sdk": "^1.1.0"
+  }
+}
