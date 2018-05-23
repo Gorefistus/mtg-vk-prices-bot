@@ -36,7 +36,7 @@ bot.get(/[m|h][\s]card[\s,]|c[\s,]/i, message => {
     if (setCode) {
         cardName = setNameRegex[2];
     }
-    MISC.getMultiverseId(cardName.trim(), setCode).then(value => {
+    MISC.getMultiverseId(cardName, setCode).then(value => {
         MISC.downloadCardImage(value.image_uris.normal, (filename) => {
             const absolutePath = path.resolve(filename);
             bot.uploadPhoto(absolutePath).then(photo => {
@@ -85,9 +85,14 @@ bot.get(/([m|h][\s]oracle[\s,]|[m|h][\s]o[\s,])/i, message => {
 });
 
 bot.get(/([m|h][\s]price[\s,]|[m|h][\s]p[\s,])/i, message => {
-    const cardName = message.body.match(/([m|h][\s]price[\s,]|[m|h][\s]p[\s,])(.*)/i)[2];
-    MISC.getMultiverseId(cardName).then(value => {
-        bot.send(`${value.name} prices :\n TCG Mid: ${value.usd ? value.usd + '$' : STRINGS.NO_DATA} \n MTGO: ${value.tix ? value.tix + '$' : STRINGS.NO_DATA}`, message.peer_id);
+    let cardName = message.body.match(/([m|h][\s]price[\s,]|[m|h][\s]p[\s,])(.*)/i)[2];
+    const setNameRegex = message.body.match(/([m|h][\s]price[\s,]|[m|h][\s]p[\s,])(.*)\[(.{3,4})\]/i);
+    const setCode = setNameRegex !== null ? setNameRegex[3] : undefined;
+    if (setCode) {
+        cardName = setNameRegex[2];
+    }
+    MISC.getMultiverseId(cardName, setCode).then(value => {
+        bot.send(`${value.name} prices :\n TCG Mid: ${value.usd ? value.usd + '$' : STRINGS.NO_DATA} \n MTGO: ${value.tix ? value.tix + 'tix' : STRINGS.NO_DATA}`, message.peer_id);
     }, reason => {
         console.log(reason);
         if (CONSTANTS.TIMEOUT_CODE === reason.error.code) {
@@ -145,7 +150,7 @@ bot.get(/help\b|h\b/i, message => {
     const options = {forward_messages: message.id};
     bot.send('Available commands:\n ' +
         '!MTH card (c) %cardname% [%set_abbreviation%]  -  to show the image of the card from desired set if provided, supports both russian and english names  \n\n ' +
-        '!MTH price (p) %cardname% -  to show TCG mid and MTGO prices, supports both russian and english names    \n\n ' +
+        '!MTH price (p) %cardname% [%set_abbreviation%]  -  to show TCG mid and MTGO prices, supports both russian and english names    \n\n ' +
         '!MTH oracle (o)  %cardname% - to show oracle text for the card and its gatherer rulings, supports both russian and english names   \n\n ' +
         '!MTH HelpMe (hm) %cardname% - remember forgotten card name, supports only english names\n\n' +
         '!MTH legality (l) %cardname%  - check legality for the card in most popular formats, supports both russian and english names  ', message.peer_id, options);
