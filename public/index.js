@@ -29,16 +29,6 @@ const bot = new Bot({
 bot.start(3000); //we meed this delay or VK return and error
 console.log('____________________________________\n|             Bot started           |\n____________________________________');
 
-bot.get(/help\b|h\b/i, message => {
-    const options = {forward_messages: message.id};
-    bot.send('Available commands:\n ' +
-        '!MTH card (c) %cardname%  -  to show the image of the card from desired set if provided  \n\n ' +
-        '!MTH price (p) %cardname% -  to show TCG mid and MTGO prices  \n\n ' +
-        '!MTH oracle (o)  %cardname% - to show oracle text for the card and its gatherer rulings \n\n ' +
-        '!MTH HelpMe (hm) %cardname% - remember forgotten card name\n\n' +
-        '!MTH legality (l) %cardname%  - check legality for the card in most popular formats ', message.peer_id, options);
-});
-
 bot.get(/[m|h][\s]card[\s,]|c[\s,]/ig, message => {
     const cardName = message.body.match(/([m|h][\s]card[\s,]|c[\s,])(.*)/i)[2];
     Scry.Cards.byName(cardName, true).then(value => {
@@ -147,6 +137,15 @@ bot.get(/([m|h][\s]legality[\s]|l[\s])/i, message => {
     })
 });
 
+bot.get(/help\b|h\b/i, message => {
+    const options = {forward_messages: message.id};
+    bot.send('Available commands:\n ' +
+        '!MTH card (c) %cardname%  -  to show the image of the card from desired set if provided  \n\n ' +
+        '!MTH price (p) %cardname% -  to show TCG mid and MTGO prices  \n\n ' +
+        '!MTH oracle (o)  %cardname% - to show oracle text for the card and its gatherer rulings \n\n ' +
+        '!MTH HelpMe (hm) %cardname% - remember forgotten card name\n\n' +
+        '!MTH legality (l) %cardname%  - check legality for the card in most popular formats ', message.peer_id, options);
+});
 
 bot.on('poll-error', error => {
     console.log(error);
