@@ -13,6 +13,7 @@ const MISC = require('./common/misc');
 //THIS IS JUST NEEDED SO HEROKU WON"T STOPP OUR APPLICATION
 const app = express();
 app.use(express.static(path.resolve(__dirname, 'static')));
+app.listen(process.env.PORT || 5000);
 //__________________________________________________________
 
 const bot = new Bot({
