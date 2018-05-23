@@ -33,7 +33,7 @@ console.log('____________________________________\n|             Bot started    
 
 bot.get(/[m|h][\s]card[\s,]|c[\s,]/i, message => {
     const cardName = message.body.match(/([m|h][\s]card[\s,]|[m|h][\s]c[\s,])(.*)/i)[2];
-    Scry.Cards.byName(cardName, true).then(value => {
+    MISC.getMultiverseId(cardName).then(value => {
         MISC.downloadCardImage(value.image_uris.normal, (filename) => {
             const absolutePath = path.resolve(filename);
             bot.uploadPhoto(absolutePath).then(photo => {
@@ -52,6 +52,7 @@ bot.get(/[m|h][\s]card[\s,]|c[\s,]/i, message => {
             });
         });
     }, reason => {
+        console.log(reason);
         if(CONSTANTS.TIMEOUT_CODE === reason.error.code){
             return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
         }
@@ -61,10 +62,8 @@ bot.get(/[m|h][\s]card[\s,]|c[\s,]/i, message => {
 });
 
 bot.get(/([m|h][\s]oracle[\s,]|[m|h][\s]o[\s,])/i, message => {
-    console.log(message.body);
     const cardName = message.body.match(/([m|h][\s]oracle[\s,]|[m|h][\s]o[\s,])(.*)/i)[2];
-    Scry.Cards.byName(cardName, true).then(value => {
-        console.log(message.body);
+    MISC.getMultiverseId(cardName).then(value => {
         let oracleText = '';
         if(value.card_faces && value.card_faces.length > 0 ){
             value.card_faces.forEach((face)=>{
@@ -85,7 +84,7 @@ bot.get(/([m|h][\s]oracle[\s,]|[m|h][\s]o[\s,])/i, message => {
 
 bot.get(/([m|h][\s]price[\s,]|[m|h][\s]p[\s,])/i, message => {
     const cardName = message.body.match(/([m|h][\s]price[\s,]|[m|h][\s]p[\s,])(.*)/i)[2];
-    Scry.Cards.byName(cardName).then(value => {
+    MISC.getMultiverseId(cardName).then(value => {
         bot.send(`${value.name} prices :\n TCG Mid: ${value.usd ? value.usd + '$' : STRINGS.NO_DATA} \n MTGO: ${value.tix ? value.tix + '$' : STRINGS.NO_DATA}`, message.peer_id);
     }, reason => {
         console.log(reason);
@@ -123,7 +122,7 @@ bot.get(/([m|h][\s]helpme[\s,]|[m|h][\s]hm[\s,])/i, message => {
 
 bot.get(/([m|h][\s]legality[\s]|[m|h][\s]l[\s])/i, message => {
     const cardName = message.body.match(/([m|h][\s]legality[\s]|[m|h][\s]l[\s])(.*)/i)[2];
-    Scry.Cards.byName(cardName, true).then(value => {
+    MISC.getMultiverseId(cardName).then(value => {
         bot.send(`${value.name} legality:\n 
         ${STRINGS.FORMAT_STANDARD}: ${MISC.getLegality(value.legalities.standard)}
         ${STRINGS.FORMAT_MODERN}: ${MISC.getLegality(value.legalities.modern)}
@@ -143,15 +142,15 @@ bot.get(/([m|h][\s]legality[\s]|[m|h][\s]l[\s])/i, message => {
 bot.get(/help\b|h\b/i, message => {
     const options = {forward_messages: message.id};
     bot.send('Available commands:\n ' +
-        '!MTH card (c) %cardname%  -  to show the image of the card from desired set if provided  \n\n ' +
-        '!MTH price (p) %cardname% -  to show TCG mid and MTGO prices  \n\n ' +
-        '!MTH oracle (o)  %cardname% - to show oracle text for the card and its gatherer rulings \n\n ' +
-        '!MTH HelpMe (hm) %cardname% - remember forgotten card name\n\n' +
-        '!MTH legality (l) %cardname%  - check legality for the card in most popular formats ', message.peer_id, options);
+        '!MTH card (c) %cardname%  -  to show the image of the card from desired set if provided, supports both russian and english names  \n\n ' +
+        '!MTH price (p) %cardname% -  to show TCG mid and MTGO prices, supports both russian and english names    \n\n ' +
+        '!MTH oracle (o)  %cardname% - to show oracle text for the card and its gatherer rulings, supports both russian and english names   \n\n ' +
+        '!MTH HelpMe (hm) %cardname% - remember forgotten card name, supports only english names\n\n' +
+        '!MTH legality (l) %cardname%  - check legality for the card in most popular formats, supports both russian and english names  ', message.peer_id, options);
 });
 
 bot.on('poll-error', error => {
-    // console.log(error);
+    console.log(error);
 });
 
 bot.on('command-notfound', msg => {
