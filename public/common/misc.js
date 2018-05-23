@@ -1,6 +1,8 @@
 const constants = require('./constants');
 const strings = require('./strings');
 const request = require('request');
+const fs = require('fs');
+
 
 
 function getLegality(legality){
