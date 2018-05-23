@@ -2,6 +2,10 @@ const constants = require('./constants');
 const strings = require('./strings');
 const request = require('request');
 const fs = require('fs');
+const mtg = require('mtgsdk');
+const franc = require('franc');
+const Scry = require("scryfall-sdk");
+
 
 
 
@@ -28,7 +32,24 @@ function downloadCardImage(uri, callback){
 }
 
 
+function getCardByName(cardName) {
+    return new Promise((resolve, reject)=>{
+        const lang = franc(cardName, {minLength: 3, whitelist: [constants.LANG_ENG, constants.LANG_RUS]});
+        mtg.card.where({name: cardName, language: `${constants.LANG_RUS === lang ? strings.LANG_RUS : strings.LANG_ENG}`})
+            .then(results => {
+                if ( results.length === 1) {
+                     Scry.Cards.byMultiverseId(results[0].multiverseid).then(value =>{resolve (value)}, reason => reject(reason));
+                } else {
+                     Scry.Cards.byName(cardName, true).then(value => resolve(value),reason => reject(reason));
+                }
+            });
+    });
+
+}
+
+
 module.exports = {
     getLegality,
-    downloadCardImage
+    downloadCardImage,
+    getMultiverseId: getCardByName
 };

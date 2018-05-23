@@ -17,7 +17,7 @@ app.listen(process.env.PORT || 5000);
 //__________________________________________________________
 
 const bot = new Bot({
-    token: '8c4dd988d5bc9241138550503ea20287734828b38d799f0868570a00f9415c11c84cb4bc02b92ee6eba58',
+    token: '3393b05149a989611210d6d77a69e1a9359100c88e554fbf7ca1a3810ab51a08946e30014739e10ad6390',
     prefix: /^!mth[\s,]|!m[\s,]/i,
     prefixOnlyInChats: true,
     api: {
@@ -26,11 +26,13 @@ const bot = new Bot({
     }
 });
 
+
+
 bot.start(3000); //we meed this delay or VK return and error
 console.log('____________________________________\n|             Bot started           |\n____________________________________');
 
 bot.get(/[m|h][\s]card[\s,]|c[\s,]/ig, message => {
-    const cardName = message.body.match(/([m|h][\s]card[\s,]|c[\s,])(.*)/i)[2];
+    const cardName = message.body.match(/([m|h][\s]card[\s,]|[m|h][\s]c[\s,])(.*)/i)[2];
     Scry.Cards.byName(cardName, true).then(value => {
         MISC.downloadCardImage(value.image_uris.normal, (filename) => {
             const absolutePath = path.resolve(filename);
@@ -58,9 +60,9 @@ bot.get(/[m|h][\s]card[\s,]|c[\s,]/ig, message => {
     });
 });
 
-bot.get(/([m|h][\s]oracle[\s,]|o[\s,])/i, message => {
+bot.get(/([m|h][\s]oracle[\s,]|[m|h][\s]o[\s,])/i, message => {
     console.log(message.body);
-    const cardName = message.body.match(/([m|h][\s]oracle[\s,]|o[\s,])(.*)/i)[2];
+    const cardName = message.body.match(/([m|h][\s]oracle[\s,]|[m|h][\s]o[\s,])(.*)/i)[2];
     Scry.Cards.byName(cardName, true).then(value => {
         console.log(message.body);
         let oracleText = '';
@@ -81,11 +83,12 @@ bot.get(/([m|h][\s]oracle[\s,]|o[\s,])/i, message => {
     });
 });
 
-bot.get(/([m|h][\s]price[\s,]|p[\s,])/i, message => {
-    const cardName = message.body.match(/([m|h][\s]price[\s,]|p[\s,])(.*)/i)[2];
-    Scry.Cards.byName(cardName, true).then(value => {
+bot.get(/([m|h][\s]price[\s,]|[m|h][\s]p[\s,])/i, message => {
+    const cardName = message.body.match(/([m|h][\s]price[\s,]|[m|h][\s]p[\s,])(.*)/i)[2];
+    Scry.Cards.byName(cardName).then(value => {
         bot.send(`${value.name} prices :\n TCG Mid: ${value.usd ? value.usd + '$' : STRINGS.NO_DATA} \n MTGO: ${value.tix ? value.tix + '$' : STRINGS.NO_DATA}`, message.peer_id);
     }, reason => {
+        console.log(reason);
         if(CONSTANTS.TIMEOUT_CODE === reason.error.code){
             return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
         }
@@ -94,8 +97,8 @@ bot.get(/([m|h][\s]price[\s,]|p[\s,])/i, message => {
     });
 });
 
-bot.get(/([m|h][\s]helpme[\s,]|hm[\s,])/i, message => {
-    const cardName = message.body.match(/([m|h][\s]helpme[\s,]|hm[\s,])(.*)/i)[2];
+bot.get(/([m|h][\s]helpme[\s,]|[m|h][\s]hm[\s,])/i, message => {
+    const cardName = message.body.match(/([m|h][\s]helpme[\s,]|[m|h][\s]hm[\s,])(.*)/i)[2];
     if (cardName.length < 2) {
         return bot.send(STRINGS.NAME_SHORT_ERR, message.peer_id)
     }
@@ -118,8 +121,8 @@ bot.get(/([m|h][\s]helpme[\s,]|hm[\s,])/i, message => {
     })
 });
 
-bot.get(/([m|h][\s]legality[\s]|l[\s])/i, message => {
-    const cardName = message.body.match(/([m|h][\s]legality[\s]|l[\s])(.*)/i)[2];
+bot.get(/([m|h][\s]legality[\s]|[m|h][\s]l[\s])/i, message => {
+    const cardName = message.body.match(/([m|h][\s]legality[\s]|[m|h][\s]l[\s])(.*)/i)[2];
     Scry.Cards.byName(cardName, true).then(value => {
         bot.send(`${value.name} legality:\n 
         ${STRINGS.FORMAT_STANDARD}: ${MISC.getLegality(value.legalities.standard)}
@@ -148,7 +151,7 @@ bot.get(/help\b|h\b/i, message => {
 });
 
 bot.on('poll-error', error => {
-    console.log(error);
+    // console.log(error);
 });
 
 bot.on('command-notfound', msg => {

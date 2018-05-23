@@ -16,6 +16,9 @@ const COMMANDER = 'commander';
 const VINTAGE = 'vintage';
 
 
+const LANG_RUS = 'rus';
+const LANG_ENG = 'eng';
+
 
 module.exports = {
     TIMEOUT_CODE,
@@ -28,5 +31,7 @@ module.exports = {
     LEGACY,
     PAUPER,
     COMMANDER,
-    VINTAGE
+    VINTAGE,
+    LANG_RUS,
+    LANG_ENG
 };

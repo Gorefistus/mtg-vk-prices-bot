@@ -20,7 +20,8 @@ const LEGALITY_BANNED = 'BANNED';
 const LEGALITY_RESTRICTED = 'RESTRICTED';
 
 
-
+const LANG_RUS = 'russian';
+const LANG_ENG = 'english';
 
 module.exports = {
     FILE_DELETED,
@@ -39,5 +40,7 @@ module.exports = {
     LEGALITY_LEGAL,
     LEGALITY_NOT_LEGAL,
     LEGALITY_BANNED,
-    LEGALITY_RESTRICTED
+    LEGALITY_RESTRICTED,
+    LANG_ENG,
+    LANG_RUS
 };

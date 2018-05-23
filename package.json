@@ -19,6 +19,8 @@
   "homepage": "https://github.com/Gorefistus/mtg-vk-prices-bot#readme",
   "dependencies": {
     "express": "^4.16.3",
+    "franc": "^4.0.0",
+    "mtgsdk": "^0.3.0",
     "node-vk-bot": "0.2.6",
     "scryfall-sdk": "^1.1.0"
   }
