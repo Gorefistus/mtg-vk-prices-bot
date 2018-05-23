@@ -18,7 +18,7 @@ app.listen(process.env.PORT || 5000);
 
 const bot = new Bot({
     token: '94cd304d63ab59a05592ce9b030f1fc14daae29e4bd5a31d741c5e9521687f00bf7ddcaf1aa97e32b469',
-    prefix: /^!mth[\s,]|!m[\s,]/i,
+    prefix: /^!mth[\s,]|^!m[\s,]/i,
     prefixOnlyInChats: true,
     api: {
         v: 5.38, // must be >= 5.38
@@ -31,7 +31,7 @@ const bot = new Bot({
 bot.start(3000); //we meed this delay or VK return and error
 console.log('____________________________________\n|             Bot started           |\n____________________________________');
 
-bot.get(/[m|h][\s]card[\s,]|c[\s,]/ig, message => {
+bot.get(/[m|h][\s]card[\s,]|c[\s,]/i, message => {
     const cardName = message.body.match(/([m|h][\s]card[\s,]|[m|h][\s]c[\s,])(.*)/i)[2];
     Scry.Cards.byName(cardName, true).then(value => {
         MISC.downloadCardImage(value.image_uris.normal, (filename) => {
