@@ -30,17 +30,18 @@ function downloadCardImage(uri, callback) {
 
 
 function getCardByName(cardName, setCode) {
+    cardName = cardName.trim();
+    if (setCode) {
+        setCode = setCode.toUpperCase();
+    }
     return new Promise((resolve, reject) => {
         const lang = franc(cardName, {minLength: 3, whitelist: [constants.LANG_ENG, constants.LANG_RUS]});
         const searchCard = {name: cardName};
         if (constants.LANG_RUS === lang) {
             searchCard.language = strings.LANG_RUS;
         }
-        console.log(searchCard);
         mtg.card.where(searchCard)
             .then(results => {
-                console.log(setCode);
-                console.log(results);
                 if (results.length > 0 && results.length <= 5) {
                     if (setCode) {
                         Scry.Cards.search(`!"${results[0].name}" set:${setCode} `).on('data', card => {
