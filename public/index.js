@@ -17,7 +17,7 @@ app.listen(process.env.PORT || 5000);
 //__________________________________________________________
 
 const bot = new Bot({
-    token: '94cd304d63ab59a05592ce9b030f1fc14daae29e4bd5a31d741c5e9521687f00bf7ddcaf1aa97e32b469',
+    token: '4f6f50981783386f4c62efc6ea0cc2a8f98a8b73be97ceabd7b445cb51592d8fad1ade764e65444c1a046',
     prefix: /^!mth[\s,]|^!m[\s,]/i,
     prefixOnlyInChats: true,
     api: {
