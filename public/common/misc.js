@@ -29,25 +29,46 @@ function downloadCardImage(uri, callback) {
 }
 
 
-function getCardByName(cardName) {
+function getCardByName(cardName, setCode) {
     return new Promise((resolve, reject) => {
         const lang = franc(cardName, {minLength: 3, whitelist: [constants.LANG_ENG, constants.LANG_RUS]});
-        mtg.card.where({
-            name: cardName,
-            language: `${constants.LANG_RUS === lang ? strings.LANG_RUS : strings.LANG_ENG}`
-        })
+        const searchCard = {name: cardName};
+        if (constants.LANG_RUS === lang) {
+            searchCard.language = strings.LANG_RUS;
+        }
+        console.log(searchCard);
+        mtg.card.where(searchCard)
             .then(results => {
-                if (results.length <= 3) {
-                    for (let i = 0; i < results.length; i++) {
-                        if (results[i].multiverseid) {
-                            Scry.Cards.byMultiverseId(results[i].multiverseid).then(value => {
-                                resolve(value)
-                            }, reason => reject(reason));
+                console.log(setCode);
+                console.log(results);
+                if (results.length > 0 && results.length <= 5) {
+                    if (setCode) {
+                        Scry.Cards.search(`!"${results[0].name}" set:${setCode} `).on('data', card => {
+                            resolve(card);
+                        }).on("error", reason => {
+                            reject(reason);
+                        }).on("end", () => reject(undefined));
+                    } else {
+                        for (let i = 0; i < results.length; i++) {
+                            if (results[i].multiverseid) {
+                                Scry.Cards.byMultiverseId(results[i].multiverseid).then(value => {
+                                    resolve(value)
+                                }, reason => reject(reason));
+                            }
                         }
                     }
 
                 } else {
-                    Scry.Cards.byName(cardName, true).then(value => resolve(value), reason => reject(reason));
+                    if (setCode) {
+                        Scry.Cards.search(`!"${results[0].name}" set:${setCode} `).on('data', card => {
+                            resolve(card);
+                        }).on("error", reason => {
+                            reject(reason);
+                        }).on("end", () => reject(undefined));
+                    } else {
+                        Scry.Cards.byName(cardName, true).then(value => resolve(value), reason => reject(reason));
+
+                    }
                 }
             }, reason => reject(reason));
     });
