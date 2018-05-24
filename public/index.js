@@ -30,7 +30,7 @@ const bot = new Bot({
 bot.start(3000); //we meed this delay or VK return and error
 console.log('____________________________________\n|             Bot started           |\n____________________________________');
 
-bot.get(/[m|h][\s]card[\s,]|c[\s]/i, message => {
+bot.get(/[m|h][\s]card[\s,]|[m|h][\s]c[\s]/i, message => {
     let cardName = message.body.match(/([m|h][\s]card[\s]|[m|h][\s]c[\s])(.*)/i)[2];
     const setNameRegex = message.body.match(/([m|h][\s]card[\s]|[m|h][\s]c[\s])(.*)\[(.{3,4})\]/i);
     const setCode = setNameRegex !== null ? setNameRegex[3] : undefined;
@@ -114,6 +114,7 @@ bot.get(/([m|h][\s]oracle[\s]|[m|h][\s]o[\s])/i, message => {
 
 bot.get(/([m|h][\s]price[\s]|[m|h][\s]p[\s])/i, message => {
     let cardName = message.body.match(/([m|h][\s]price[\s,]|[m|h][\s]p[\s])(.*)/i)[2];
+    console.log(cardName);
     const setNameRegex = message.body.match(/([m|h][\s]price[\s,]|[m|h][\s]p[\s])(.*)\[(.{3,4})\]/i);
     const setCode = setNameRegex !== null ? setNameRegex[3] : undefined;
     if (setCode) {
