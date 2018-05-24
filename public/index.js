@@ -3,6 +3,7 @@ const Scry = require("scryfall-sdk");
 const path = require("path");
 const fs = require('fs');
 const express = require('express');
+const request = require('request-promise');
 
 
 const CONSTANTS = require('./common/constants');
@@ -92,15 +93,40 @@ bot.get(/([m|h][\s]price[\s,]|[m|h][\s]p[\s,])/i, message => {
         cardName = setNameRegex[2];
     }
     MISC.getMultiverseId(cardName, setCode).then(value => {
-        bot.send(`${value.name} prices :\n TCG Mid: ${value.usd ? value.usd + '$' : STRINGS.NO_DATA} \n MTGO: ${value.tix ? value.tix + 'tix' : STRINGS.NO_DATA}`, message.peer_id);
+        bot.send(`${value.name} prices :\n TCG Mid: ${value.usd ? value.usd + ' $' : STRINGS.NO_DATA} \n MTGO: ${value.tix ? value.tix + ' tix' : STRINGS.NO_DATA}`, message.peer_id);
     }, reason => {
-        console.log(reason);
         if (CONSTANTS.TIMEOUT_CODE === reason.error.code) {
             return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
         }
         const options = {forward_messages: message.id};
         bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
     });
+});
+
+bot.get(/([m|h][\s]printings[\s,]|[m|h][\s]pr[\s,])/i, message => {
+    const cardName = message.body.match(/([m|h][\s]printings[\s,]|[m|h][\s]pr[\s,])(.*)/i)[2];
+    MISC.getMultiverseId(cardName).then(value => {
+        request({uri: value.prints_search_uri, json: true}).then(printings => {
+            let printingsString = `Up to 10 printings of ${value.name}: \n`;
+            for (let i = 0; i < 10 && i < printings.data.length; i++) {
+                printingsString = printingsString + `${printings.data[i].set_name} (${printings.data[i].set.toUpperCase()})\n`
+            }
+            return bot.send(printingsString, message.peer_id);
+        }, reason => {
+            if (CONSTANTS.TIMEOUT_CODE === reason.error.code) {
+                return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
+            }
+            const options = {forward_messages: message.id};
+            bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
+        })
+    }, reason => {
+        if (CONSTANTS.TIMEOUT_CODE === reason.error.code) {
+            return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
+        }
+        const options = {forward_messages: message.id};
+        bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
+    });
+
 });
 
 bot.get(/([m|h][\s]helpme[\s,]|[m|h][\s]hm[\s,])/i, message => {
@@ -146,6 +172,7 @@ bot.get(/([m|h][\s]legality[\s]|[m|h][\s]l[\s])/i, message => {
     })
 });
 
+
 bot.get(/help\b|h\b/i, message => {
     const options = {forward_messages: message.id};
     bot.send('Available commands:\n ' +
@@ -153,7 +180,8 @@ bot.get(/help\b|h\b/i, message => {
         '!MTH price (p) %cardname% [%set_abbreviation%]  -  to show TCG mid and MTGO prices, supports both russian and english names    \n\n ' +
         '!MTH oracle (o)  %cardname% - to show oracle text for the card and its gatherer rulings, supports both russian and english names   \n\n ' +
         '!MTH HelpMe (hm) %cardname% - remember forgotten card name, supports only english names\n\n' +
-        '!MTH legality (l) %cardname%  - check legality for the card in most popular formats, supports both russian and english names  ', message.peer_id, options);
+        '!MTH legality (l) %cardname%  - check legality for the card in most popular formats, supports both russian and english names\n\n' +
+        '!MTH printings (pr) $cardname$ - shows upt o 10 printing of the card  ', message.peer_id, options);
 });
 
 bot.on('poll-error', error => {
