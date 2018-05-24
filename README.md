@@ -1,6 +1,6 @@
 # MTG VK Prices Bot
 
-This bot is created to help you with your everyday magic needs in your chat in social network VK. Add him to your friends or just PM him to start working. 
+This [bot](https://vk.com/mtgpricebot) is created to help you with your everyday magic needs in your chat in social network VK. Add [bot](https://vk.com/mtgpricebot) to your friends or just PM him to start working. 
 
 ## Getting Started
 
@@ -35,7 +35,7 @@ End with an example of getting some data out of the system or using it for a lit
 
 * [mtg-vk-bot](https://github.com/vitalyavolyn/node-vk-bot) - Basis for the bot and VK API
 * [mtgsdk](https://github.com/MagicTheGathering/mtg-sdk-javascript) - Gatherer wrapper for russian cards search
-* [scryfall-sdk](https://github.com/Yuudaari/scryfall-sdk) - Main SDK we are using for card search
+* [scryfall-sdk](https://github.com/Yuudaari/scryfall-sdk) - Main SDK for card search
 
 ## License
 
