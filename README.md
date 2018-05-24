@@ -39,4 +39,4 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## License
 
-This project is licensed under the Apache 2.0 - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the Apache 2.0 - see the [LICENSE.md](LICENSE) file for details
