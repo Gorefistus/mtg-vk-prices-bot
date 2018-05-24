@@ -37,24 +37,51 @@ bot.get(/[m|h][\s]card[\s,]|c[\s]/i, message => {
     if (setCode) {
         cardName = setNameRegex[2];
     }
+
+
+    //TO DO proper isolation
     MISC.getMultiverseId(cardName, setCode).then(value => {
-        MISC.downloadCardImage(value.image_uris.normal, (filename) => {
-            const absolutePath = path.resolve(filename);
-            bot.uploadPhoto(absolutePath).then(photo => {
-                fs.unlink(filename, () => {
-                    console.log(STRINGS.FILE_DELETED);
+        if (value.card_faces && value.card_faces.length > 0) {
+            for (let face in value.card_faces) {
+                MISC.downloadCardImage(value.card_faces[face].image_uris.normal, (filename) => {
+                    const absolutePath = path.resolve(filename);
+                    bot.uploadPhoto(absolutePath).then(photo => {
+                        fs.unlink(filename, () => {
+                            console.log(STRINGS.FILE_DELETED);
+                        });
+                        const options = {attachment: `photo${photo.owner_id}_${photo.id}`};
+                        bot.send('', message.peer_id, options);
+                    }, reason => {
+                        bot.send(value.card_faces[face].image_uris.normal, message.peer_id);
+                        console.error(`Couldn't uplaod an image`);
+                        console.log(reason);
+                        fs.unlink(filename, () => {
+                            console.log(STRINGS.FILE_DELETED);
+                        });
+                    });
                 });
-                const options = {attachment: `photo${photo.owner_id}_${photo.id}`};
-                bot.send('', message.peer_id, options);
-            }, reason => {
-                bot.send(value.image_uris.normal, message.peer_id);
-                console.error(`Couldn't uplaod an image`);
-                console.log(reason);
-                fs.unlink(filename, () => {
-                    console.log(STRINGS.FILE_DELETED);
+            }
+        } else {
+            console.log('__________________________________');
+            MISC.downloadCardImage(value.image_uris.normal, (filename) => {
+                const absolutePath = path.resolve(filename);
+                bot.uploadPhoto(absolutePath).then(photo => {
+                    fs.unlink(filename, () => {
+                        console.log(STRINGS.FILE_DELETED);
+                    });
+                    const options = {attachment: `photo${photo.owner_id}_${photo.id}`};
+                    bot.send('', message.peer_id, options);
+                }, reason => {
+                    bot.send(value.image_uris.normal, message.peer_id);
+                    console.error(`Couldn't uplaod an image`);
+                    console.log(reason);
+                    fs.unlink(filename, () => {
+                        console.log(STRINGS.FILE_DELETED);
+                    });
                 });
             });
-        });
+        }
+
     }, reason => {
         if (CONSTANTS.TIMEOUT_CODE === reason.error.code) {
             return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
