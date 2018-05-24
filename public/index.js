@@ -17,8 +17,8 @@ app.listen(process.env.PORT || 5000);
 //__________________________________________________________
 
 const bot = new Bot({
-    token: '4f6f50981783386f4c62efc6ea0cc2a8f98a8b73be97ceabd7b445cb51592d8fad1ade764e65444c1a046',
-    prefix: /^!mth[\s,]|^!m[\s,]/i,
+    token: process.env.VK_TOKEN || 'place your token here',
+    prefix: /^!mth[\s,]|^!m[\s]/i,
     prefixOnlyInChats: true,
     api: {
         v: 5.38, // must be >= 5.38
@@ -30,9 +30,9 @@ const bot = new Bot({
 bot.start(3000); //we meed this delay or VK return and error
 console.log('____________________________________\n|             Bot started           |\n____________________________________');
 
-bot.get(/[m|h][\s]card[\s,]|c[\s,]/i, message => {
-    let cardName = message.body.match(/([m|h][\s]card[\s,]|[m|h][\s]c[\s,])(.*)/i)[2];
-    const setNameRegex = message.body.match(/([m|h][\s]card[\s,]|[m|h][\s]c[\s,])(.*)\[(.{3,4})\]/i);
+bot.get(/[m|h][\s]card[\s,]|c[\s]/i, message => {
+    let cardName = message.body.match(/([m|h][\s]card[\s]|[m|h][\s]c[\s])(.*)/i)[2];
+    const setNameRegex = message.body.match(/([m|h][\s]card[\s]|[m|h][\s]c[\s])(.*)\[(.{3,4})\]/i);
     const setCode = setNameRegex !== null ? setNameRegex[3] : undefined;
     if (setCode) {
         cardName = setNameRegex[2];
@@ -64,8 +64,8 @@ bot.get(/[m|h][\s]card[\s,]|c[\s,]/i, message => {
     });
 });
 
-bot.get(/([m|h][\s]oracle[\s,]|[m|h][\s]o[\s,])/i, message => {
-    const cardName = message.body.match(/([m|h][\s]oracle[\s,]|[m|h][\s]o[\s,])(.*)/i)[2];
+bot.get(/([m|h][\s]oracle[\s]|[m|h][\s]o[\s])/i, message => {
+    const cardName = message.body.match(/([m|h][\s]oracle[\s,]|[m|h][\s]o[\s])(.*)/i)[2];
     MISC.getMultiverseId(cardName).then(value => {
         let oracleText = '';
         if (value.card_faces && value.card_faces.length > 0) {
@@ -85,9 +85,9 @@ bot.get(/([m|h][\s]oracle[\s,]|[m|h][\s]o[\s,])/i, message => {
     });
 });
 
-bot.get(/([m|h][\s]price[\s,]|[m|h][\s]p[\s,])/i, message => {
-    let cardName = message.body.match(/([m|h][\s]price[\s,]|[m|h][\s]p[\s,])(.*)/i)[2];
-    const setNameRegex = message.body.match(/([m|h][\s]price[\s,]|[m|h][\s]p[\s,])(.*)\[(.{3,4})\]/i);
+bot.get(/([m|h][\s]price[\s]|[m|h][\s]p[\s])/i, message => {
+    let cardName = message.body.match(/([m|h][\s]price[\s,]|[m|h][\s]p[\s])(.*)/i)[2];
+    const setNameRegex = message.body.match(/([m|h][\s]price[\s,]|[m|h][\s]p[\s])(.*)\[(.{3,4})\]/i);
     const setCode = setNameRegex !== null ? setNameRegex[3] : undefined;
     if (setCode) {
         cardName = setNameRegex[2];
@@ -103,8 +103,8 @@ bot.get(/([m|h][\s]price[\s,]|[m|h][\s]p[\s,])/i, message => {
     });
 });
 
-bot.get(/([m|h][\s]printings[\s,]|[m|h][\s]pr[\s,])/i, message => {
-    const cardName = message.body.match(/([m|h][\s]printings[\s,]|[m|h][\s]pr[\s,])(.*)/i)[2];
+bot.get(/([m|h][\s]printings[\s]|[m|h][\s]pr[\s])/i, message => {
+    const cardName = message.body.match(/([m|h][\s]printings[\s]|[m|h][\s]pr[\s,])(.*)/i)[2];
     MISC.getMultiverseId(cardName).then(value => {
         request({uri: value.prints_search_uri, json: true}).then(printings => {
             let printingsString = `Up to 10 printings of ${value.name}: \n`;
@@ -129,8 +129,8 @@ bot.get(/([m|h][\s]printings[\s,]|[m|h][\s]pr[\s,])/i, message => {
 
 });
 
-bot.get(/([m|h][\s]helpme[\s,]|[m|h][\s]hm[\s,])/i, message => {
-    const cardName = message.body.match(/([m|h][\s]helpme[\s,]|[m|h][\s]hm[\s,])(.*)/i)[2];
+bot.get(/([m|h][\s]helpme[\s]|[m|h][\s]hm[\s])/i, message => {
+    const cardName = message.body.match(/([m|h][\s]helpme[\s]|[m|h][\s]hm[\s,])(.*)/i)[2];
     if (cardName.length < 2) {
         return bot.send(STRINGS.NAME_SHORT_ERR, message.peer_id)
     }
@@ -181,7 +181,7 @@ bot.get(/help\b|h\b/i, message => {
         '!MTH oracle (o)  %cardname% - to show oracle text for the card and its gatherer rulings, supports both russian and english names   \n\n ' +
         '!MTH HelpMe (hm) %cardname% - remember forgotten card name, supports only english names\n\n' +
         '!MTH legality (l) %cardname%  - check legality for the card in most popular formats, supports both russian and english names\n\n' +
-        '!MTH printings (pr) $cardname$ - shows up to 10 printing of the card, supports both russian and english names ', message.peer_id, options);
+        '!MTH printings (pr) %cardname% - shows up to 10 printing of the card, supports both russian and english names ', message.peer_id, options);
 });
 
 bot.on('poll-error', error => {
