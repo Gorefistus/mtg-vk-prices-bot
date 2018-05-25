@@ -41,7 +41,7 @@ bot.get(/[m|h][\s]card[\s,]|[m|h][\s]c[\s]/i, message => {
 
     //TO DO proper isolation
     MISC.getMultiverseId(cardName, setCode).then(value => {
-        if (value.card_faces && value.card_faces.length > 0) {
+        if (value.image_uris!== undefined && value.card_faces && value.card_faces.length > 0) {
             for (let face in value.card_faces) {
                 MISC.downloadCardImage(value.card_faces[face].image_uris.normal, (filename) => {
                     const absolutePath = path.resolve(filename);
