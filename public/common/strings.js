@@ -1,10 +1,9 @@
-const  FILE_DELETED = 'File deleted';
-const  REQ_TIMEOUT = 'Request timeout';
-const  CARD_NOT_FOUND = 'Card not found';
-const  SUGGESTIONS_NOT_FOUND = `Couldn't find suggestions`;
-const  NAME_SHORT_ERR = 'Card Name is too short!';
-const  COMMAND_NOT_FOUND = 'Command not found, try !MTH help for the list of commands';
-const  NO_DATA = 'No data available!';
+const FILE_DELETED = 'File deleted';
+const REQ_TIMEOUT = 'Request timeout';
+const CARD_NOT_FOUND = 'Card not found';
+const SUGGESTIONS_NOT_FOUND = `Couldn't find suggestions`;
+const NAME_SHORT_ERR = 'Card Name is too short!';
+const NO_DATA = 'No data available!';
 
 const FORMAT_STANDARD = 'Standard';
 const FORMAT_MODERN = 'Modern';
@@ -19,9 +18,16 @@ const LEGALITY_NOT_LEGAL = 'NOT LEGAL';
 const LEGALITY_BANNED = 'BANNED';
 const LEGALITY_RESTRICTED = 'RESTRICTED';
 
+const COMMAND_NOT_FOUND = 'Command not found, try !MTH help for the list of commands';
+const COMMAND_NOT_ADDED = 'Bot object is undefined, command not added';
+
 
 const LANG_RUS = 'russian';
 const LANG_ENG = 'english';
+
+
+const BOT_ERROR = 'Bot could not be started';
+
 
 module.exports = {
     FILE_DELETED,
@@ -42,5 +48,7 @@ module.exports = {
     LEGALITY_BANNED,
     LEGALITY_RESTRICTED,
     LANG_ENG,
-    LANG_RUS
+    LANG_RUS,
+    COMMAND_NOT_ADDED,
+    BOT_ERROR
 };

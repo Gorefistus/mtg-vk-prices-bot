@@ -1,5 +1,5 @@
-const constants = require('./constants');
-const strings = require('./strings');
+const CONSTANTS = require('./constants');
+const STRINGS = require('./strings');
 const request = require('request');
 const fs = require('fs');
 const mtg = require('mtgsdk');
@@ -9,14 +9,14 @@ const Scry = require("scryfall-sdk");
 
 function getLegality(legality) {
     switch (legality) {
-        case constants.LEGALITY_LEGAL:
-            return strings.LEGALITY_LEGAL;
-        case constants.LEGALITY_BANNED:
-            return strings.LEGALITY_BANNED;
-        case constants.LEGALITY_NOT_LEGAL:
-            return strings.LEGALITY_NOT_LEGAL;
-        case constants.LEGALITY_RESTRICTED:
-            return strings.LEGALITY_RESTRICTED;
+        case CONSTANTS.LEGALITY_LEGAL:
+            return STRINGS.LEGALITY_LEGAL;
+        case CONSTANTS.LEGALITY_BANNED:
+            return STRINGS.LEGALITY_BANNED;
+        case CONSTANTS.LEGALITY_NOT_LEGAL:
+            return STRINGS.LEGALITY_NOT_LEGAL;
+        case CONSTANTS.LEGALITY_RESTRICTED:
+            return STRINGS.LEGALITY_RESTRICTED;
     }
 }
 
@@ -35,10 +35,10 @@ function getCardByName(cardName, setCode) {
         setCode = setCode.toUpperCase();
     }
     return new Promise((resolve, reject) => {
-        const lang = franc(cardName, {minLength: 3, whitelist: [constants.LANG_ENG, constants.LANG_RUS]});
+        const lang = franc(cardName, {minLength: 3, whitelist: [CONSTANTS.LANG_ENG, CONSTANTS.LANG_RUS]});
         const searchCard = {name: cardName};
-        if (constants.LANG_RUS === lang) {
-            searchCard.language = strings.LANG_RUS;
+        if (CONSTANTS.LANG_RUS === lang) {
+            searchCard.language = STRINGS.LANG_RUS;
         }
         mtg.card.where(searchCard)
             .then(results => {
