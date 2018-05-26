@@ -18,8 +18,8 @@ function addCommands(bot) {
     oracleCommand.addOracleCommand(bot);
     priceCommand.addPriceCommand(bot);
     printingsCommand.addPrintingsCommand(bot);
-    // miscCommand.addMiscCommands(bot);
-    // helpCommand.addHelpCommand(bot);
+    miscCommand.addMiscCommands(bot);
+    helpCommand.addHelpCommand(bot);
 
     console.log('Adding commands finished');
 
@@ -38,6 +38,5 @@ function startBot(bot, pollDelay = 3000) {
 
 
 module.exports = {
-    addCommands,
     startBot
 };
