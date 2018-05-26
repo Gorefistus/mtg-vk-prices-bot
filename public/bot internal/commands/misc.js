@@ -1,3 +1,5 @@
+const STRINGS = require('../../common/strings');
+
 function addMiscCommands(bot) {
     if (bot && typeof bot.get === 'function') {
         bot.on('poll-error', error => {
