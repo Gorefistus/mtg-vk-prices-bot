@@ -1,6 +1,6 @@
 const FILE_DELETED = 'File deleted';
-const REQ_TIMEOUT = 'One or more request has timed out';
-const CARD_NOT_FOUND = `One or more cards hasn't been found`;
+const REQ_TIMEOUT = 'One or more requests have timed out';
+const CARD_NOT_FOUND = `One or more cards haven't been found`;
 const SUGGESTIONS_NOT_FOUND = `Couldn't find suggestions`;
 const NAME_SHORT_ERR = 'Card Name is too short!';
 const NO_DATA = 'No data available!';

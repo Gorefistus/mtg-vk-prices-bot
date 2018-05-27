@@ -15,12 +15,14 @@ function downloadAndPostCardImage(bot, cards, peerId) {
             // double faced cards have many images in them, we need to handle that
             if (card.image_uris === undefined && card.card_faces && card.card_faces.length > 0) {
                 card.card_faces.forEach(face => {
-                    if (promisesDownloadArray.length < 10) {
+                    //look like some vk api limiting
+                    if (promisesDownloadArray.length < 4) {
                         promisesDownloadArray.push(MISC.downloadCardImage(face.image_uris.normal));
                     }
                 });
             } else {
-                if (promisesDownloadArray.length < 10) {
+                //look like some vk api limiting
+                if (promisesDownloadArray.length < 4) {
                     promisesDownloadArray.push(MISC.downloadCardImage(card.image_uris.normal));
                 }
             }
