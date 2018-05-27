@@ -20,11 +20,26 @@ function getLegality(legality) {
     }
 }
 
+function promiseReflect(promise) {
+    return promise.then(function (v) {
+            return {v: v, status: "resolved"}
+        },
+        function (e) {
+            return {e: e, status: "rejected"}
+        });
+}
 
-function downloadCardImage(uri, callback) {
-    request.head(uri, (err, res, body) => {
-        const fileName = Date.now().toString() + '.jpg';
-        request(uri).pipe(fs.createWriteStream(fileName)).on('close', () => callback(fileName));
+
+function downloadCardImage(uri) {
+    return new Promise((resolve, reject) => {
+        try {
+            request.head(uri, (err, res, body) => {
+                const fileName = Date.now().toString() + '.jpg';
+                request(uri).pipe(fs.createWriteStream(fileName)).on('close', () => resolve(fileName));
+            });
+        } catch (e) {
+            reject(e);
+        }
     });
 }
 
@@ -79,5 +94,6 @@ function getCardByName(cardName, setCode) {
 module.exports = {
     getLegality,
     downloadCardImage,
-    getMultiverseId: getCardByName
+    getMultiverseId: getCardByName,
+    promiseReflect
 };
