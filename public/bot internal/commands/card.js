@@ -11,7 +11,19 @@ function downloadAndPostCardImage(bot, cards, peerId) {
         const promisesDownloadArray = [];
         //generating array of Promises for us to resolve, we need to wait for all of them to post a message
         for (let index in cards) {
-            promisesDownloadArray.push(MISC.downloadCardImage(cards[index].image_uris.normal));
+            let card = cards[index];
+            // double faced cards have many images in them, we need to handle that
+            if (card.image_uris.normal === undefined && card.card_faces && card.card_faces.length > 0) {
+                card.card_faces.forEach(face => {
+                    if (promisesDownloadArray.length < 10) {
+                        promisesDownloadArray.push(MISC.downloadCardImage(face.image_uris.normal));
+                    }
+                });
+            } else {
+                if (promisesDownloadArray.length < 10) {
+                    promisesDownloadArray.push(MISC.downloadCardImage(card.image_uris.normal));
+                }
+            }
         }
         Promise.all(promisesDownloadArray.map(MISC.promiseReflect)).then(values => {
                 const resolvedPromises = values.filter(value => value.status === 'resolved');
