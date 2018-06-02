@@ -8,7 +8,7 @@ You'll need a [token](https://vk.com/dev/access_token) for the bot:
 
 get yourself one:
 ```
-https://oauth.vk.com/authorize?client_id= YOUR APP ID &scope=photos,messages,offline&display=touch&response_type=token
+https://oauth.vk.com/authorize?client_id=YOUR_APP_ID&scope=photos,messages,offline&display=touch&response_type=token
 ```
 
 Your token goes into bot startup setting in index.js.
@@ -28,8 +28,6 @@ After the bot started, message him
 ```
 to get the list of available commands.
 
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Built With
 
