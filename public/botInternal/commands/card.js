@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = require("path");
+const path = require('path');
 
 const STRINGS = require('../../common/strings');
 const CONSTANTS = require('../../common/constants');
@@ -9,55 +9,56 @@ const MISC = require('../../common/misc');
 function downloadAndPostCardImage(bot, cards, peerId) {
     if (cards && cards.length > 0 && bot && peerId) {
         const promisesDownloadArray = [];
-        //generating array of Promises for us to resolve, we need to wait for all of them to post a message
-        for (let index in cards) {
-            let card = cards[index];
+        // generating array of Promises for us to resolve, we need to wait for all of them to post a message
+        for (const index in cards) {
+            const card = cards[index];
             // double faced cards have many images in them, we need to handle that
             if (card.image_uris === undefined && card.card_faces && card.card_faces.length > 0) {
-                card.card_faces.forEach(face => {
-                    //look like some vk api limiting
+                card.card_faces.forEach((face) => {
+                    // look like some vk api limiting
                     if (promisesDownloadArray.length < 4) {
                         promisesDownloadArray.push(MISC.downloadCardImage(face.image_uris.normal));
                     }
                 });
             } else {
-                //look like some vk api limiting
+                // look like some vk api limiting
                 if (promisesDownloadArray.length < 4) {
                     promisesDownloadArray.push(MISC.downloadCardImage(card.image_uris.normal));
                 }
             }
         }
-        Promise.all(promisesDownloadArray.map(MISC.promiseReflect)).then(values => {
+        Promise.all(promisesDownloadArray.map(MISC.promiseReflect)).then(
+            (values) => {
                 const resolvedPromises = values.filter(value => value.status === 'resolved');
-                //do something with rejected promises
+                // do something with rejected promises
                 const rejectedPromises = values.filter(value => value.status === 'rejected');
                 const promiseUploadArray = [];
-                for (let index in resolvedPromises) {
+                for (const index in resolvedPromises) {
                     promiseUploadArray.push(bot.uploadPhoto(path.resolve(resolvedPromises[index].v.toString())));
                 }
-                Promise.all(promiseUploadArray.map(MISC.promiseReflect)).then(photoValues => {
+                Promise.all(promiseUploadArray.map(MISC.promiseReflect)).then((photoValues) => {
                     const resolvedPhotoPromises = photoValues.filter(value => value.status === 'resolved');
                     let attachmentString = '';
-                    for (let index in resolvedPhotoPromises) {
-                        attachmentString = attachmentString + `photo${resolvedPhotoPromises[index].v.owner_id}_${resolvedPhotoPromises[index].v.id},`;
+                    for (const index in resolvedPhotoPromises) {
+                        attachmentString = `${attachmentString}photo${resolvedPhotoPromises[index].v.owner_id}_${resolvedPhotoPromises[index].v.id},`;
                     }
-                    const options = {attachment: attachmentString};
+                    const options = { attachment: attachmentString };
                     bot.send('', peerId, options);
-                    resolvedPromises.forEach((value => {
+                    resolvedPromises.forEach(((value) => {
                         fs.unlink(value.v, () => {
                             console.log(STRINGS.FILE_DELETED);
-                        })
-                    }))
-                }, reason => {
-                    //this should never occur due to our reflect pattern
+                        });
+                    }));
+                }, (reason) => {
+                // this should never occur due to our reflect pattern
                     console.log(reason);
-                })
-
+                });
             },
-            reason => {
-                //this should never occur due to our reflect pattern
-                console.log(reason)
-            });
+            (reason) => {
+            // this should never occur due to our reflect pattern
+                console.log(reason);
+            },
+        );
     } else {
         console.error('Error uploading photos to VK');
     }
@@ -66,10 +67,10 @@ function downloadAndPostCardImage(bot, cards, peerId) {
 
 function addCardCommand(bot) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/[m|h][\s]card[\s,]|[m|h][\s]c[\s]/i, message => {
+        bot.get(/[m|h][\s]card[\s,]|[m|h][\s]c[\s]/i, (message) => {
             const cardNames = message.body.match(/([m|h][\s]card[\s]|[m|h][\s]c[\s])(.*)/i)[2];
             const splittedCardNames = cardNames.split(';');
-            //make it no more than 10 cards
+            // make it no more than 10 cards
 
             if (splittedCardNames.length > 0) {
                 const cardRequestPromisesArray = [];
@@ -81,12 +82,10 @@ function addCardCommand(bot) {
                         cardRequestPromisesArray.push(MISC.getMultiverseId(splittedCardNames[i]));
                     }
                 }
-                Promise.all(cardRequestPromisesArray.map(MISC.promiseReflect)).then(values => {
+                Promise.all(cardRequestPromisesArray.map(MISC.promiseReflect)).then((values) => {
                     const resolvedPromises = values.filter(value => value.status === 'resolved');
                     const rejectedPromises = values.filter(value => value.status === 'rejected');
-                    downloadAndPostCardImage(bot, resolvedPromises.map(result => {
-                        return result.v;
-                    }), message.peer_id);
+                    downloadAndPostCardImage(bot, resolvedPromises.map(result => result.v), message.peer_id);
                     let didRequestTimeout = false;
                     let didCardNotFound = false;
                     let processedArrayElements = 0;
@@ -96,27 +95,27 @@ function addCardCommand(bot) {
                         } else {
                             didCardNotFound = true;
                         }
-                        //JS forEach doesn't provide an callback when all operations are done, so we improvise
+                        // JS forEach doesn't provide an callback when all operations are done, so we improvise
                         processedArrayElements++;
                         if (processedArrayElements === rejectedPromises.length) {
                             if (didRequestTimeout) {
                                 return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
                             } else if (didCardNotFound) {
-                                const options = {forward_messages: message.id};
+                                const options = { forward_messages: message.id };
                                 return bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
                             }
                         }
-                    })
-                }, reason => {
+                    });
+                }, (reason) => {
                     console.log(reason);
                 });
             }
         });
     } else {
-        console.error(STRINGS.COMMAND_NOT_ADDED)
+        console.error(STRINGS.COMMAND_NOT_ADDED);
     }
 }
 
 module.exports = {
-    addCardCommand
+    addCardCommand,
 };

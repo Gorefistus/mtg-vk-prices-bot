@@ -22,14 +22,13 @@ function addCommands(bot) {
     helpCommand.addHelpCommand(bot);
 
     console.log('Adding commands finished');
-
 }
 
 
 function startBot(bot, pollDelay = 3000) {
     if (bot && typeof bot.start === 'function') {
         addCommands(bot);
-        bot.start(pollDelay); //we meed this delay or VK return and error
+        bot.start(pollDelay); // we meed this delay or VK return and error
         console.log('____________________________________\n|             Bot started           |\n____________________________________');
     } else {
         console.error(STRINGS.BOT_ERROR);
@@ -38,5 +37,5 @@ function startBot(bot, pollDelay = 3000) {
 
 
 module.exports = {
-    startBot
+    startBot,
 };

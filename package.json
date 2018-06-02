@@ -2,7 +2,7 @@
   "name": "mtg-vk-prices-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "node public/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,7 +22,13 @@
     "franc": "^4.0.0",
     "mtgsdk": "^0.3.0",
     "node-vk-bot": "0.2.6",
+    "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
     "scryfall-sdk": "^1.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.12.0"
   }
 }

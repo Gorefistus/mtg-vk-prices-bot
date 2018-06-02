@@ -3,8 +3,8 @@ const STRINGS = require('../../common/strings');
 
 function addHelpCommand(bot) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/help\b|h\b/i, message => {
-            const options = {forward_messages: message.id};
+        bot.get(/help\b|h\b/i, (message) => {
+            const options = { forward_messages: message.id };
             bot.send('Available commands:\n ' +
                 '!MTH card (c) %cardname% [%set_abbreviation%] ; %cardname% [%set_abbreviation%]  -  to show the image of the cards (up to 4 images per message) from desired set if provided, supports both russian and english names  \n\n ' +
                 '!MTH price (p) %cardname% [%set_abbreviation%]  -  to show TCG mid and MTGO prices, supports both russian and english names    \n\n ' +
@@ -14,12 +14,11 @@ function addHelpCommand(bot) {
                 '!MTH printings (pr) %cardname% - shows up to 10 printing of the card, supports both russian and english names ', message.peer_id, options);
         });
     } else {
-        console.error(STRINGS.COMMAND_NOT_ADDED)
-
+        console.error(STRINGS.COMMAND_NOT_ADDED);
     }
 }
 
 
 module.exports = {
-    addHelpCommand
+    addHelpCommand,
 };

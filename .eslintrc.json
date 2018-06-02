@@ -1,0 +1,38 @@
+{
+  "extends": "airbnb-base",
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest": true,
+    "es6": true
+  },
+  "rules": {
+    "linebreak-style": [
+      1,
+      "windows"
+    ],
+    "no-underscore-dangle": [
+      0
+    ],
+    "no-extra-bind": [
+      2
+    ],
+    "import/first": [
+      0
+    ],
+    "prefer-destructuring": [
+      0
+    ],
+    "indent": [
+      "error",
+      4
+    ],
+    "operator-assignment": [
+      0
+    ],
+    "no-plusplus": [
+      0
+    ]
+  }
+}
+

@@ -1,7 +1,6 @@
 const TIMEOUT_CODE = 'ETIMEDOUT';
 
 
-
 const LEGALITY_LEGAL = 'legal';
 const LEGALITY_NOT_LEGAL = 'not_legal';
 const LEGALITY_BANNED = 'banned';
@@ -33,5 +32,5 @@ module.exports = {
     COMMANDER,
     VINTAGE,
     LANG_RUS,
-    LANG_ENG
+    LANG_ENG,
 };

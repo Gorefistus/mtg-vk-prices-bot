@@ -1,7 +1,7 @@
 const FILE_DELETED = 'File deleted';
 const REQ_TIMEOUT = 'One or more requests have timed out';
-const CARD_NOT_FOUND = `One or more cards haven't been found`;
-const SUGGESTIONS_NOT_FOUND = `Couldn't find suggestions`;
+const CARD_NOT_FOUND = 'One or more cards haven\'t been found';
+const SUGGESTIONS_NOT_FOUND = 'Couldn\'t find suggestions';
 const NAME_SHORT_ERR = 'Card Name is too short!';
 const NO_DATA = 'No data available!';
 
@@ -50,5 +50,5 @@ module.exports = {
     LANG_ENG,
     LANG_RUS,
     COMMAND_NOT_ADDED,
-    BOT_ERROR
+    BOT_ERROR,
 };

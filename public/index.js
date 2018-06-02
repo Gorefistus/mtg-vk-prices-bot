@@ -1,13 +1,13 @@
-const {Bot} = require('node-vk-bot');
-const path = require("path");
+const { Bot } = require('node-vk-bot');
+const path = require('path');
 const express = require('express');
 
-const botStarter = require('./bot internal/botConfig');
-//THIS IS JUST NEEDED SO HEROKU WON"T STOPP OUR APPLICATION
+const botStarter = require('./botInternal/botConfig');
+// THIS IS JUST NEEDED SO HEROKU WON"T STOPP OUR APPLICATION
 const app = express();
 app.use(express.static(path.resolve(__dirname, 'static')));
 app.listen(process.env.PORT || 5000);
-//__________________________________________________________
+// __________________________________________________________
 
 const bot = new Bot({
     token: process.env.VK_TOKEN || 'place your token here',
@@ -15,8 +15,8 @@ const bot = new Bot({
     prefixOnlyInChats: true,
     api: {
         v: 5.38, // must be >= 5.38
-        lang: 'ru'
-    }
+        lang: 'ru',
+    },
 });
 
 botStarter.startBot(bot);
