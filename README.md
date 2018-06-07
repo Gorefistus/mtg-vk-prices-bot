@@ -32,6 +32,7 @@ to get the list of available commands.
 ## Built With
 
 * [mtg-vk-bot](https://github.com/vitalyavolyn/node-vk-bot) - Basis for the bot and VK API
+* [mtgsdk](https://github.com/MagicTheGathering/mtg-sdk-javascript) - Gatherer wrapper for russian cards search
 * [scryfall-sdk](https://github.com/Yuudaari/scryfall-sdk) - Main SDK for card search
 
 ## License
