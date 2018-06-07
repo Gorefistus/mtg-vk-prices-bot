@@ -20,7 +20,7 @@ function addLegalityCommand(bot) {
                     return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
                 }
                 const options = { forward_messages: message.id };
-                bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
+                return bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
             });
         });
     } else {

@@ -10,7 +10,7 @@ const priceCommand = require('./commands/price');
 const printingsCommand = require('./commands/printings');
 
 function addCommands(bot) {
-    console.log('Adding commands started');
+    console.log('Command addition started');
 
     cardCommand.addCardCommand(bot);
     helpmeCommand.addHelpmeCommand(bot);
@@ -21,7 +21,7 @@ function addCommands(bot) {
     miscCommand.addMiscCommands(bot);
     helpCommand.addHelpCommand(bot);
 
-    console.log('Adding commands finished');
+    console.log('Command addition finished');
 }
 
 
