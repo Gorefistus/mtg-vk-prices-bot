@@ -18,6 +18,8 @@ const VINTAGE = 'vintage';
 const LANG_RUS = 'rus';
 const LANG_ENG = 'eng';
 
+const STAR_CITY_PRICE_LINK = 'http://www.starcitygames.com/results?name=';
+
 
 module.exports = {
     TIMEOUT_CODE,
@@ -33,4 +35,5 @@ module.exports = {
     VINTAGE,
     LANG_RUS,
     LANG_ENG,
+    STAR_CITY_PRICE_LINK,
 };
