@@ -35,8 +35,8 @@ function addPriceCommand(bot) {
                         if (value.card_faces) {
                             cardName = value.name.replace('//', '|');
                         }
-                        console.log(`${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=y`);
-                        return request(`${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=y`);
+                        console.log(`${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=Y`);
+                        return request(`${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=Y`);
                     }
                 }, (reason) => {
                     if (CONSTANTS.TIMEOUT_CODE === reason.error.code) {
@@ -51,7 +51,7 @@ function addPriceCommand(bot) {
                         cardCache.push(starcityPrice);
                         bot.send(`${cardString} \n SCG: ${starcityPrice.value}`, message.peer_id);
                     } else {
-                        bot.send(`${cardString} \n SCG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardObject.name)}&auto=y`, message.peer_id);
+                        bot.send(`${cardString} \n SCG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardObject.name)}&auto=Y`, message.peer_id);
                     }
                 }, (reason) => {
                     bot.send(`${cardString} \n SSG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardObject.name)}&auto=y`, message.peer_id);
