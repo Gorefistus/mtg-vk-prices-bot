@@ -1,8 +1,8 @@
+const request = require('request-promise-native');
+
 const STRINGS = require('../../common/strings');
 const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
-const request = require('request-promise-native');
-const cheerio = require('cheerio');
 
 const cardCache = [];
 
@@ -17,21 +17,25 @@ function addPriceCommand(bot) {
             }
 
             let cardString = '';
-            let properCardName = '';
+            let cardObject;
             MISC.getMultiverseId(cardName, setCode)
                 .then((value) => {
-                    properCardName = value.name;
+                    cardObject = value;
                     cardString = `${value.name} prices :\n TCG Mid: ${value.usd ? `$${value.usd}` : STRINGS.NO_DATA} \n MTGO: ${value.tix ? `${value.tix} tix` : STRINGS.NO_DATA}`;
                     let cardIndex = -1;
                     cardCache.forEach((card, index) => {
-                        if (card.name === value.name) {
+                        if (card.name === value.name && card.set === value.set_name) {
                             cardIndex = index;
                         }
                     });
                     if (cardIndex >= 0) {
                         bot.send(`${cardString} \n SCG: ${cardCache[cardIndex].value}`, message.peer_id);
                     } else {
-                        return request(`${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(value.name)}&auto=y`);
+                        let cardName = value.name;
+                        if (value.card_faces) {
+                            cardName = value.name.replace('//', '|');
+                        }
+                        return request(`${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=y`);
                     }
                 }, (reason) => {
                     if (CONSTANTS.TIMEOUT_CODE === reason.error.code) {
@@ -40,27 +44,20 @@ function addPriceCommand(bot) {
                     const options = { forward_messages: message.id };
                     bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
                 })
-                .then(value => {
-                    const htmlPage = cheerio.load(value);
-                    const SCGEdition = htmlPage('.search_results_2')
-                        .first()
-                        .text();
-                    const SCGPrice = htmlPage('.search_results_9')
-                        .first()
-                        .text();
-                    if (SCGEdition.length > 0 && SCGPrice.length > 0) {
-                        cardCache.push({
-                            name: properCardName,
-                            value: SCGPrice,
-                        });
-                        bot.send(`${cardString} \n SCG: ${SCGPrice}`, message.peer_id);
+                .then((value) => {
+                    const starcityPrice = MISC.getStarCityPrice(value, cardObject);
+                    if (starcityPrice) {
+                        cardCache.push(starcityPrice);
+                        bot.send(`${cardString} \n SCG: ${starcityPrice.value}`, message.peer_id);
                     } else {
-                        bot.send(`${cardString} \n SCG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=y`, message.peer_id);
-
+                        bot.send(`${cardString} \n SCG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardObject.name)}&auto=y`, message.peer_id);
                     }
-
-                }, reason => {
-                    bot.send(`${cardString} \n SSG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=y`, message.peer_id);
+                }, (reason) => {
+                    bot.send(`${cardString} \n SSG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardObject.name)}&auto=y`, message.peer_id);
+                })
+                .catch((reason) => {
+                    // do nothing
+                    console.log(reason);
                 });
         });
     } else {

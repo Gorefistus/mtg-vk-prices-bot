@@ -2,10 +2,12 @@ const fs = require('fs');
 const mtg = require('mtgsdk');
 const franc = require('franc');
 const Scry = require('scryfall-sdk');
+const cheerio = require('cheerio');
+const request = require('request');
+
 
 const CONSTANTS = require('./constants');
 const STRINGS = require('./strings');
-const request = require('request');
 
 
 function getLegality(legality) {
@@ -108,9 +110,48 @@ function getCardByName(cardName, setCode) {
 }
 
 
+function getStarCityPrice(htmlString, cardObject = undefined) {
+    if (!cardObject) {
+        return undefined;
+    }
+    const htmlPage = cheerio.load(htmlString);
+    let SCGCard = {};
+    let scgCardIndex = -1;
+    htmlPage('.search_results_2')
+        .each(function (i, elem) {
+            if (htmlPage(this)
+                .text()
+                .trim() === cardObject.set_name) {
+                scgCardIndex = i;
+                SCGCard.set = cardObject.set_name;
+            }
+        });
+    if (scgCardIndex >= 0) {
+        SCGCard.value = htmlPage('.search_results_9')
+            .eq(scgCardIndex)
+            .text();
+    } else {
+        try {
+            SCGCard.set = htmlPage('.search_results_2')
+                .first()
+                .text()
+                .trim();
+            SCGCard.value = htmlPage('.search_results_9')
+                .first()
+                .text()
+                .trim();
+            SCGCard.name = cardObject.name;
+        } catch (e) {
+            SCGCard = undefined;
+        }
+    }
+    return SCGCard;
+}
+
 module.exports = {
     getLegality,
     downloadCardImage,
     getMultiverseId: getCardByName,
     promiseReflect,
+    getStarCityPrice,
 };
