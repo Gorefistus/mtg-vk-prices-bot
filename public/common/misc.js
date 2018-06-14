@@ -70,45 +70,39 @@ function getCardByName(cardName, setCode) {
         if (CONSTANTS.LANG_RUS === lang) {
             searchCard.language = STRINGS.LANG_RUS;
         }
-        mtg.card.where(searchCard)
-            .then((results) => {
-                if (results.length > 0 && results.length <= 5) {
-                    if (setCode) {
-                        Scry.Cards.search(`!"${results[0].name}" set:${setCode} `)
-                            .on('data', (card) => {
-                                resolve(card);
-                            })
-                            .on('error', (reason) => {
-                                reject(reason);
-                            })
-                            .on('end', () => reject(undefined));
+        if (setCode) {
+            Scry.Cards.search(`"${cardName}" set:${setCode} lang:${searchCard.language} `)
+                .on('data', (card) => {
+                    if (!card.card_faces && !card.image_uris) {
+                        Scry.Cards.search(`"${cardName}" set:${setCode}`)
+                            .on('data', data => resolve(data))
+                            .on('error', err => reject(err));
                     } else {
-                        for (let i = 0; i < results.length; i++) {
-                            if (results[i].multiverseid) {
-                                Scry.Cards.byMultiverseId(results[i].multiverseid)
-                                    .then((value) => {
-                                        resolve(value);
-                                    }, reason => reject(reason));
-                            }
-                        }
+                        resolve(card);
                     }
-                } else if (setCode) {
-                    Scry.Cards.search(`!"${results[0].name}" set:${setCode} `)
-                        .on('data', (card) => {
-                            resolve(card);
-                        })
-                        .on('error', (reason) => {
-                            reject(reason);
-                        })
-                        .on('end', () => reject(undefined));
-                } else {
-                    Scry.Cards.byName(cardName, true)
-                        .then(value => resolve(value), reason => reject(reason));
-                }
-            }, reason => reject(reason));
+                })
+                .on('error', (reason) => {
+                    reject(reason);
+                });
+        } else {
+            Scry.Cards.search(`"${cardName}" lang:${searchCard.language} `)
+                .on('data', (card) => {
+                    if (!card.card_faces && !card.image_uris) {
+                        Scry.Cards.byName(card.name, true)
+                            .then(
+                                value => resolve(value),
+                                reason => reject(reason),
+                            );
+                    } else {
+                        resolve(card);
+                    }
+                })
+                .on('error', (reason) => {
+                    reject(reason);
+                });
+        }
     });
 }
-
 
 function getStarCityPrice(htmlString, cardObject = undefined) {
     if (!cardObject) {
