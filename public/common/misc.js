@@ -114,7 +114,7 @@ function getCardByName(cardName, setCode) {
                         resolve(card);
                     }
                 }, reason => {
-                    throw  new Error("Whoops!");
+                    console.log('error')
                 })
                 .catch(reason => {
                     Scry.Cards.search(`"${cardName}" lang:${searchCard.language} `)
