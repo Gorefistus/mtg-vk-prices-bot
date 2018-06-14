@@ -1,16 +1,17 @@
 const STRINGS = require('../common/strings');
 const CONSTANTS = require('../common/constants');
 const cardCommand = require('./commands/card');
-const helpmeCommand = require('./commands/helpme');
+const helpmeCommand = require('./commands/help-me');
 const legalityCommand = require('./commands/legality');
 const helpCommand = require('./commands/help');
 const miscCommand = require('./commands/misc');
 const oracleCommand = require('./commands/oracle');
 const priceCommand = require('./commands/price');
 const printingsCommand = require('./commands/printings');
+const advancedSearchCommand = require('./commands/advanced-search');
 
 function addCommands(bot) {
-    console.log('Adding commands started');
+    console.log('Commands addition started');
 
     cardCommand.addCardCommand(bot);
     helpmeCommand.addHelpmeCommand(bot);
@@ -18,10 +19,11 @@ function addCommands(bot) {
     oracleCommand.addOracleCommand(bot);
     priceCommand.addPriceCommand(bot);
     printingsCommand.addPrintingsCommand(bot);
+    advancedSearchCommand.addAdvancedSearchCommand(bot);
     miscCommand.addMiscCommands(bot);
     helpCommand.addHelpCommand(bot);
 
-    console.log('Adding commands finished');
+    console.log('Commands addition finished');
 }
 
 

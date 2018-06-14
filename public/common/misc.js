@@ -1,5 +1,4 @@
 const fs = require('fs');
-const mtg = require('mtgsdk');
 const franc = require('franc');
 const Scry = require('scryfall-sdk');
 const cheerio = require('cheerio');
@@ -12,16 +11,16 @@ const STRINGS = require('./strings');
 
 function getLegality(legality) {
     switch (legality) {
-    case CONSTANTS.LEGALITY_LEGAL:
-        return STRINGS.LEGALITY_LEGAL;
-    case CONSTANTS.LEGALITY_BANNED:
-        return STRINGS.LEGALITY_BANNED;
-    case CONSTANTS.LEGALITY_NOT_LEGAL:
-        return STRINGS.LEGALITY_NOT_LEGAL;
-    case CONSTANTS.LEGALITY_RESTRICTED:
-        return STRINGS.LEGALITY_RESTRICTED;
-    default:
-        return STRINGS.LEGALITY_NOT_LEGAL;
+        case CONSTANTS.LEGALITY_LEGAL:
+            return STRINGS.LEGALITY_LEGAL;
+        case CONSTANTS.LEGALITY_BANNED:
+            return STRINGS.LEGALITY_BANNED;
+        case CONSTANTS.LEGALITY_NOT_LEGAL:
+            return STRINGS.LEGALITY_NOT_LEGAL;
+        case CONSTANTS.LEGALITY_RESTRICTED:
+            return STRINGS.LEGALITY_RESTRICTED;
+        default:
+            return STRINGS.LEGALITY_NOT_LEGAL;
     }
 }
 
@@ -71,8 +70,10 @@ function getCardByName(cardName, setCode) {
             searchCard.language = STRINGS.LANG_RUS;
         }
         if (setCode) {
-            Scry.Cards.search(`"${cardName}" set:${setCode} lang:${searchCard.language} `)
-                .on('data', (card) => {
+            Scry.Cards.search(`!"${cardName}" set:${setCode} lang:${searchCard.language} `)
+                .waitForAll()
+                .then(values => {
+                    const card = values[0];
                     if (!card.card_faces && !card.image_uris) {
                         Scry.Cards.search(`"${cardName}" set:${setCode}`)
                             .on('data', data => resolve(data))
@@ -81,12 +82,26 @@ function getCardByName(cardName, setCode) {
                         resolve(card);
                     }
                 })
-                .on('error', (reason) => {
-                    reject(reason);
+                .catch(reason => {
+                    Scry.Cards.search(`"${cardName}" set:${setCode} lang:${searchCard.language} `)
+                        .on('data', (card) => {
+                            if (!card.card_faces && !card.image_uris) {
+                                Scry.Cards.search(`"${cardName}" set:${setCode}`)
+                                    .on('data', data => resolve(data))
+                                    .on('error', err => reject(err));
+                            } else {
+                                resolve(card);
+                            }
+                        })
+                        .on('error', (reason) => {
+                            reject(reason);
+                        });
                 });
         } else {
-            Scry.Cards.search(`"${cardName}" lang:${searchCard.language} `)
-                .on('data', (card) => {
+            Scry.Cards.search(`!"${cardName}" lang:${searchCard.language} `)
+                .waitForAll()
+                .then(values => {
+                    const card = values[0];
                     if (!card.card_faces && !card.image_uris) {
                         Scry.Cards.byName(card.name, true)
                             .then(
@@ -97,8 +112,22 @@ function getCardByName(cardName, setCode) {
                         resolve(card);
                     }
                 })
-                .on('error', (reason) => {
-                    reject(reason);
+                .catch(reason => {
+                    Scry.Cards.search(`"${cardName}" lang:${searchCard.language} `)
+                        .on('data', (card) => {
+                            if (!card.card_faces && !card.image_uris) {
+                                Scry.Cards.byName(card.name, true)
+                                    .then(
+                                        value => resolve(value),
+                                        reason => reject(reason),
+                                    );
+                            } else {
+                                resolve(card);
+                            }
+                        })
+                        .on('error', (reason) => {
+                            reject(reason);
+                        });
                 });
         }
     });

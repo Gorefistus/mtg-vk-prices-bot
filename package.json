@@ -12,7 +12,7 @@
     "url": "git+https://github.com/Gorefistus/mtg-vk-prices-bot.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "Apache 2.0",
   "bugs": {
     "url": "https://github.com/Gorefistus/mtg-vk-prices-bot/issues"
   },
@@ -21,7 +21,6 @@
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.3",
     "franc": "^4.0.0",
-    "mtgsdk": "^0.3.0",
     "node-vk-bot": "0.2.6",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
