@@ -81,6 +81,8 @@ function getCardByName(cardName, setCode) {
                     } else {
                         resolve(card);
                     }
+                }, reason => {
+                    throw true;
                 })
                 .catch(reason => {
                     Scry.Cards.search(`"${cardName}" set:${setCode} lang:${searchCard.language} `)
@@ -111,6 +113,8 @@ function getCardByName(cardName, setCode) {
                     } else {
                         resolve(card);
                     }
+                }, reason => {
+                    throw true;
                 })
                 .catch(reason => {
                     Scry.Cards.search(`"${cardName}" lang:${searchCard.language} `)
