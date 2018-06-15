@@ -11,22 +11,23 @@ function addHelpmeCommand(bot) {
             if (cardName.length < 2) {
                 return bot.send(STRINGS.NAME_SHORT_ERR, message.peer_id);
             }
-            Scry.Cards.autoCompleteName(cardName).then((results) => {
-                if (results.length > 0) {
-                    let suggestions = 'Did you mean:';
-                    for (let i = 0; i < 5 && i < results.length - 1; i++) {
-                        suggestions = `${suggestions}\n ${results[i]}`;
+            Scry.Cards.autoCompleteName(cardName)
+                .then((results) => {
+                    if (results.length > 0) {
+                        let suggestions = 'Did you mean:';
+                        for (let i = 0; i < 5 && i < results.length - 1; i++) {
+                            suggestions = `${suggestions}\n ${results[i]}`;
+                        }
+                        bot.send(suggestions, message.peer_id);
+                    } else {
+                        bot.send(STRINGS.SUGGESTIONS_NOT_FOUND, message.peer_id);
                     }
-                    bot.send(suggestions, message.peer_id);
-                } else {
+                }, (reason) => {
+                    if (CONSTANTS.TIMEOUT_CODE === reason.error.code) {
+                        return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
+                    }
                     bot.send(STRINGS.SUGGESTIONS_NOT_FOUND, message.peer_id);
-                }
-            }, (reason) => {
-                if (CONSTANTS.TIMEOUT_CODE === reason.error.code) {
-                    return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
-                }
-                bot.send(STRINGS.SUGGESTIONS_NOT_FOUND, message.peer_id);
-            });
+                });
         });
     } else {
         console.error(STRINGS.COMMAND_NOT_ADDED);
