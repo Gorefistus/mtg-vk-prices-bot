@@ -20,7 +20,7 @@ function addAdvancedSearchCommand(bot) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])/i, message => {
             const searchQuery = message.body.match(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])(.*)/i)[2];
-            const cardEmitter = Scry.Cards.search(searchQuery);
+            const cardEmitter = Scry.Cards.search(`${searchQuery}`);
             const resultArray = [];
             let alreadyFired = false;
             cardEmitter.on('data', data => {
