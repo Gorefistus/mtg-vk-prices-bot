@@ -20,6 +20,7 @@ function addPriceCommand(bot) {
             let cardObject;
             MISC.getMultiverseId(cardName, setCode)
                 .then((value) => {
+                    console.log(value);
                     cardObject = value;
                     cardString = `${value.name} prices :\n TCG Mid: ${value.usd ? `$${value.usd}` : STRINGS.NO_DATA} \n MTGO: ${value.tix ? `${value.tix} tix` : STRINGS.NO_DATA}`;
                     let cardIndex = -1;

@@ -114,7 +114,6 @@ function getCardByName(cardName, setCode) {
                     Scry.Cards.search(`"${cardName}" lang:${searchCard.language} `)
                         .on('data', (card) => {
                             if (!card.card_faces && !card.image_uris) {
-                                console.log(card);
                                 Scry.Cards.byName(card.name, true)
                                     .then(
                                         value => resolve(value),
