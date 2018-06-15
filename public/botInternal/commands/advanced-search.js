@@ -50,7 +50,11 @@ function addAdvancedSearchCommand(bot) {
             cardEmitter.on('end', () => {
                 if (!alreadyFired) {
                     alreadyFired = true;
-                    sendResults(bot, message, resultArray);
+                    if (resultArray.length === 0) {
+                        bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
+                    } else {
+                        sendResults(bot, message, resultArray);
+                    }
                 }
             });
         });
