@@ -19,6 +19,7 @@ function sendResults(bot, message, values) {
 function addAdvancedSearchCommand(bot) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])/i, message => {
+            //VK replaces quotes "" with &quot; characters, so we replace them back again
             const searchQuery = message.body.match(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])(.*)/i)[2].replace(new RegExp('&quot;', 'g'), '"');
             console.log(searchQuery);
             const cardEmitter = Scry.Cards.search(`${searchQuery}`);
@@ -33,7 +34,7 @@ function addAdvancedSearchCommand(bot) {
             });
 
             cardEmitter.on('error', reason => {
-                if (CONSTANTS.TIMEOUT_CODE === reason.error.code) {
+                if (reason && reason.error && CONSTANTS.TIMEOUT_CODE === reason.error.code) {
                     return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
                 }
                 const options = { forward_messages: message.id };
