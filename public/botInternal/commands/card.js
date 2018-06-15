@@ -90,7 +90,7 @@ function addCardCommand(bot) {
                     let didCardNotFound = false;
                     let processedArrayElements = 0;
                     rejectedPromises.forEach((rejected, index) => {
-                        if (CONSTANTS.TIMEOUT_CODE === rejected.e.error.code) {
+                        if (rejected.e && rejected.e.error && CONSTANTS.TIMEOUT_CODE === rejected.e.error.code) {
                             didRequestTimeout = true;
                         } else {
                             didCardNotFound = true;
