@@ -9,7 +9,7 @@ function sendResults(bot, message, values) {
         values.forEach(card => {
             results = results + `\n ${card.name}`;
         });
-        bot.send(results, message.peer_id);
+        bot.send(`${results}`, message.peer_id);
     } else {
         console.error('Error sending results');
     }
