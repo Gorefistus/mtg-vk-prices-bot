@@ -5,7 +5,7 @@ const CONSTANTS = require('../../common/constants');
 
 function sendResults(bot, message, values) {
     if (bot && message && values.length > 0) {
-        let results = 'I found this cards matching the criteria:';
+        let results = 'I found these cards matching the criteria:';
         values.forEach(card => {
             results = results + `\n ${card.name}`;
         });
@@ -19,7 +19,7 @@ function sendResults(bot, message, values) {
 function addAdvancedSearchCommand(bot) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])/i, message => {
-            const searchQuery = message.body.match(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])(.*)/i)[2];
+            const searchQuery = message.body.match(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])(.*)/i)[2].replace('&quot;', '"');
             console.log(searchQuery);
             const cardEmitter = Scry.Cards.search(`${encodeURIComponent(searchQuery)}`);
             const resultArray = [];
