@@ -77,7 +77,7 @@ function getCardByName(cardName, setCode) {
                     if (!card.card_faces && !card.image_uris) {
                         Scry.Cards.search(`"${cardName}" set:${setCode}`)
                             .on('data', data => resolve(data))
-                            .on('end', err => reject(err));
+                            .on('error', err => reject(err));
                     } else {
                         resolve(card);
                     }
@@ -88,12 +88,12 @@ function getCardByName(cardName, setCode) {
                             if (!card.card_faces && !card.image_uris) {
                                 Scry.Cards.search(`"${cardName}" set:${setCode}`)
                                     .on('data', data => resolve(data))
-                                    .on('end', err => reject(err));
+                                    .on('error', err => reject(err));
                             } else {
                                 resolve(card);
                             }
                         })
-                        .on('end', (reason) => {
+                        .on('error', (reason) => {
                             reject(reason);
                         });
                 });
@@ -110,7 +110,7 @@ function getCardByName(cardName, setCode) {
                         resolve(card);
                     }
                 })
-                .on('end', () => {
+                .on('error', () => {
                     Scry.Cards.search(`"${cardName}" lang:${searchCard.language} `)
                         .on('data', (card) => {
                             if (!card.card_faces && !card.image_uris) {
@@ -123,7 +123,7 @@ function getCardByName(cardName, setCode) {
                                 resolve(card);
                             }
                         })
-                        .on('end', (reason) => {
+                        .on('error', (reason) => {
                             reject(reason);
                         });
                 });
