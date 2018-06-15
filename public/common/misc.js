@@ -77,23 +77,23 @@ function getCardByName(cardName, setCode) {
                     if (!card.card_faces && !card.image_uris) {
                         Scry.Cards.search(`"${cardName}" set:${setCode}`)
                             .on('data', data => resolve(data))
-                            .on('error', err => reject(err));
+                            .on('end', err => reject(err));
                     } else {
                         resolve(card);
                     }
                 })
-                .on('error', () => {
+                .on('end', () => {
                     Scry.Cards.search(`"${cardName}" set:${setCode} lang:${searchCard.language} `)
                         .on('data', (card) => {
                             if (!card.card_faces && !card.image_uris) {
                                 Scry.Cards.search(`"${cardName}" set:${setCode}`)
                                     .on('data', data => resolve(data))
-                                    .on('error', err => reject(err));
+                                    .on('end', err => reject(err));
                             } else {
                                 resolve(card);
                             }
                         })
-                        .on('error', (reason) => {
+                        .on('end', (reason) => {
                             reject(reason);
                         });
                 });
@@ -110,7 +110,7 @@ function getCardByName(cardName, setCode) {
                         resolve(card);
                     }
                 })
-                .on('error', () => {
+                .on('end', () => {
                     Scry.Cards.search(`"${cardName}" lang:${searchCard.language} `)
                         .on('data', (card) => {
                             if (!card.card_faces && !card.image_uris) {
@@ -123,7 +123,7 @@ function getCardByName(cardName, setCode) {
                                 resolve(card);
                             }
                         })
-                        .on('error', (reason) => {
+                        .on('end', (reason) => {
                             reject(reason);
                         });
                 });
