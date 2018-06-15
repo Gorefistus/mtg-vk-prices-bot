@@ -22,6 +22,7 @@ function addAdvancedSearchCommand(bot) {
             const searchQuery = message.body.match(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])(.*)/i)[2];
             const cardEmitter = Scry.Cards.search(searchQuery);
             const resultArray = [];
+            let alreadyFired = false;
             cardEmitter.on('data', data => {
                 if (resultArray.length < 10) {
                     resultArray.push(data);
@@ -39,12 +40,17 @@ function addAdvancedSearchCommand(bot) {
             });
 
             cardEmitter.on('cancel', () => {
-                sendResults(bot, message, resultArray);
+                if (!alreadyFired) {
+                    alreadyFired = true;
+                    sendResults(bot, message, resultArray);
+                }
             });
 
             cardEmitter.on('end', () => {
-                sendResults(bot, message, resultArray);
-
+                if (!alreadyFired) {
+                    alreadyFired = true;
+                    sendResults(bot, message, resultArray);
+                }
             });
         });
     }
