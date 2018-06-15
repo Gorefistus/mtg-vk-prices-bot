@@ -12,7 +12,7 @@ function addHelpCommand(bot) {
                 '!MTH HelpMe (hm) %cardname% - remember forgotten card name, supports only english names\n\n' +
                 '!MTH legality (l) %cardname%  - check legality for the card in most popular formats, supports both russian and english names\n\n' +
                 '!MTH printings (pr) %cardname% - shows up to 10 printing of the card, supports both russian and english names \n\n' +
-                '!MTH AdvancedSearch (as) $searchQuery$ - search with https://scryfall.com/docs/reference syntax FOR ADVANCED USERS, show up to top 5 results', message.peer_id, options);
+                '!MTH AdvancedSearch (as) $searchQuery$ - search with https://scryfall.com/docs/reference syntax FOR ADVANCED USERS, show up to top 10 results', message.peer_id, options);
         });
     } else {
         console.error(STRINGS.COMMAND_NOT_ADDED);
