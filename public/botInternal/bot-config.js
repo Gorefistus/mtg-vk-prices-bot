@@ -13,7 +13,8 @@ const announcmentCommand = require('./commands/announcment');
 
 function addCommands(bot) {
     console.log('Commands addition started');
-
+    
+    announcmentCommand.addAnouncmentCommand(bot);
     cardCommand.addCardCommand(bot);
     helpmeCommand.addHelpmeCommand(bot);
     legalityCommand.addLegalityCommand(bot);
@@ -21,7 +22,6 @@ function addCommands(bot) {
     priceCommand.addPriceCommand(bot);
     printingsCommand.addPrintingsCommand(bot);
     advancedSearchCommand.addAdvancedSearchCommand(bot);
-    announcmentCommand.addAnouncmentCommand(bot);
     miscCommand.addMiscCommands(bot);
     helpCommand.addHelpCommand(bot);
 
