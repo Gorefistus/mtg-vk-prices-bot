@@ -11,16 +11,16 @@ const STRINGS = require('./strings');
 
 function getLegality(legality) {
     switch (legality) {
-        case CONSTANTS.LEGALITY_LEGAL:
-            return STRINGS.LEGALITY_LEGAL;
-        case CONSTANTS.LEGALITY_BANNED:
-            return STRINGS.LEGALITY_BANNED;
-        case CONSTANTS.LEGALITY_NOT_LEGAL:
-            return STRINGS.LEGALITY_NOT_LEGAL;
-        case CONSTANTS.LEGALITY_RESTRICTED:
-            return STRINGS.LEGALITY_RESTRICTED;
-        default:
-            return STRINGS.LEGALITY_NOT_LEGAL;
+    case CONSTANTS.LEGALITY_LEGAL:
+        return STRINGS.LEGALITY_LEGAL;
+    case CONSTANTS.LEGALITY_BANNED:
+        return STRINGS.LEGALITY_BANNED;
+    case CONSTANTS.LEGALITY_NOT_LEGAL:
+        return STRINGS.LEGALITY_NOT_LEGAL;
+    case CONSTANTS.LEGALITY_RESTRICTED:
+        return STRINGS.LEGALITY_RESTRICTED;
+    default:
+        return STRINGS.LEGALITY_NOT_LEGAL;
     }
 }
 
@@ -69,9 +69,11 @@ function getCardByName(cardName, setCode) {
         if (CONSTANTS.LANG_RUS === lang) {
             searchCard.language = STRINGS.LANG_RUS;
         }
+        // First, we are trying to get the card with exact name as provided,
+        // if we fail, we are doing fluffy search
         if (setCode) {
             Scry.Cards.search(`!"${cardName}" set:${setCode} lang:${searchCard.language} `)
-                .on('data', card => {
+                .on('data', (card) => {
                     if (!card.card_faces && !card.image_uris) {
                         Scry.Cards.search(`"${cardName}" set:${setCode}`)
                             .on('data', data => resolve(data))
@@ -97,7 +99,7 @@ function getCardByName(cardName, setCode) {
                 });
         } else {
             Scry.Cards.search(`!"${cardName}" lang:${searchCard.language} `)
-                .on('data', card => {
+                .on('data', (card) => {
                     if (!card.card_faces && !card.image_uris) {
                         Scry.Cards.byName(card.name, true)
                             .then(

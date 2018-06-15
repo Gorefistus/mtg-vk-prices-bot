@@ -6,8 +6,7 @@ const CONSTANTS = require('../../common/constants');
 function addAdvancedSearchCommand(bot) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])/i, message => {
-            console.log(message);
-            const searchQuery = message.body;
+            const searchQuery = message.body.match(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])(.*)/i)[2];
             Scry.Cards.search(searchQuery)
                 .waitForAll()
                 .then((values) => {
