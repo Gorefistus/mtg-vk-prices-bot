@@ -23,7 +23,6 @@ function addAdvancedSearchCommand(bot) {
             const searchQuery = message.body.match(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])(.*)/i)[2].replace(new RegExp('&quot;', 'g'), '"')
                 .replace(new RegExp('&gt;', 'g'), '>')
                 .replace(new RegExp('&lt;', 'g'), '<');
-            console.log(searchQuery);
             const cardEmitter = Scry.Cards.search(`${searchQuery}`);
             const resultArray = [];
             let alreadyFired = false;
