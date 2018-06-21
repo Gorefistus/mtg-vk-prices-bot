@@ -19,6 +19,7 @@ const LANG_RUS = 'rus';
 const LANG_ENG = 'eng';
 
 const STAR_CITY_PRICE_LINK = 'http://www.starcitygames.com/results?name=';
+const TOPDECK_PRICE_LINK = 'https://topdeck.ru/apps/toptrade/api-v1/singles/search?q=';
 
 
 module.exports = {
@@ -36,4 +37,5 @@ module.exports = {
     LANG_RUS,
     LANG_ENG,
     STAR_CITY_PRICE_LINK,
+    TOPDECK_PRICE_LINK
 };

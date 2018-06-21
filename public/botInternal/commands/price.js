@@ -48,12 +48,35 @@ function addPriceCommand(bot) {
                     const starcityPrice = MISC.getStarCityPrice(value, cardObject);
                     if (starcityPrice) {
                         cardCache.push(starcityPrice);
-                        bot.send(`${cardString} \n SCG: ${starcityPrice.value}`, message.peer_id);
+                        cardString = `${cardString} \n SCG: ${starcityPrice.value}`;
                     } else {
-                        bot.send(`${cardString} \n SCG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardObject.name)}&auto=Y`, message.peer_id);
+                        cardString = `${cardString} \n SCG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardObject.name)}&auto=Y`;
                     }
-                }, (reason) => {
+                    let cardName = cardObject.name;
+                    if (cardObject.card_faces) {
+                        cardName = cardObject.name.split('//')[0].trim();
+                    }
+                    return request({
+                        method: 'GET',
+                        uri: `${CONSTANTS.TOPDECK_PRICE_LINK}${encodeURIComponent(cardName)}`,
+                        ecdhCurve: 'auto',
+                        json: true,
+                    });
+                }, () => {
                     bot.send(`${cardString} \n SSG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardObject.name)}&auto=y`, message.peer_id);
+                })
+                .then((topdeckResult) => {
+                    const filteredByQuantity = topdeckResult.filter((price) => {
+                        return price.qty > 1;
+                    });
+                    if (filteredByQuantity.length > 0) {
+                        bot.send(`${cardString} \n TopDeck(unknown edition): ${filteredByQuantity[0].cost} RUB`, message.peer_id);
+                    } else {
+                        bot.send(`${cardString} \n TopDeck(unknown edition): ${topdeckResult[0].cost} RUB`, message.peer_id);
+                    }
+                }, reason => {
+                    console.log(`Couldn't find card on topdeck`);
+                    bot.send(cardString, message.peer_id);
                 })
                 .catch((reason) => {
                     // do nothing
