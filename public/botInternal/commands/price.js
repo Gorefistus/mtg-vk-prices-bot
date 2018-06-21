@@ -73,7 +73,14 @@ function addPriceCommand(bot) {
                         if (filteredByQuantity.length > 0) {
                             bot.send(`${cardString} \n TopDeck(unknown edition): ${filteredByQuantity[0].cost} RUB`, message.peer_id);
                         } else {
-                            bot.send(`${cardString} \n TopDeck(unknown edition): ${topdeckResult[0].cost} RUB`, message.peer_id);
+                            const filterByName = topdeckResult.filter(price => {
+                                return price.name.toLowerCase() === cardObject.name.toLowerCase();
+                            });
+                            if (filterByName.length > 0) {
+                                bot.send(`${cardString} \n TopDeck(unknown edition): ${filterByName[0].cost} RUB`, message.peer_id);
+                            } else {
+                                throw false;
+                            }
                         }
                     } catch (e) {
                         bot.send(`${cardString}`, message.peer_id);
