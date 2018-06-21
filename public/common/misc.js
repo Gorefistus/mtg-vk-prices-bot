@@ -56,6 +56,7 @@ function downloadCardImage(uri) {
 
 
 function getCardByName(cardName, setCode) {
+
     cardName = cardName.trim();
     if (setCode) {
         setCode = setCode.toUpperCase();
@@ -139,7 +140,7 @@ function getStarCityPrice(htmlString, cardObject = undefined) {
     let SCGCard = {};
     let scgCardIndex = -1;
     htmlPage('.search_results_2')
-        .each(function (i, elem) {
+        .each(function (i) {
             if (htmlPage(this)
                 .text()
                 .trim() === cardObject.set_name) {

@@ -35,7 +35,6 @@ function addPriceCommand(bot) {
                         if (value.card_faces) {
                             cardName = value.name.split('//')[0].trim();
                         }
-                        console.log(`${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=Y`);
                         return request(`${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=Y`);
                     }
                 }, (reason) => {

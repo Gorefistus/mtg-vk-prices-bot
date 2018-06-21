@@ -32,6 +32,13 @@
     ],
     "no-plusplus": [
       0
+    ],
+    "no-console": [
+      0
+    ],
+    "max-len": [
+      1,
+      150
     ]
   }
 }
