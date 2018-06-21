@@ -56,6 +56,7 @@ function addPriceCommand(bot) {
                     if (cardObject.card_faces) {
                         cardName = cardObject.name.split('//')[0].trim();
                     }
+                    console.log(cardName);
                     return request({
                         method: 'GET',
                         uri: `${CONSTANTS.TOPDECK_PRICE_LINK}${encodeURIComponent(cardName)}`,
