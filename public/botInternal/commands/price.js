@@ -56,7 +56,6 @@ function addPriceCommand(bot) {
                     if (cardObject.card_faces) {
                         cardName = cardObject.name.split('//')[0].trim();
                     }
-                    console.log(cardName);
                     return request({
                         method: 'GET',
                         uri: `${CONSTANTS.TOPDECK_PRICE_LINK}${encodeURIComponent(cardName)}`,
@@ -69,7 +68,7 @@ function addPriceCommand(bot) {
                 .then((topdeckResult) => {
                     try {
                         const filteredByQuantity = topdeckResult.filter((price) => {
-                            return price.qty > 1 && price.name.toLowerCase() === cardObject.name.toLowerCase();
+                            return parseInt(price.qty) > 1 && price.name.toLowerCase() === cardObject.name.toLowerCase();
                         });
                         if (filteredByQuantity.length > 0) {
                             bot.send(`${cardString} \n TopDeck(unknown edition): ${filteredByQuantity[0].cost} RUB`, message.peer_id);
