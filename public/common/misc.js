@@ -83,7 +83,7 @@ function getCardByName(cardName, setCode) {
                         resolve(card);
                     }
                 })
-                .on('end', () => {
+                .on('error', () => {
                     Scry.Cards.search(`"${cardName}" set:${setCode} lang:${searchCard.language} `)
                         .on('data', (card) => {
                             if (!card.card_faces && !card.image_uris) {

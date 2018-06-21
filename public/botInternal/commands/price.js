@@ -21,7 +21,7 @@ function addPriceCommand(bot) {
             MISC.getMultiverseId(cardName, setCode)
                 .then((value) => {
                     cardObject = value;
-                    cardString = `${value.name} [${value.set_name}] prices :\n TCG Mid: ${value.usd ? `$${value.usd}` : STRINGS.NO_DATA} \n MTGO: ${value.tix ? `${value.tix} tix` : STRINGS.NO_DATA}`;
+                    cardString = `${value.name} [ ${value.set_name} ] prices :\n TCG Mid: ${value.usd ? `$${value.usd}` : STRINGS.NO_DATA} \n MTGO: ${value.tix ? `${value.tix} tix` : STRINGS.NO_DATA}`;
                     let cardIndex = -1;
                     cardCache.forEach((card, index) => {
                         if (card.name === value.name && card.set === value.set_name) {
