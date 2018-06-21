@@ -66,17 +66,21 @@ function addPriceCommand(bot) {
                     bot.send(`${cardString} \n SSG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardObject.name)}&auto=y`, message.peer_id);
                 })
                 .then((topdeckResult) => {
-                    const filteredByQuantity = topdeckResult.filter((price) => {
-                        return price.qty > 1;
-                    });
-                    if (filteredByQuantity.length > 0) {
-                        bot.send(`${cardString} \n TopDeck(unknown edition): ${filteredByQuantity[0].cost} RUB`, message.peer_id);
-                    } else {
-                        bot.send(`${cardString} \n TopDeck(unknown edition): ${topdeckResult[0].cost} RUB`, message.peer_id);
+                    try {
+                        const filteredByQuantity = topdeckResult.filter((price) => {
+                            return price.qty > 1 && price.name.toLowerCase() === cardObject.name.toLowerCase();
+                        });
+                        if (filteredByQuantity.length > 0) {
+                            bot.send(`${cardString} \n TopDeck(unknown edition): ${filteredByQuantity[0].cost} RUB`, message.peer_id);
+                        } else {
+                            bot.send(`${cardString} \n TopDeck(unknown edition): ${topdeckResult[0].cost} RUB`, message.peer_id);
+                        }
+                    } catch (e) {
+                        bot.send(`${cardString}`, message.peer_id);
                     }
-                }, reason => {
+                }, () => {
                     console.log(`Couldn't find card on topdeck`);
-                    bot.send(cardString, message.peer_id);
+                    bot.send(`${cardString}`, message.peer_id);
                 })
                 .catch((reason) => {
                     // do nothing
