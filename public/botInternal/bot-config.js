@@ -22,8 +22,8 @@ function addCommands(bot) {
     priceCommand.addPriceCommand(bot);
     printingsCommand.addPrintingsCommand(bot);
     advancedSearchCommand.addAdvancedSearchCommand(bot);
-    miscCommand.addMiscCommands(bot);
     helpCommand.addHelpCommand(bot);
+    miscCommand.addMiscCommands(bot);
 
     console.log('Commands addition finished');
 }
