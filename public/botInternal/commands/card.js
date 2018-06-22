@@ -6,6 +6,21 @@ const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
 
 
+async function runPromisesInSequence(bot, promises) {
+    try {
+        const resultsArray = [];
+        for (let promise of promises) {
+            const resolved = await MISC.promiseReflect(bot.uploadPhoto(path.resolve(promise.v.toString())));
+            if (resolved.status === 'resolved') {
+                resultsArray.push(resolved);
+            }
+        }
+        return resultsArray;
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 function downloadAndPostCardImage(bot, cards, peerId) {
     if (cards && cards.length > 0 && bot && peerId) {
         const promisesDownloadArray = [];
@@ -15,14 +30,12 @@ function downloadAndPostCardImage(bot, cards, peerId) {
             // double faced cards have many images in them, we need to handle that
             if (card.image_uris === undefined && card.card_faces && card.card_faces.length > 0) {
                 card.card_faces.forEach((face) => {
-                    // look like some vk api limiting
-                    if (promisesDownloadArray.length < 4) {
+                    if (promisesDownloadArray.length < 10) {
                         promisesDownloadArray.push(MISC.downloadCardImage(face.image_uris.normal));
                     }
                 });
             } else {
-                // look like some vk api limiting
-                if (promisesDownloadArray.length < 4) {
+                if (promisesDownloadArray.length < 10) {
                     promisesDownloadArray.push(MISC.downloadCardImage(card.image_uris.normal));
                 }
             }
@@ -31,34 +44,31 @@ function downloadAndPostCardImage(bot, cards, peerId) {
             (values) => {
                 const resolvedPromises = values.filter(value => value.status === 'resolved');
                 // do something with rejected promises
-                const rejectedPromises = values.filter(value => value.status === 'rejected');
-                const promiseUploadArray = [];
-                for (const index in resolvedPromises) {
-                    promiseUploadArray.push(bot.uploadPhoto(path.resolve(resolvedPromises[index].v.toString())));
-                }
-                Promise.all(promiseUploadArray.map(MISC.promiseReflect)).then((photoValues) => {
-                    const resolvedPhotoPromises = photoValues.filter(value => value.status === 'resolved');
-                    let attachmentString = '';
-                    for (const index in resolvedPhotoPromises) {
-                        attachmentString = `${attachmentString}photo${resolvedPhotoPromises[index].v.owner_id}_${resolvedPhotoPromises[index].v.id},`;
-                    }
-                    const options = { attachment: attachmentString };
-                    bot.send('', peerId, options);
-                    resolvedPromises.forEach(((value) => {
-                        fs.unlink(value.v, () => {
-                            console.log(STRINGS.FILE_DELETED);
-                        });
-                    }));
-                }, (reason) => {
-                // this should never occur due to our reflect pattern
-                    console.log(reason);
-                });
+
+                runPromisesInSequence(bot, resolvedPromises)
+                    .then(photoValues => {
+                        const resolvedPhotoPromises = photoValues.filter(value => value.status === 'resolved');
+                        let attachmentString = '';
+                        for (const index in resolvedPhotoPromises) {
+                            attachmentString = `${attachmentString}photo${resolvedPhotoPromises[index].v.owner_id}_${resolvedPhotoPromises[index].v.id},`;
+                        }
+                        const options = { attachment: attachmentString };
+                        console.log(options);
+                        bot.send('', peerId, options).catch(reason => {
+                            console.log(reason);});
+                        resolvedPromises.forEach(((value) => {
+                            fs.unlink(value.v, () => {
+                                console.log(STRINGS.FILE_DELETED);
+                            });
+                        }));
+                    });
             },
             (reason) => {
             // this should never occur due to our reflect pattern
                 console.log(reason);
             },
-        );
+        ).catch(reason => {
+            console.log(reason);});
     } else {
         console.error('Error uploading photos to VK');
     }

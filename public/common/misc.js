@@ -24,6 +24,13 @@ function getLegality(legality) {
     }
 }
 
+
+function delay(delayTime = 100) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, delayTime);
+    });
+}
+
 function promiseReflect(promise) {
     return promise.then(
         v => ({
@@ -175,5 +182,6 @@ module.exports = {
     downloadCardImage,
     getMultiverseId: getCardByName,
     promiseReflect,
+    delay,
     getStarCityPrice,
 };
