@@ -84,7 +84,7 @@ function getCardByName(cardName, setCode) {
                     }
                 })
                 .on('error', () => {
-                    Scry.Cards.search(`"${cardName}" set:${setCode} lang:${searchCard.language} `)
+                    Scry.Cards.search(`${cardName} set:${setCode} lang:${searchCard.language} `)
                         .on('data', (card) => {
                             if (!card.card_faces && !card.image_uris) {
                                 Scry.Cards.search(`"${cardName}" set:${setCode}`)
@@ -112,7 +112,7 @@ function getCardByName(cardName, setCode) {
                     }
                 })
                 .on('error', () => {
-                    Scry.Cards.search(`"${cardName}" lang:${searchCard.language} `)
+                    Scry.Cards.search(`${cardName} lang:${searchCard.language}`)
                         .on('data', (card) => {
                             if (!card.card_faces && !card.image_uris) {
                                 Scry.Cards.byName(card.name, true)
