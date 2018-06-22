@@ -3,7 +3,7 @@ const STRINGS = require('../../common/strings');
 
 function addHelpCommand(bot) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/help\b|h\b/i, (message) => {
+        bot.get(/[m|h][\s]help\b|[m|h][\s]h\b/i, (message) => {
             const options = { forward_messages: message.id };
             bot.send('Available commands:\n ' +
                 '!MTH card (c) %cardname% [%set_abbreviation%] ; %cardname% [%set_abbreviation%]  -  to show the image of the cards (up to 10 images per message) from desired set if provided, supports both russian and english names  \n\n ' +
