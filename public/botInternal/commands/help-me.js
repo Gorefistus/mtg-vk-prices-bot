@@ -15,7 +15,7 @@ function addHelpmeCommand(bot) {
                 .then((results) => {
                     if (results.length > 0) {
                         let suggestions = 'Did you mean:';
-                        for (let i = 0; i < 5 && i <= results.length - 1; i++) {
+                        for (let i = 0; i < 10 && i <= results.length - 1; i++) {
                             suggestions = `${suggestions}\n ${results[i]}`;
                         }
                         bot.send(suggestions, message.peer_id);
