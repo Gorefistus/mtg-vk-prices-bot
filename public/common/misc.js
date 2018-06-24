@@ -5,22 +5,23 @@ const cheerio = require('cheerio');
 const request = require('request');
 
 
+const SCGDict = require('./SCGSetDictionary');
 const CONSTANTS = require('./constants');
 const STRINGS = require('./strings');
 
 
 function getLegality(legality) {
     switch (legality) {
-    case CONSTANTS.LEGALITY_LEGAL:
-        return STRINGS.LEGALITY_LEGAL;
-    case CONSTANTS.LEGALITY_BANNED:
-        return STRINGS.LEGALITY_BANNED;
-    case CONSTANTS.LEGALITY_NOT_LEGAL:
-        return STRINGS.LEGALITY_NOT_LEGAL;
-    case CONSTANTS.LEGALITY_RESTRICTED:
-        return STRINGS.LEGALITY_RESTRICTED;
-    default:
-        return STRINGS.LEGALITY_NOT_LEGAL;
+        case CONSTANTS.LEGALITY_LEGAL:
+            return STRINGS.LEGALITY_LEGAL;
+        case CONSTANTS.LEGALITY_BANNED:
+            return STRINGS.LEGALITY_BANNED;
+        case CONSTANTS.LEGALITY_NOT_LEGAL:
+            return STRINGS.LEGALITY_NOT_LEGAL;
+        case CONSTANTS.LEGALITY_RESTRICTED:
+            return STRINGS.LEGALITY_RESTRICTED;
+        default:
+            return STRINGS.LEGALITY_NOT_LEGAL;
     }
 }
 
@@ -148,9 +149,10 @@ function getStarCityPrice(htmlString, cardObject = undefined) {
     let scgCardIndex = -1;
     htmlPage('.search_results_2')
         .each(function (i) {
-            if (htmlPage(this)
+            if (checkAgainstSCGDict(htmlPage(this)
                 .text()
-                .trim() === cardObject.set_name) {
+                .trim())
+                .toLowerCase() === cardObject.set_name.toLowerCase()) {
                 scgCardIndex = i;
                 SCGCard.set = cardObject.set_name;
             }
@@ -175,6 +177,16 @@ function getStarCityPrice(htmlString, cardObject = undefined) {
         }
     }
     return SCGCard;
+}
+
+function checkAgainstSCGDict(setName) {
+    let setNameToReturn = setName;
+    SCGDict.SCGDict.forEach((scgDictItem) => {
+        if (setName.toLowerCase() === scgDictItem.scg.toLowerCase()) {
+            setNameToReturn = scgDictItem.scry;
+        }
+    });
+    return setNameToReturn;
 }
 
 module.exports = {

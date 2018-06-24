@@ -21,7 +21,7 @@ function addPriceCommand(bot) {
             MISC.getMultiverseId(cardName, setCode)
                 .then((value) => {
                     cardObject = value;
-                    cardString = `${value.name} [ ${value.set_name} ] prices :\n TCG Mid: ${value.usd ? `$${value.usd}` : STRINGS.NO_DATA} \n MTGO: ${value.tix ? `${value.tix} tix` : STRINGS.NO_DATA}`;
+                    cardString = `${value.name} [${value.set_name}] prices :\n TCG Mid: ${value.usd ? `$${value.usd}` : STRINGS.NO_DATA} \n MTGO: ${value.tix ? `${value.tix} tix` : STRINGS.NO_DATA}`;
                     let cardIndex = -1;
                     cardCache.forEach((card, index) => {
                         if (card.name === value.name && card.set === value.set_name) {
@@ -48,7 +48,7 @@ function addPriceCommand(bot) {
                     const starcityPrice = MISC.getStarCityPrice(value, cardObject);
                     if (starcityPrice) {
                         cardCache.push(starcityPrice);
-                        cardString = `${cardString} \n SCG: ${starcityPrice.value}`;
+                        cardString = `${cardString} \n SCG:${starcityPrice.set !== cardObject.set_name ? ` [${starcityPrice.set}] ` : ''} ${starcityPrice.value}`;
                     } else {
                         cardString = `${cardString} \n SCG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardObject.name)}&auto=Y`;
                     }
