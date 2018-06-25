@@ -4,6 +4,7 @@ const CARD_NOT_FOUND = 'One or more cards haven\'t been found';
 const SUGGESTIONS_NOT_FOUND = 'Couldn\'t find suggestions';
 const NAME_SHORT_ERR = 'Card Name is too short!';
 const NO_DATA = 'No data available!';
+const PRICES_ERR_GENERAL = 'Couldn\'t find prices, please try again';
 
 const FORMAT_STANDARD = 'Standard';
 const FORMAT_MODERN = 'Modern';
@@ -51,4 +52,5 @@ module.exports = {
     LANG_RUS,
     COMMAND_NOT_ADDED,
     BOT_ERROR,
+    PRICES_ERR_GENERAL
 };

@@ -6,6 +6,61 @@ const MISC = require('../../common/misc');
 
 const cardCache = [];
 
+async function getCardPrices(parsedCardName, setCode) {
+    try {
+        let cardIndex = -1;
+        let priceString = '';
+
+        const cardObject = await MISC.getMultiverseId(parsedCardName, setCode);
+        priceString = `${cardObject.name} [${cardObject.set_name}] prices :\n TCG Mid: ${cardObject.usd ? `$${cardObject.usd}` : STRINGS.NO_DATA}\n MTGO: ${cardObject.tix ? `${cardObject.tix} tix` : STRINGS.NO_DATA}`;
+
+        let cardName = cardObject.name;
+        if (cardObject.card_faces) {
+            cardName = cardObject.name.split('//')[0].trim();
+        }
+
+        // SCG PRICES SCRAPING START
+        cardCache.forEach((card, index) => {
+            if (card.name === cardObject.name && card.set === cardObject.set_name) {
+                cardIndex = index;
+            }
+        });
+        if (cardIndex >= 0) {
+            priceString = `${priceString} \n SCG: ${cardCache[cardIndex].value}`;
+        } else {
+            const starCityPage = await request(`${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=Y`);
+            const scgPriceObject = MISC.getStarCityPrice(starCityPage, cardObject);
+            if (scgPriceObject) {
+                cardCache.push({
+                    ...scgPriceObject,
+                    name: cardObject.name,
+                });
+                priceString =
+                    `${priceString} \n SCG:${scgPriceObject.set !== cardObject.set_name ? ` [${scgPriceObject.set}] ` : ''} ${scgPriceObject.value}`;
+            } else {
+                priceString = `${priceString} \n SCG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=Y`;
+            }
+        }
+        // TOPDECK PRICES SCRAP START
+
+        const topDeckPrices = await request({
+            method: 'GET',
+            uri: `${CONSTANTS.TOPDECK_PRICE_LINK}${encodeURIComponent(cardName)}`,
+            ecdhCurve: 'auto',
+            json: true,
+        });
+        const filterByName = topDeckPrices.filter(price => price.eng_name.toLowerCase() === cardName.toLowerCase());
+        if (filterByName.length > 0) {
+            priceString = `${priceString} \n TopDeck(unknown edition): ${filterByName[0].cost} RUB`;
+        }
+        return priceString;
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+
 function addPriceCommand(bot) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/([m|h][\s]price[\s]|[m|h][\s]p[\s])/i, (message) => {
@@ -16,82 +71,16 @@ function addPriceCommand(bot) {
                 cardName = setNameRegex[2];
             }
 
-            let cardString = '';
-            let cardObject;
-            MISC.getMultiverseId(cardName, setCode)
-                .then((value) => {
-                    cardObject = value;
-                    cardString = `${value.name} [${value.set_name}] prices :\n TCG Mid: ${value.usd ? `$${value.usd}` : STRINGS.NO_DATA} \n MTGO: ${value.tix ? `${value.tix} tix` : STRINGS.NO_DATA}`;
-                    let cardIndex = -1;
-                    cardCache.forEach((card, index) => {
-                        if (card.name === value.name && card.set === value.set_name) {
-                            cardIndex = index;
-                        }
-                    });
-                    if (cardIndex >= 0) {
-                        bot.send(`${cardString} \n SCG: ${cardCache[cardIndex].value}`, message.peer_id);
-                    } else {
-                        let cardName = value.name;
-                        if (value.card_faces) {
-                            cardName = value.name.split('//')[0].trim();
-                        }
-                        return request(`${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=Y`);
-                    }
+            getCardPrices(cardName, setCode)
+                .then((prices) => {
+                    bot.send(prices, message.peer_id);
                 }, (reason) => {
-                    if (CONSTANTS.TIMEOUT_CODE === reason.error.code) {
-                        return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
-                    }
-                    const options = { forward_messages: message.id };
-                    bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
-                })
-                .then((value) => {
-                    const starcityPrice = MISC.getStarCityPrice(value, cardObject);
-                    if (starcityPrice) {
-                        cardCache.push(starcityPrice);
-                        cardString = `${cardString} \n SCG:${starcityPrice.set !== cardObject.set_name ? ` [${starcityPrice.set}] ` : ''} ${starcityPrice.value}`;
-                    } else {
-                        cardString = `${cardString} \n SCG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardObject.name)}&auto=Y`;
-                    }
-                    let cardName = cardObject.name;
-                    if (cardObject.card_faces) {
-                        cardName = cardObject.name.split('//')[0].trim();
-                    }
-                    return request({
-                        method: 'GET',
-                        uri: `${CONSTANTS.TOPDECK_PRICE_LINK}${encodeURIComponent(cardName)}`,
-                        ecdhCurve: 'auto',
-                        json: true,
-                    });
-                }, () => {
-                    bot.send(`${cardString} \n SSG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardObject.name)}&auto=y`, message.peer_id);
-                })
-                .then((topdeckResult) => {
-                    try {
-                        const filteredByQuantity = topdeckResult.filter((price) => {
-                            return parseInt(price.qty) > 1 && price.name.toLowerCase() === cardObject.name.toLowerCase();
-                        });
-                        if (filteredByQuantity.length > 0) {
-                            bot.send(`${cardString} \n TopDeck(unknown edition): ${filteredByQuantity[0].cost} RUB`, message.peer_id);
-                        } else {
-                            const filterByName = topdeckResult.filter(price => {
-                                return price.name.toLowerCase() === cardObject.name.toLowerCase();
-                            });
-                            if (filterByName.length > 0) {
-                                bot.send(`${cardString} \n TopDeck(unknown edition): ${filterByName[0].cost} RUB`, message.peer_id);
-                            } else {
-                                throw false;
-                            }
-                        }
-                    } catch (e) {
-                        bot.send(`${cardString}`, message.peer_id);
-                    }
-                }, () => {
-                    console.log(`Couldn't find card on topdeck`);
-                    bot.send(`${cardString}`, message.peer_id);
-                })
-                .catch((reason) => {
-                    // do nothing
+                    bot.send(STRINGS.PRICES_ERR_GENERAL, message.peer_id);
                     console.log(reason);
+                })
+                .catch(reason => {
+                    console.log(reason);
+                    bot.send(STRINGS.PRICES_ERR_GENERAL, message.peer_id);
                 });
         });
     } else {

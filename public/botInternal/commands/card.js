@@ -53,13 +53,10 @@ function downloadAndPostCardImage(bot, cards, peerId) {
                             attachmentString = `${attachmentString}photo${resolvedPhotoPromises[index].v.owner_id}_${resolvedPhotoPromises[index].v.id},`;
                         }
                         const options = { attachment: attachmentString };
-                        console.log(options);
                         bot.send('', peerId, options).catch(reason => {
                             console.log(reason);});
                         resolvedPromises.forEach(((value) => {
-                            fs.unlink(value.v, () => {
-                                console.log(STRINGS.FILE_DELETED);
-                            });
+                            fs.unlink(value.v);
                         }));
                     });
             },
