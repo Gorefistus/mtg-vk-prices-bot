@@ -34,7 +34,6 @@ const BOT_ERROR = 'Bot could not be started';
 
 
 module.exports = {
-    FILE_DELETED,
     REQ_TIMEOUT,
     CARD_NOT_FOUND,
     SUGGESTIONS_NOT_FOUND,
