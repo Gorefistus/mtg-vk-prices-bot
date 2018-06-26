@@ -1,5 +1,4 @@
 const STRINGS = require('../common/strings');
-const CONSTANTS = require('../common/constants');
 const cardCommand = require('./commands/card');
 const helpmeCommand = require('./commands/help-me');
 const legalityCommand = require('./commands/legality');

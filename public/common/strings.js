@@ -1,10 +1,13 @@
-const FILE_DELETED = 'File deleted';
 const REQ_TIMEOUT = 'One or more requests have timed out';
 const CARD_NOT_FOUND = 'One or more cards haven\'t been found';
 const SUGGESTIONS_NOT_FOUND = 'Couldn\'t find suggestions';
 const NAME_SHORT_ERR = 'Card Name is too short!';
 const NO_DATA = 'No data available!';
-const PRICES_ERR_GENERAL = 'Couldn\'t find prices, please try again';
+
+const ERR_PRICES_GENERAL = 'Couldn\'t find prices, please try again';
+const ERR_VK_UPLOAD = 'Couldn\'t upload image to the VK';
+
+const LOG_FILE_DELETED = 'Card image file deleted';
 
 const FORMAT_STANDARD = 'Standard';
 const FORMAT_MODERN = 'Modern';
@@ -52,5 +55,7 @@ module.exports = {
     LANG_RUS,
     COMMAND_NOT_ADDED,
     BOT_ERROR,
-    PRICES_ERR_GENERAL
+    PRICES_ERR_GENERAL: ERR_PRICES_GENERAL,
+    LOG_FILE_DELETED,
+    ERR_VK_UPLOAD,
 };

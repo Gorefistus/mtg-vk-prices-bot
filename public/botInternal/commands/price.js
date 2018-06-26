@@ -75,11 +75,11 @@ function addPriceCommand(bot) {
                         const options = { forward_messages: message.id };
                         return bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
                     } else {
-                        bot.send(STRINGS.PRICES_ERR_GENERAL, message.peer_id);
+                        return bot.send(STRINGS.PRICES_ERR_GENERAL, message.peer_id);
                     }
                 })
-                .catch(reason => {
-                    bot.send(STRINGS.PRICES_ERR_GENERAL, message.peer_id);
+                .catch(() => {
+                    return bot.send(STRINGS.PRICES_ERR_GENERAL, message.peer_id);
                 });
         });
     } else {

@@ -39,6 +39,9 @@
     "max-len": [
       1,
       150
+    ],
+    "no-await-in-loop": [
+      0
     ]
   }
 }
