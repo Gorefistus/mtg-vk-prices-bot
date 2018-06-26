@@ -19,6 +19,7 @@ async function getCardPrices(parsedCardName, setCode) {
     }
 
     // SCG PRICES SCRAPING START
+    let scgPriceObject;
     cardCache.forEach((card, index) => {
         if (card.name === cardObject.name && card.set === cardObject.set_name) {
             cardIndex = index;
@@ -28,7 +29,7 @@ async function getCardPrices(parsedCardName, setCode) {
         priceString = `${priceString} \n SCG: ${cardCache[cardIndex].value}`;
     } else {
         const starCityPage = await request(`${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=Y`);
-        const scgPriceObject = MISC.getStarCityPrice(starCityPage, cardObject);
+        scgPriceObject = MISC.getStarCityPrice(starCityPage, cardObject);
         if (scgPriceObject) {
             cardCache.push({
                 ...scgPriceObject,
@@ -48,9 +49,20 @@ async function getCardPrices(parsedCardName, setCode) {
         ecdhCurve: 'auto',
         json: true,
     });
-    const filterByName = topDeckPrices.filter(price => price.eng_name.toLowerCase() === cardName.toLowerCase());
-    if (filterByName.length > 0) {
-        priceString = `${priceString} \n TopDeck(unknown edition): ${filterByName[0].cost} RUB`;
+    const filterByNameAndPrice = topDeckPrices.filter(price => {
+        if (scgPriceObject) {
+            const scgPriceInNumber = parseFloat(scgPriceObject.value.split('$')[0]);
+            return price.eng_name.toLowerCase() === cardName.toLowerCase() && price.cost > scgPriceInNumber * 25;
+        }
+        return price.eng_name.toLowerCase() === cardName.toLowerCase();
+    });
+    if (filterByNameAndPrice.length > 0) {
+        priceString = `${priceString} \n TopDeck(unknown edition): ${filterByNameAndPrice[0].cost} RUB`;
+    } else {
+        const filterByName = topDeckPrices.filter(price => price.eng_name.toLowerCase() === cardName.toLowerCase());
+        if (filterByName.length > 0) {
+            priceString = `${priceString} \n TopDeck(unknown edition): ${filterByName[0].cost} RUB`;
+        }
     }
     return priceString;
 
