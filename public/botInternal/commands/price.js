@@ -52,6 +52,7 @@ async function getCardPrices(parsedCardName, setCode) {
     const filterByNameAndPrice = topDeckPrices.filter(price => {
         if (scgPriceObject) {
             const scgPriceInNumber = parseFloat(scgPriceObject.value.split('$')[0]);
+            console.log(scgPriceInNumber);
             return price.eng_name.toLowerCase() === cardName.toLowerCase() && price.cost > scgPriceInNumber * 25;
         }
         return price.eng_name.toLowerCase() === cardName.toLowerCase();
