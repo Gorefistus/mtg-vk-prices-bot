@@ -1,5 +1,6 @@
 const STRINGS = require('../common/strings');
 const cardCommand = require('./commands/card');
+const artCommand = require('./commands/art');
 const helpmeCommand = require('./commands/help-me');
 const legalityCommand = require('./commands/legality');
 const helpCommand = require('./commands/help');
@@ -15,6 +16,7 @@ function addCommands(bot) {
 
     announcmentCommand.addAnouncmentCommand(bot);
     cardCommand.addCardCommand(bot);
+    artCommand.addArtCommand(bot);
     helpmeCommand.addHelpmeCommand(bot);
     legalityCommand.addLegalityCommand(bot);
     oracleCommand.addOracleCommand(bot);
