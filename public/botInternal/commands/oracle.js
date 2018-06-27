@@ -4,8 +4,8 @@ const MISC = require('../../common/misc');
 
 function addOracleCommand(bot) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/([m|h][\s]oracle[\s]|[n|h][\s]o[\s])/i, (message) => {
-            const cardName = message.body.match(/([m|h][\s]oracle[\s,]|[n|h][\s]o[\s])(.*)/i)[2];
+        bot.get(/([m|h][\s]oracle[\s]|[m|h][\s]o[\s])/i, (message) => {
+            const cardName = message.body.match(/([m|h][\s]oracle[\s,]|[m|h][\s]o[\s])(.*)/i)[2];
             MISC.getMultiverseId(cardName)
                 .then((value) => {
                     let oracleText = '';
