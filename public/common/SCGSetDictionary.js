@@ -39,6 +39,10 @@ const SCGDict = [
         scg: 'Masterpiece Series: Zendikar Expeditions (Foil)',
         scry: 'Zendikar Expeditions',
     },
+    {
+        scg: 'Conspiracy (2014 Edition)',
+        scry: 'Conspiracy',
+    },
 
 
 ];

@@ -36,7 +36,7 @@ function addPrintingsCommand(bot) {
                                     printingsString = `${totalPrintingsShown} printings (${printings.data.length} total) of ${value.name} (Page ${pageName}/${pages}): \n${printingsString}`;
                                 } else {
                                     printingsString =
-                                        `10 printings (${printings.data.length} total) of ${value.name} (Page 1 /${pages}):\n`;
+                                        `10 printings (${printings.data.length} total) of ${value.name} (Page 1/${pages}):\n`;
                                     for (let i = 0; i < 10 && i < printings.data.length; i++) {
                                         printingsString =
                                             `${printingsString}${printings.data[i].set_name} (${printings.data[i].set.toUpperCase()})\n`;

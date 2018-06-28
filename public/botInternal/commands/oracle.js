@@ -15,12 +15,14 @@ function addOracleCommand(bot) {
                             ${face.name} oracle text :\nMana cost: ${face.mana_cost.length > 0 ? face.mana_cost : 'None'} 
                     ${face.type_line}
                     \n${face.oracle_text}
+                    ${face.loyalty ? `\nStarting loyalty: ${face.loyalty}` : ''}
                     \n\t\t${face.power ? `🗡: ${face.power}` : ''} ${face.toughness ? `🛡: ${face.toughness}` : ''}`;
                         });
                     } else {
                         oracleText = `${value.name} oracle text :\nMana cost: ${value.mana_cost.length > 0 ? value.mana_cost : 'None'} 
                     ${value.type_line}
                     \n${value.oracle_text}
+                    ${value.loyalty ? `\nStarting loyalty: ${value.loyalty}` : ''}
                     \n${value.power ? `🗡: ${value.power}` : ''} ${value.toughness ? `🛡: ${value.toughness}` : ''}`;
                     }
                     bot.send(oracleText, message.peer_id);
