@@ -9,18 +9,12 @@ const app = express();
 app.use(express.static(path.resolve(__dirname, 'static')));
 app.listen(process.env.PORT || 5000);
 
-setInterval(() => {
-    console.log('PINGED YOURSELF');
-    http.get('http://mtgvkbotprices.herokuapp.com/');
-}, 300000);
-
 // __________________________________________________________
 const bot = new Bot({
-    token: process.env.VK_TOKEN || 'place your token here',
-    prefix: /^!mth[\s,]|^!m[\s]/i,
-    prefixOnlyInChats: true,
+    token: process.env.VK_TOKEN || 'place your group token here',
+    group_id: process.env.VK_GROUP || 'place your group id here',
     api: {
-        v: 5.38, // must be >= 5.38
+        v: 5.81, // must be >= 5.80
         lang: 'ru',
     },
 });

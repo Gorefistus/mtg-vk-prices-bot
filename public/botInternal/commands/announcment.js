@@ -1,7 +1,7 @@
 function addAnnouncmentCommand(bot) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/([m|h][\s]announcment[\s])/i, (message) => {
-            const messageBody = message.body.match(/([m|h][\s]announcment[\s])(.*)/i)[2];
+            const messageBody = message.text.match(/([m|h][\s]announcment[\s])(.*)/i)[2];
             if (message.user_id === 6874525 && messageBody.length > 0) {
                 bot.api('messages.getDialogs')
                     .then((dialogs) => {

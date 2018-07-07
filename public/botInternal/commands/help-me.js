@@ -7,7 +7,7 @@ const CONSTANTS = require('../../common/constants');
 function addHelpmeCommand(bot) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/([m|h][\s]helpme[\s]|[m|h][\s]hm[\s])/i, (message) => {
-            const cardName = message.body.match(/([m|h][\s]helpme[\s]|[m|h][\s]hm[\s,])(.*)/i)[2];
+            const cardName = message.text.match(/([m|h][\s]helpme[\s]|[m|h][\s]hm[\s,])(.*)/i)[2];
             if (cardName.length < 2) {
                 return bot.send(STRINGS.NAME_SHORT_ERR, message.peer_id);
             }
@@ -18,7 +18,8 @@ function addHelpmeCommand(bot) {
                         for (let i = 0; i < 10 && i <= results.length - 1; i++) {
                             suggestions = `${suggestions}\n ${results[i]}`;
                         }
-                        bot.send(suggestions, message.peer_id);
+                        bot.send(suggestions, message.peer_id).catch(reason => {
+                            console.log(reason);});
                     } else {
                         bot.send(STRINGS.SUGGESTIONS_NOT_FOUND, message.peer_id);
                     }

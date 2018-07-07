@@ -16,17 +16,17 @@ function addMiscCommands(bot) {
             bot.send(STRINGS.COMMAND_NOT_FOUND, msg.peer_id);
         });
 
-        setInterval(() => {
-            bot.api('friends.getRequests', { need_viewed: 1 })
-                .then((value) => {
-                    if (value.count > 0) {
-                        addFriendsByOne(bot, value.items);
-                    }
-                })
-                .catch((reason) => {
-                    console.log(reason);
-                });
-        }, 1000 * 45);
+        // setInterval(() => {
+        //     bot.api('friends.getRequests', { need_viewed: 1 })
+        //         .then((value) => {
+        //             if (value.count > 0) {
+        //                 addFriendsByOne(bot, value.items);
+        //             }
+        //         })
+        //         .catch((reason) => {
+        //             console.log(reason);
+        //         });
+        // }, 1000 * 45);
     } else {
         console.error(STRINGS.COMMAND_NOT_ADDED);
     }

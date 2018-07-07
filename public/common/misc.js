@@ -125,7 +125,7 @@ function getCardByName(cardName, setCode) {
                         });
                 });
         } else {
-            Scry.Cards.search(`!"${cardName}" lang:any} `)
+            Scry.Cards.search(`!"${cardName}" lang:any } `)
                 .on('data', (card) => {
                     if (!card.card_faces && !card.image_uris) {
                         Scry.Cards.byName(card.name, true)
