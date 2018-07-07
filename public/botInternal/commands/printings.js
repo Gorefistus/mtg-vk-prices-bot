@@ -7,9 +7,9 @@ const MISC = require('../../common/misc');
 
 function addPrintingsCommand(bot) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/([m|h][\s]printings[\s]|[m|h][\s]pr[\s])/i, (message) => {
+        bot.get(/(printings[\s]|pr[\s])/i, (message) => {
             let pageName = 0;
-            let cardName = message.text.match(/([m|h][\s]printings[\s]|[m|h][\s]pr[\s,])(.*)/i)[2];
+            let cardName = message.text.match(/(printings[\s]|pr[\s,])(.*)/i)[2];
             if (cardName.split('|').length > 1) {
                 const tempValue = cardName.split('|');
                 cardName = tempValue[0];

@@ -5,8 +5,8 @@ const MISC = require('../../common/misc');
 
 function addLegalityCommand(bot) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/([m|h][\s]legality[\s]|[m|h][\s]l[\s])/i, (message) => {
-            const cardName = message.text.match(/([m|h][\s]legality[\s]|[m|h][\s]l[\s])(.*)/i)[2];
+        bot.get(/(legality[\s]|l[\s])/i, (message) => {
+            const cardName = message.text.match(/(legality[\s]|l[\s])(.*)/i)[2];
             MISC.getMultiverseId(cardName).then((value) => {
                 bot.send(`${value.name} legality:\n 
         ${STRINGS.FORMAT_STANDARD}: ${MISC.getLegality(value.legalities.standard)}
