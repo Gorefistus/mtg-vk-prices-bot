@@ -6,8 +6,8 @@ const CONSTANTS = require('../../common/constants');
 
 function addHelpmeCommand(bot) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/(helpme[\s]|hm[\s])/i, (message) => {
-            const cardName = message.text.match(/(helpme[\s]|hm[\s,])(.*)/i)[2];
+        bot.get(/(\[club168593903.*\].*|^)(helpme[\s]|hm[\s])/i, (message) => {
+            const cardName = message.text.match(/(\[club168593903.*\].*|^)(helpme[\s]|hm[\s])(.*)/i)[3];
             if (cardName.length < 2) {
                 return bot.send(STRINGS.NAME_SHORT_ERR, message.peer_id);
             }

@@ -71,9 +71,9 @@ async function getCardPrices(parsedCardName, setCode) {
 
 function addPriceCommand(bot) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/(price[\s]|p[\s])/i, (message) => {
-            let cardName = message.text.match(/(price[\s,]|p[\s])(.*)/i)[2];
-            const setNameRegex = message.text.match(/(price[\s,]|p[\s])(.*)\[(.{3,4})\]/i);
+        bot.get(/(\[club168593903.*\].*|^)(price[\s]|p[\s])/i, (message) => {
+            let cardName = message.text.match(/(\[club168593903.*\].*|^)(price[\s]|p[\s])(.*)/i)[3];
+            const setNameRegex = message.text.match(/(\[club168593903.*\].*|^)(price[\s]|p[\s])(.*)\[(.{3,4})\]/i);
             const setCode = setNameRegex !== null ? setNameRegex[3] : undefined;
             if (setCode) {
                 cardName = setNameRegex[2];

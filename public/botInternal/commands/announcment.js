@@ -1,7 +1,7 @@
 function addAnnouncmentCommand(bot) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/(announcment[\s])/i, (message) => {
-            const messageBody = message.text.match(/(announcment[\s])(.*)/i)[2];
+        bot.get(/(\[club168593903.*\]announcment[\s])/i, (message) => {
+            const messageBody = message.text.match(/(\[club168593903.*\]announcment[\s])(.*)/i)[2];
             if (message.user_id === 6874525 && messageBody.length > 0) {
                 bot.api('messages.getDialogs')
                     .then((dialogs) => {

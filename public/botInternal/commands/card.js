@@ -78,8 +78,9 @@ function downloadAndPostCardImage(bot, cards, peerId) {
 
 function addCardCommand(bot) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/card[\s,]|[c[\s]/i, (message) => {
-            const cardNames = message.text.match(/(card[\s]|c[\s])(.*)/i)[2];
+        bot.get(/(\[club168593903.*\].*|^)(card[\s]|c[\s])/i, (message) => {
+            console.log(message);
+            const cardNames = message.text.match(/(\[club168593903.*\].*|^)(card[\s]|c[\s])(.*)/i)[3];
             const splittedCardNames = cardNames.split(';');
             // make it no more than 10 cards
 

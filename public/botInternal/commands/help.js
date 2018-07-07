@@ -3,7 +3,7 @@ const STRINGS = require('../../common/strings');
 
 function addHelpCommand(bot) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/help\b|h\b/i, (message) => {
+        bot.get(/(\[club168593903.*\].*|^)(help\b|h\b)/i, (message) => {
             const options = { forward_messages: message.id };
             bot.send('Доступные комманды:\n ' +
                 'card (c) имя_карты [аббривиатура_сета] ; имя_карты [аббривиатура_сета]  -  показывает изображение запрошенных карт (до 10 изображений в сообщении) из заданного сета, поддерживает все языки MTG  \n\n ' +
