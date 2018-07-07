@@ -2,6 +2,7 @@ const fs = require('fs');
 const Scry = require('scryfall-sdk');
 const cheerio = require('cheerio');
 const request = require('request');
+const franc = require('franc');
 
 
 const SCGDict = require('./SCGSetDictionary');
@@ -96,10 +97,19 @@ function getCardByName(cardName, setCode) {
         setCode = setCode.toUpperCase();
     }
     return new Promise((resolve, reject) => {
+        const lang = franc(cardName, {
+            minLength: 3,
+            whitelist: [CONSTANTS.LANG_ENG, CONSTANTS.LANG_RUS],
+        });
+        const searchCard = { name: cardName };
+        if (CONSTANTS.LANG_RUS === lang) {
+            searchCard.language = STRINGS.LANG_RUS;
+        }
+
         // First, we are trying to get the card with exact name as provided,
         // if we fail, we are doing fluffy search
         if (setCode) {
-            Scry.Cards.search(`!"${cardName}" set:${setCode}  `)
+            Scry.Cards.search(`!"${cardName}" set:${setCode} lang:${searchCard.language}`)
                 .on('data', (card) => {
                     if (!card.card_faces && !card.image_uris) {
                         Scry.Cards.search(`"${cardName}" set:${setCode}`)
@@ -110,7 +120,7 @@ function getCardByName(cardName, setCode) {
                     }
                 })
                 .on('error', () => {
-                    Scry.Cards.search(`${cardName} set:${setCode} lang:any `)
+                    Scry.Cards.search(`${cardName} set:${setCode} lang:${searchCard.language} `)
                         .on('data', (card) => {
                             if (!card.card_faces && !card.image_uris) {
                                 Scry.Cards.search(`"${cardName}" set:${setCode}`)
@@ -125,7 +135,7 @@ function getCardByName(cardName, setCode) {
                         });
                 });
         } else {
-            Scry.Cards.search(`!"${cardName}" lang:any} `)
+            Scry.Cards.search(`!"${cardName}" lang:${searchCard.language}} `)
                 .on('data', (card) => {
                     if (!card.card_faces && !card.image_uris) {
                         Scry.Cards.byName(card.name, true)
@@ -138,7 +148,7 @@ function getCardByName(cardName, setCode) {
                     }
                 })
                 .on('error', () => {
-                    Scry.Cards.search(`${cardName} lang:any`)
+                    Scry.Cards.search(`${cardName} lang:${searchCard.language}`)
                         .on('data', (card) => {
                             if (!card.card_faces && !card.image_uris) {
                                 Scry.Cards.byName(card.name, true)
