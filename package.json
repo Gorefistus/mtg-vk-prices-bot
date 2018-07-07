@@ -23,7 +23,8 @@
     "node-vk-bot": "1.0.0",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
-    "scryfall-sdk": "1.2.0"
+    "scryfall-sdk": "1.2.0",
+    "franc": "^4.0.0"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
