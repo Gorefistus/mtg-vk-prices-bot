@@ -28,6 +28,14 @@ const COMMAND_NOT_ADDED = 'Bot object is undefined, command not added';
 
 const LANG_RUS = 'russian';
 const LANG_ENG = 'english';
+const LANG_ESP = 'spanish';
+const LANG_FR = 'french';
+const LANG_DE = 'german';
+const LANG_IT = 'italian';
+const LANG_PT = 'portuguese';
+const LANG_JA = 'japanese';
+const LANG_KO = 'korean';
+const LANG_ZHT = 'chinese';
 
 
 const BOT_ERROR = 'Bot could not be started';
@@ -52,6 +60,14 @@ module.exports = {
     LEGALITY_RESTRICTED,
     LANG_ENG,
     LANG_RUS,
+    LANG_ESP,
+    LANG_FR,
+    LANG_DE,
+    LANG_IT,
+    LANG_PT,
+    LANG_JA,
+    LANG_KO,
+    LANG_ZHT,
     COMMAND_NOT_ADDED,
     BOT_ERROR,
     PRICES_ERR_GENERAL: ERR_PRICES_GENERAL,
