@@ -14,7 +14,8 @@ function addHelpCommand(bot) {
                 '!m  printings (pr) имя_карты | номер_страницы - показывает издания карты, до 10 изданий на странице, поддерживает все языки MTG  \n\n' +
                 '!m  art (a) имя_карты [аббривиатура_сета] ; имя_карты [аббривиатура_сета]   -  показывает арт карты (до 10 карт в сообщение) из заданного сета, поддерживает все языки MTG   \n\n  ' +
                 '!m  AdvancedSearch (as) поисковая_строка - ищет с помощью https://scryfall.com/docs/reference ТОЛЬКО ДЛЯ ПРОДВИНУТЫХ ПОЛЬЗОВАТЕЛЕЙ, показывает первые 10 сообщений \n\n' +
-                'Пример запроса: !m  c темный наперсник', message.peer_id, options);
+                'Пример запроса: !m  c темный наперсник \n\n\n' +
+                'Тема на топдеке для отзывов и предложений:\n https://topdeck.ru/forums/topic/121143-mtgpricebot-%D0%B1%D0%BE%D1%82-%D0%B4%D0%BB%D1%8F-%D0%B2%D0%B0%D1%88%D0%B5%D0%B3%D0%BE-vk-%D1%87%D0%B0%D1%82%D0%B8%D0%BA%D0%B0/', message.peer_id, options);
         });
     } else {
         console.error(STRINGS.COMMAND_NOT_ADDED);
