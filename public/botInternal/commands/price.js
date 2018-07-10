@@ -57,11 +57,11 @@ async function getCardPrices(parsedCardName, setCode) {
         return price.eng_name.toLowerCase() === cardName.toLowerCase();
     });
     if (filterByNameAndPrice.length > 0) {
-        priceString = `${priceString} \n TopDeck(unknown edition): ${filterByNameAndPrice[0].cost} RUB`;
+        priceString = `${priceString} \n TopDeck(неизветсное издание): ${filterByNameAndPrice[0].cost} RUB`;
     } else {
         const filterByName = topDeckPrices.filter(price => price.eng_name.toLowerCase() === cardName.toLowerCase());
         if (filterByName.length > 0) {
-            priceString = `${priceString} \n TopDeck(unknown edition): ${filterByName[0].cost} RUB`;
+            priceString = `${priceString} \n TopDeck(неизветсное издание): ${filterByName[0].cost} RUB`;
         }
     }
     return priceString;
