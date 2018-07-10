@@ -5,7 +5,7 @@ function addHelpCommand(bot) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/[m|h][\s]help\b|[m|h][\s]h\b/i, (message) => {
             const options = { forward_messages: message.id };
-            bot.send('Доступные комманды:\n ' +
+            bot.send('Доступные команды:\n ' +
                 '!m card (c) имя_карты [аббривиатура_сета] ; имя_карты [аббривиатура_сета]  -  показывает изображение запрошенных карт (до 10 изображений в сообщении) из заданного сета, поддерживает все языки MTG  \n\n ' +
                 '!m  price (p) имя_карты [аббривиатура_сета]  -  показывает цены TCG mid, MTGO, TopDeck(цена топдека не привязана к изданию) и StarCityGames (или ссылку на лот на SCG при ошибке), поддерживает все языки MTG   \n\n ' +
                 '!m  oracle (o)  имя_карты - показывает oracle текст карты, поддерживает все языки MTG   \n\n ' +

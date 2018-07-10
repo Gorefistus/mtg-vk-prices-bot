@@ -1,6 +1,6 @@
 const REQ_TIMEOUT = 'One or more requests have timed out';
 const CARD_NOT_FOUND = 'Одна или несколько карт не были найдены!';
-const SUGGESTIONS_NOT_FOUND = 'Couldn\'t find suggestions';
+const SUGGESTIONS_NOT_FOUND = 'Не могу найти рекомендации';
 const NAME_SHORT_ERR = 'Card Name is too short!';
 const NO_DATA = 'Нет информации!';
 
