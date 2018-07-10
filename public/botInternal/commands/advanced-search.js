@@ -5,7 +5,7 @@ const CONSTANTS = require('../../common/constants');
 
 function sendResults(bot, message, values) {
     if (bot && message && values.length > 0) {
-        let results = 'These cards match the criteria:';
+        let results = 'Эти карты подходят под критерии поиска:';
         values.forEach(card => {
             results = results + `\n ${card.name}`;
         });

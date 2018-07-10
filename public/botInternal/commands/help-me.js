@@ -14,7 +14,7 @@ function addHelpmeCommand(bot) {
             Scry.Cards.autoCompleteName(cardName)
                 .then((results) => {
                     if (results.length > 0) {
-                        let suggestions = 'Did you mean:';
+                        let suggestions = 'Возможно, вы искали это:';
                         for (let i = 0; i < 10 && i <= results.length - 1; i++) {
                             suggestions = `${suggestions}\n ${results[i]}`;
                         }

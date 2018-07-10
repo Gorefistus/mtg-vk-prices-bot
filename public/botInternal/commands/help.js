@@ -5,15 +5,16 @@ function addHelpCommand(bot) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/[m|h][\s]help\b|[m|h][\s]h\b/i, (message) => {
             const options = { forward_messages: message.id };
-            bot.send('Available commands:\n ' +
-                '!MTH card (c) %cardname% [%set_abbreviation%] ; %cardname% [%set_abbreviation%]  -  to show the image of the cards (up to 10 images per message) from desired set if provided, supports all MTG languages  \n\n ' +
-                '!MTH price (p) %cardname% [%set_abbreviation%]  -  to show TCG mid, MTGO, TopDeck(not tied to card edition) and StarCityGames prices (or a link to StarCityGames if bot is banned from scraping info), supports all MTG languages   \n\n ' +
-                '!MTH oracle (o)  %cardname% - to show oracle text for the card, supports all MTG languages    \n\n ' +
-                '!MTH HelpMe (hm) %cardname% - remember forgotten card name, supports only english names\n\n' +
-                '!MTH legality (l) %cardname%  - check legality for the card in most popular formats, supports all MTG languages \n\n' +
-                '!MTH printings (pr) %cardname% | %pageNumber| - shows printings of the card, shows up to 10 printings for page, supports all MTG languages  \n\n' +
-                '!MTH art (a) %cardname% [%set_abbreviation%] ; %cardname% [%set_abbreviation%]  -  to show the cropped image of the cards (up to 10 images per message) from desired set if provided, supports all MTG languages   \n\n  ' +
-                '!MTH AdvancedSearch (as) %searchQuery% - search with https://scryfall.com/docs/reference syntax FOR ADVANCED USERS, show up to top 10 results', message.peer_id, options);
+            bot.send('Доступные комманды:\n ' +
+                '!m card (c) имя_карты [аббривиатура_сета] ; имя_карты [аббривиатура_сета]  -  показывает изображение запрошенных карт (до 10 изображений в сообщении) из заданного сета, поддерживает все языки MTG  \n\n ' +
+                '!m  price (p) имя_карты [аббривиатура_сета]  -  показывает цены TCG mid, MTGO, TopDeck(цена топдека не привязана к изданию) и StarCityGames (или ссылку на лот на SCG при ошибке), поддерживает все языки MTG   \n\n ' +
+                '!m  oracle (o)  имя_карты - показывает oracle текст карты, поддерживает все языки MTG   \n\n ' +
+                '!m  HelpMe (hm) имя_карты - remember forgotten card name, supports only english names\n\n' +
+                '!m  legality (l) имя_карты  - проверяет легальность карты в самых популярных форматах, поддерживает все языки MTG \n\n' +
+                '!m  printings (pr) имя_карты | номер_страницы - показывает издания карты, до 10 изданий на странице, поддерживает все языки MTG  \n\n' +
+                '!m  art (a) имя_карты [аббривиатура_сета] ; имя_карты [аббривиатура_сета]   -  показывает арт карты (до 10 карт в сообщение) из заданного сета, поддерживает все языки MTG   \n\n  ' +
+                '!m  AdvancedSearch (as) поисковая_строка - ищет с помощью https://scryfall.com/docs/reference ТОЛЬКО ДЛЯ ПРОДВИНУТЫХ ПОЛЬЗОВАТЕЛЕЙ, показывает первые 10 сообщений \n\n' +
+                'Пример запроса:!m  c темный наперсник', message.peer_id, options);
         });
     } else {
         console.error(STRINGS.COMMAND_NOT_ADDED);

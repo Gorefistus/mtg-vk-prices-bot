@@ -1,5 +1,5 @@
 const REQ_TIMEOUT = 'One or more requests have timed out';
-const CARD_NOT_FOUND = 'One or more cards haven\'t been found';
+const CARD_NOT_FOUND = 'Одна или несколько карт не были найдены!';
 const SUGGESTIONS_NOT_FOUND = 'Couldn\'t find suggestions';
 const NAME_SHORT_ERR = 'Card Name is too short!';
 const NO_DATA = 'No data available!';
@@ -22,7 +22,7 @@ const LEGALITY_NOT_LEGAL = 'NOT LEGAL';
 const LEGALITY_BANNED = 'BANNED';
 const LEGALITY_RESTRICTED = 'RESTRICTED';
 
-const COMMAND_NOT_FOUND = 'Command not found, try !MTH help for the list of commands';
+const COMMAND_NOT_FOUND = 'Команда не найдена, попробуйте !m help чтобы посмотреть список команд';
 const COMMAND_NOT_ADDED = 'Bot object is undefined, command not added';
 
 
