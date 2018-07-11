@@ -40,6 +40,7 @@ const STAR_CITY_PRICE_LINK = 'http://www.starcitygames.com/results?name=';
 const TOPDECK_PRICE_LINK = 'https://topdeck.ru/apps/toptrade/api-v1/singles/search?q=';
 
 const SCRY_API_LINK = "https://api.scryfall.com/cards/search?q=";
+const WIKI_LINK = "https://mtg.gamepedia.com/api.php";
 
 
 module.exports = {
@@ -76,4 +77,5 @@ module.exports = {
     STAR_CITY_PRICE_LINK,
     TOPDECK_PRICE_LINK,
     SCRY_API_LINK,
+    WIKI_LINK,
 };

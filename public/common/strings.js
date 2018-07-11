@@ -3,10 +3,12 @@ const CARD_NOT_FOUND = 'Одна или несколько карт не был�
 const SUGGESTIONS_NOT_FOUND = 'Не могу найти рекомендации';
 const NAME_SHORT_ERR = 'Card Name is too short!';
 const NO_DATA = 'Нет информации!';
+const WIKI_PAGE_LINK = 'Wiki ссылка:';
 
 const ERR_PRICES_GENERAL = 'Couldn\'t find prices, please try again';
 const ERR_VK_UPLOAD = 'Couldn\'t upload image to the VK';
 const ERR_NO_PRINTINGS = 'Было найдено 0 изданий этой карты по этому сету';
+const ERR_NO_WIKI_PAGE = 'Нет такой страницы на Wiki':
 
 const LOG_FILE_DELETED = 'Card image file deleted';
 
@@ -56,6 +58,7 @@ module.exports = {
     NAME_SHORT_ERR,
     COMMAND_NOT_FOUND,
     NO_DATA,
+    WIKI_PAGE_LINK,
     FORMAT_STANDARD,
     FORMAT_MODERN,
     FORMAT_LEGACY,
@@ -89,4 +92,5 @@ module.exports = {
     LOG_FILE_DELETED,
     ERR_VK_UPLOAD,
     ERR_NO_PRINTINGS,
+    ERR_NO_WIKI_PAGE,
 };
