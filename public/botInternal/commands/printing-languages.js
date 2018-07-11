@@ -15,7 +15,7 @@ function addPrintingLanguagesCommand(bot) {
                 cardName = setNameRegex[2];
             }
             let cardObject;
-            MISC.getMultiverseId(cardName, setCode)
+            MISC.getMultiverseId(cardName, setCode, true)
                 .then((card) => {
                     cardObject = card;
                     return request({
@@ -27,7 +27,7 @@ function addPrintingLanguagesCommand(bot) {
                     if (printings.total_cards <= 0) {
                         return bot.send(STRINGS.ERR_NO_PRINTINGS, message.peer_id);
                     }
-                    let printingsLanguagesString = `Напечатанные языки ${cardObject.name} [${cardObject.set_name}]:\n\n`;
+                    let printingsLanguagesString = `Напечатанные языки ${cardObject.name} [${cardObject.set_name}]:\n`;
                     for (let printing of printings.data) {
                         printingsLanguagesString += `Язык: ${MISC.getLanguageByLangCode(printing.lang)}. Имя карты: ${printing.printed_name ? printing.printed_name : printing.name}\n`;
                     }

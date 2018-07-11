@@ -37,7 +37,7 @@ const LANG_PT = 'Португальский';
 const LANG_JA = 'Японский';
 const LANG_KO = 'Корейский';
 const LANG_ZHT = 'Китайский';
-const LANG_ZHS = 'Китайский Упрощенный';
+const LANG_ZHS = 'Китайский упрощенный';
 
 
 const BOT_ERROR = 'Bot could not be started';
