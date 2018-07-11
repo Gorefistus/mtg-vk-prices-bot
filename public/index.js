@@ -6,8 +6,12 @@ const http = require("http");
 const botStarter = require('./botInternal/bot-config');
 // THIS IS JUST NEEDED SO HEROKU WON"T STOPP OUR APPLICATION
 const app = express();
-app.use(express.static(path.resolve(__dirname, 'static')));
+app.use(express.static(path.resolve(__dirname + '/static')));
 app.listen(process.env.PORT || 5000);
+
+app.get('/', (req, res) => {
+    res.sendFile('index.html');
+});
 
 setInterval(() => {
     console.log('PINGED YOURSELF');
