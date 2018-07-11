@@ -10,6 +10,7 @@ const priceCommand = require('./commands/price');
 const printingsCommand = require('./commands/printings');
 const advancedSearchCommand = require('./commands/advanced-search');
 const announcmentCommand = require('./commands/announcment');
+const printingLanguagesCommand = require('./commands/printing-languages');
 
 function addCommands(bot) {
     console.log('Commands addition started');
@@ -23,6 +24,7 @@ function addCommands(bot) {
     priceCommand.addPriceCommand(bot);
     printingsCommand.addPrintingsCommand(bot);
     advancedSearchCommand.addAdvancedSearchCommand(bot);
+    printingLanguagesCommand.addPrintingLanguagesCommand(bot);
     helpCommand.addHelpCommand(bot);
     miscCommand.addMiscCommands(bot);
 

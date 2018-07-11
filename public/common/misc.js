@@ -30,9 +30,9 @@ function getLanguageByLangCode(langCode) {
     switch (langCode) {
     case CONSTANTS.LANG_DE:
         return STRINGS.LANG_DE;
-    case CONSTANTS.LANG_RUS:
+    case CONSTANTS.LANG_RUS_SCRY:
         return STRINGS.LANG_RUS;
-    case CONSTANTS.LANG_ENG:
+    case CONSTANTS.LANG_ENG_SCRY:
         return STRINGS.LANG_ENG;
     case CONSTANTS.LANG_ESP:
         return STRINGS.LANG_ESP;
@@ -48,6 +48,8 @@ function getLanguageByLangCode(langCode) {
         return STRINGS.LANG_KO;
     case CONSTANTS.LANG_ZHT:
         return STRINGS.LANG_ZHT;
+    case CONSTANTS.LANG_ZHS:
+        return STRINGS.LANG_ZHS;
     default:
         return STRINGS.LANG_ENG;
     }
@@ -224,4 +226,5 @@ module.exports = {
     promiseReflect,
     delay,
     getStarCityPrice,
+    getLanguageByLangCode,
 };

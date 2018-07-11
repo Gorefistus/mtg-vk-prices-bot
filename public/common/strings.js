@@ -6,6 +6,7 @@ const NO_DATA = 'Нет информации!';
 
 const ERR_PRICES_GENERAL = 'Couldn\'t find prices, please try again';
 const ERR_VK_UPLOAD = 'Couldn\'t upload image to the VK';
+const ERR_NO_PRINTINGS = 'Было найдено 0 изданий этой карты по этому сету';
 
 const LOG_FILE_DELETED = 'Card image file deleted';
 
@@ -26,16 +27,17 @@ const COMMAND_NOT_FOUND = 'Команда не найдена, попробуй�
 const COMMAND_NOT_ADDED = 'Bot object is undefined, command not added';
 
 
-const LANG_RUS = 'russian';
-const LANG_ENG = 'english';
-const LANG_ESP = 'spanish';
-const LANG_FR = 'french';
-const LANG_DE = 'german';
-const LANG_IT = 'italian';
-const LANG_PT = 'portuguese';
-const LANG_JA = 'japanese';
-const LANG_KO = 'korean';
-const LANG_ZHT = 'chinese';
+const LANG_RUS = 'Русский';
+const LANG_ENG = 'Английский';
+const LANG_ESP = 'Испанский';
+const LANG_FR = 'Французский';
+const LANG_DE = 'Немецкий';
+const LANG_IT = 'Итальянский';
+const LANG_PT = 'Португальский';
+const LANG_JA = 'Японский';
+const LANG_KO = 'Корейский';
+const LANG_ZHT = 'Китайский';
+const LANG_ZHS = 'Китайский Упрощенный';
 
 
 const BOT_ERROR = 'Bot could not be started';
@@ -68,9 +70,11 @@ module.exports = {
     LANG_JA,
     LANG_KO,
     LANG_ZHT,
+    LANG_ZHS,
     COMMAND_NOT_ADDED,
     BOT_ERROR,
     PRICES_ERR_GENERAL: ERR_PRICES_GENERAL,
     LOG_FILE_DELETED,
     ERR_VK_UPLOAD,
+    ERR_NO_PRINTINGS,
 };

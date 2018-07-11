@@ -17,17 +17,23 @@ const VINTAGE = 'vintage';
 
 const LANG_RUS = 'rus';
 const LANG_ENG = 'eng';
-const LANG_ESP = 'spa';
-const LANG_FR = 'fra';
-const LANG_DE = 'deu';
-const LANG_IT = 'ita';
-const LANG_PT = 'por';
-const LANG_JA = 'jpn';
-const LANG_KO = 'kor';
-const LANG_ZHT = 'cmn';
+
+const LANG_RUS_SCRY = 'ru';
+const LANG_ENG_SCRY = 'en';
+const LANG_ESP = 'es';
+const LANG_FR = 'fr';
+const LANG_DE = 'de';
+const LANG_IT = 'it';
+const LANG_PT = 'pt';
+const LANG_JA = 'ja';
+const LANG_KO = 'ko';
+const LANG_ZHT = 'zht';
+const LANG_ZHS = 'zhs';
 
 const STAR_CITY_PRICE_LINK = 'http://www.starcitygames.com/results?name=';
 const TOPDECK_PRICE_LINK = 'https://topdeck.ru/apps/toptrade/api-v1/singles/search?q=';
+
+const SCRY_API_LINK = "https://api.scryfall.com/cards/search?q=";
 
 
 module.exports = {
@@ -52,6 +58,10 @@ module.exports = {
     LANG_JA,
     LANG_KO,
     LANG_ZHT,
+    LANG_ZHS,
+    LANG_RUS_SCRY,
+    LANG_ENG_SCRY,
     STAR_CITY_PRICE_LINK,
-    TOPDECK_PRICE_LINK
+    TOPDECK_PRICE_LINK,
+    SCRY_API_LINK,
 };
