@@ -8,7 +8,7 @@ const WIKI_PAGE_LINK = 'Wiki ссылка:';
 const ERR_PRICES_GENERAL = 'Couldn\'t find prices, please try again';
 const ERR_VK_UPLOAD = 'Couldn\'t upload image to the VK';
 const ERR_NO_PRINTINGS = 'Было найдено 0 изданий этой карты по этому сету';
-const ERR_NO_WIKI_PAGE = 'Нет такой страницы на Wiki':
+const ERR_NO_WIKI_PAGE = 'Нет такой страницы на Wiki';
 
 const LOG_FILE_DELETED = 'Card image file deleted';
 
