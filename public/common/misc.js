@@ -117,7 +117,7 @@ function getCardByName(cardName, setCode, multilang = false) {
         });
         const searchCard = { name: cardName };
         if (CONSTANTS.LANG_RUS === lang) {
-            searchCard.language = STRINGS.LANG_RUS;
+            searchCard.language = CONSTANTS.LANG_RUS_SCRY;
         }
 
         // First, we are trying to get the card with exact name as provided,
@@ -149,6 +149,7 @@ function getCardByName(cardName, setCode, multilang = false) {
                         });
                 });
         } else {
+            console.log(cardName, multilang, searchCard.language);
             Scry.Cards.search(`!"${cardName}" lang:${multilang ? 'any' : searchCard.language}} `)
                 .on('data', (card) => {
                     if (!card.card_faces && !card.image_uris) {
