@@ -29,6 +29,12 @@ const LANG_JA = 'ja';
 const LANG_KO = 'ko';
 const LANG_ZHT = 'zht';
 const LANG_ZHS = 'zhs';
+const LANG_HE = 'he';
+const LANG_LA = 'la';
+const LANG_GRC = 'grc';
+const LANG_AR = 'ar';
+const LANG_SA = 'sa';
+const LANG_PX = 'px';
 
 const STAR_CITY_PRICE_LINK = 'http://www.starcitygames.com/results?name=';
 const TOPDECK_PRICE_LINK = 'https://topdeck.ru/apps/toptrade/api-v1/singles/search?q=';
@@ -61,6 +67,12 @@ module.exports = {
     LANG_ZHS,
     LANG_RUS_SCRY,
     LANG_ENG_SCRY,
+    LANG_HE,
+    LANG_LA,
+    LANG_GRC,
+    LANG_AR,
+    LANG_SA,
+    LANG_PX,
     STAR_CITY_PRICE_LINK,
     TOPDECK_PRICE_LINK,
     SCRY_API_LINK,

@@ -38,6 +38,12 @@ const LANG_JA = 'Японский';
 const LANG_KO = 'Корейский';
 const LANG_ZHT = 'Китайский';
 const LANG_ZHS = 'Китайский упрощенный';
+const LANG_HE = 'Иврит';
+const LANG_LA = 'Латынь';
+const LANG_GRC = 'Древнегреческий';
+const LANG_AR = 'Арабский';
+const LANG_SA = 'Санскрит';
+const LANG_PX = 'Фирексийский';
 
 
 const BOT_ERROR = 'Bot could not be started';
@@ -71,6 +77,12 @@ module.exports = {
     LANG_KO,
     LANG_ZHT,
     LANG_ZHS,
+    LANG_HE,
+    LANG_LA,
+    LANG_GRC,
+    LANG_AR,
+    LANG_SA,
+    LANG_PX,
     COMMAND_NOT_ADDED,
     BOT_ERROR,
     PRICES_ERR_GENERAL: ERR_PRICES_GENERAL,

@@ -28,8 +28,12 @@ function addPrintingLanguagesCommand(bot) {
                         return bot.send(STRINGS.ERR_NO_PRINTINGS, message.peer_id);
                     }
                     let printingsLanguagesString = `Напечатанные языки ${cardObject.name} [${cardObject.set_name}]:\n`;
+                    const alreadyShownLanguages = [];
                     for (let printing of printings.data) {
-                        printingsLanguagesString += `Язык: ${MISC.getLanguageByLangCode(printing.lang)}. Имя карты: ${printing.printed_name ? printing.printed_name : printing.name}\n`;
+                        if (!alreadyShownLanguages.includes(printing.lang)) {
+                            alreadyShownLanguages.push(printing.lang);
+                            printingsLanguagesString += `Язык: ${MISC.getLanguageByLangCode(printing.lang)}. Имя карты: ${printing.printed_name ? printing.printed_name : printing.name}\n`;
+                        }
                     }
                     return bot.send(printingsLanguagesString, message.peer_id);
                 });

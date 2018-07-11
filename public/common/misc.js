@@ -50,6 +50,18 @@ function getLanguageByLangCode(langCode) {
         return STRINGS.LANG_ZHT;
     case CONSTANTS.LANG_ZHS:
         return STRINGS.LANG_ZHS;
+    case CONSTANTS.LANG_HE:
+        return STRINGS.LANG_HE;
+    case CONSTANTS.LANG_LA:
+        return STRINGS.LANG_LA;
+    case CONSTANTS.LANG_GRC:
+        return STRINGS.LANG_GRC;
+    case CONSTANTS.LANG_AR:
+        return STRINGS.LANG_AR;
+    case CONSTANTS.LANG_SA:
+        return STRINGS.LANG_SA;
+    case CONSTANTS.LANG_PX:
+        return CONSTANTS.LANG_PX;
     default:
         return STRINGS.LANG_ENG;
     }
