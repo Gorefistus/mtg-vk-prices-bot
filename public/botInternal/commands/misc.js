@@ -6,13 +6,14 @@ async function addFriendsByOne(bot, friendsArray) {
     }
 }
 
-function addMiscCommands(bot) {
+function addMiscCommands(bot, stats) {
     if (bot && typeof bot.get === 'function') {
         bot.on('poll-error', (error) => {
             console.log(error);
         });
 
         bot.on('command-notfound', (msg) => {
+            stats.track(message.user_id, { msg: msg.body }, 'uc');
             bot.send(STRINGS.COMMAND_NOT_FOUND, msg.peer_id);
         });
 

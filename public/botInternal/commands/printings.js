@@ -5,9 +5,10 @@ const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
 
 
-function addPrintingsCommand(bot) {
+function addPrintingsCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/([m|h][\s]printings[\s]|[m|h][\s]pr[\s])/i, (message) => {
+            stats.track(message.user_id, { msg: message.body }, 'pr');
             let pageName = 0;
             let cardName = message.body.match(/([m|h][\s]printings[\s]|[m|h][\s]pr[\s,])(.*)/i)[2];
             if (cardName.split('|').length > 1) {

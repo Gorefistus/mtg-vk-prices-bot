@@ -1,3 +1,5 @@
+const stats = require('bot-metrica')(process.env.YA_TOKEN || 'place your ya metrika token here');
+
 const STRINGS = require('../common/strings');
 const cardCommand = require('./commands/card');
 const artCommand = require('./commands/art');
@@ -15,18 +17,18 @@ const printingLanguagesCommand = require('./commands/printing-languages');
 function addCommands(bot) {
     console.log('Commands addition started');
 
-    announcmentCommand.addAnouncmentCommand(bot);
-    cardCommand.addCardCommand(bot);
-    artCommand.addArtCommand(bot);
-    helpmeCommand.addHelpmeCommand(bot);
-    legalityCommand.addLegalityCommand(bot);
-    oracleCommand.addOracleCommand(bot);
-    priceCommand.addPriceCommand(bot);
-    printingsCommand.addPrintingsCommand(bot);
-    advancedSearchCommand.addAdvancedSearchCommand(bot);
-    printingLanguagesCommand.addPrintingLanguagesCommand(bot);
-    helpCommand.addHelpCommand(bot);
-    miscCommand.addMiscCommands(bot);
+    announcmentCommand.addAnouncmentCommand(bot, stats);
+    cardCommand.addCardCommand(bot, stats);
+    artCommand.addArtCommand(bot, stats);
+    helpmeCommand.addHelpmeCommand(bot, stats);
+    legalityCommand.addLegalityCommand(bot, stats);
+    oracleCommand.addOracleCommand(bot, stats);
+    priceCommand.addPriceCommand(bot, stats);
+    printingsCommand.addPrintingsCommand(bot, stats);
+    advancedSearchCommand.addAdvancedSearchCommand(bot, stats);
+    printingLanguagesCommand.addPrintingLanguagesCommand(bot, stats);
+    helpCommand.addHelpCommand(bot, stats);
+    miscCommand.addMiscCommands(bot, stats);
 
     console.log('Commands addition finished');
 }

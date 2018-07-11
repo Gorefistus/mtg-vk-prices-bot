@@ -3,9 +3,10 @@ const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
 
 
-function addLegalityCommand(bot) {
+function addLegalityCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/([m|h][\s]legality[\s]|[m|h][\s]l[\s])/i, (message) => {
+            stats.track(message.user_id, { msg: message.body }, 'l');
             const cardName = message.body.match(/([m|h][\s]legality[\s]|[m|h][\s]l[\s])(.*)/i)[2];
             MISC.getMultiverseId(cardName).then((value) => {
                 bot.send(`Легальность ${value.name} в форматах:\n 

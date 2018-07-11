@@ -5,9 +5,10 @@ const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
 
 
-function addPrintingLanguagesCommand(bot) {
+function addPrintingLanguagesCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/([m|h][\s]printinglanguages[\s]|[m|h][\s]pl[\s])/i, (message) => {
+            stats.track(message.user_id, { msg: message.body }, 'pl');
             let cardName = message.body.match(/([m|h][\s]printinglanguages[\s,]|[m|h][\s]pl[\s])(.*)/i)[2];
             const setNameRegex = message.body.match(/([m|h][\s]printinglanguages[\s,]|[m|h][\s]pl[\s])(.*)\[(.{3,4})\]/i);
             const setCode = setNameRegex !== null ? setNameRegex[3] : undefined;
