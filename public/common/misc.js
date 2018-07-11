@@ -134,7 +134,7 @@ function getCardByName(cardName, setCode, multilang = false) {
                     }
                 })
                 .on('error', () => {
-                    Scry.Cards.search(`${cardName} set:${setCode} lang:${multilang ? 'any' : searchCard.language} `)
+                    Scry.Cards.search(`${cardName} set:${setCode} lang:${multilang ? 'any' : searchCard.language}`)
                         .on('data', (card) => {
                             if (!card.card_faces && !card.image_uris) {
                                 Scry.Cards.search(`"${cardName}" set:${setCode}`)
@@ -149,8 +149,8 @@ function getCardByName(cardName, setCode, multilang = false) {
                         });
                 });
         } else {
-            console.log(cardName, multilang, searchCard.language);
-            Scry.Cards.search(`!"${cardName}" lang:${multilang ? 'any' : searchCard.language}} `)
+            console.log(`lang:${multilang ? 'any' : searchCard.language}`);
+            Scry.Cards.search(`!"${cardName}" lang:${multilang ? 'any' : searchCard.language}`)
                 .on('data', (card) => {
                     if (!card.card_faces && !card.image_uris) {
                         Scry.Cards.byName(card.name, true)

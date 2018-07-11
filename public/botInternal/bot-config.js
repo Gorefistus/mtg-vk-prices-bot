@@ -27,7 +27,7 @@ function addCommands(bot) {
     priceCommand.addPriceCommand(bot, stats);
     printingsCommand.addPrintingsCommand(bot, stats);
     advancedSearchCommand.addAdvancedSearchCommand(bot, stats);
-    printingLanguagesCommand.addPrintingLanguagesCommand(bot, stats)
+    printingLanguagesCommand.addPrintingLanguagesCommand(bot, stats);
     wikiCommand.addWikiCommand(bot, stats);
     helpCommand.addHelpCommand(bot, stats);
     miscCommand.addMiscCommands(bot, stats);
