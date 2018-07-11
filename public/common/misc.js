@@ -61,7 +61,7 @@ function getLanguageByLangCode(langCode) {
     case CONSTANTS.LANG_SA:
         return STRINGS.LANG_SA;
     case CONSTANTS.LANG_PX:
-        return CONSTANTS.LANG_PX;
+        return STRINGS.LANG_PX;
     default:
         return STRINGS.LANG_ENG;
     }
