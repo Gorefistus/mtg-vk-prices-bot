@@ -3,13 +3,23 @@ const Scry = require('scryfall-sdk');
 const STRINGS = require('../../common/strings');
 const CONSTANTS = require('../../common/constants');
 
-function sendResults(bot, message, values) {
+function sendResults(bot, message, values, page) {
     if (bot && message && values.length > 0) {
-        let results = 'Эти карты подходят под критерии поиска:';
-        values.forEach(card => {
-            results = results + `\n ${card.name}`;
-        });
-        bot.send(`${results}`, message.peer_id);
+        const pages = Math.ceil(values.length / 10);
+        let results = '';
+        if (page > 0 && page <= pages) {
+            results = `Эти карты подходят под критерии поиска (Страница: ${page}/${pages}):`;
+            const startIndex = (page - 1) * 10;
+            for (let i = startIndex; i < ((page - 1) * 10) + 10 && i < values.length; i++) {
+                results = results + `\n ${values[i].name}`;
+            }
+        } else {
+            results = `Эти карты подходят под критерии поиска (Страница: 1/${pages}):`;
+            for (let i = 0; i < 10 && i < values.length; i++) {
+                results = results + `\n ${values[i].name}`;
+            }
+        }
+        bot.send(results, message.peer_id);
     } else {
         console.error('Error sending results');
     }
@@ -21,14 +31,20 @@ function addAdvancedSearchCommand(bot, stats) {
         bot.get(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])/i, message => {
             stats.track(message.user_id, { msg: message.body }, 'as');
             //VK replaces quotes "" with &quot; characters, so we replace them back again
-            const searchQuery = message.body.match(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])(.*)/i)[2].replace(new RegExp('&quot;', 'g'), '"')
+            let searchQuery = message.body.match(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])(.*)/i)[2].replace(new RegExp('&quot;', 'g'), '"')
                 .replace(new RegExp('&gt;', 'g'), '>')
                 .replace(new RegExp('&lt;', 'g'), '<');
+            let page = 0;
+            if (searchQuery.split('|').length > 1) {
+                const tempValue = searchQuery.split('|');
+                searchQuery = tempValue[0];
+                page = parseInt(tempValue[1], 10);
+            }
             const cardEmitter = Scry.Cards.search(`${searchQuery}`);
             const resultArray = [];
             let alreadyFired = false;
             cardEmitter.on('data', data => {
-                if (resultArray.length < 10) {
+                if (resultArray.length < 100) {
                     resultArray.push(data);
                 } else {
                     cardEmitter.cancel();
@@ -46,7 +62,7 @@ function addAdvancedSearchCommand(bot, stats) {
             cardEmitter.on('cancel', () => {
                 if (!alreadyFired) {
                     alreadyFired = true;
-                    sendResults(bot, message, resultArray);
+                    sendResults(bot, message, resultArray, page);
                 }
             });
 
@@ -56,7 +72,7 @@ function addAdvancedSearchCommand(bot, stats) {
                     if (resultArray.length === 0) {
                         bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
                     } else {
-                        sendResults(bot, message, resultArray);
+                        sendResults(bot, message, resultArray, page);
                     }
                 }
             });
