@@ -46,7 +46,7 @@ function addHelpmeCommand(bot, stats) {
                     return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
                 }
                 const options = { forward_messages: message.id };
-                bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
+                bot.send(STRINGS.SUGGESTIONS_NOT_FOUND, message.peer_id, options);
             });
 
             cardEmitter.on('cancel', () => {
@@ -60,7 +60,7 @@ function addHelpmeCommand(bot, stats) {
                 if (!alreadyFired) {
                     alreadyFired = true;
                     if (resultArray.length === 0) {
-                        bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id);
+                        bot.send(STRINGS.SUGGESTIONS_NOT_FOUND, message.peer_id);
                     } else {
                         sendResults(bot, message, resultArray);
                     }
