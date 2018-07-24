@@ -51,7 +51,7 @@ function addAdvancedSearchCommand(bot, stats) {
                 }
             });
 
-            cardEmitter.on('error', reason => {
+            cardEmitter.on('error', (reason) => {
                 if (reason && reason.error && CONSTANTS.TIMEOUT_CODE === reason.error.code) {
                     return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
                 }
@@ -70,7 +70,7 @@ function addAdvancedSearchCommand(bot, stats) {
                 if (!alreadyFired) {
                     alreadyFired = true;
                     if (resultArray.length === 0) {
-                        bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
+                        bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id);
                     } else {
                         sendResults(bot, message, resultArray, page);
                     }
