@@ -11,7 +11,7 @@ async function getCardPrices(parsedCardName, setCode) {
     let priceString = '';
 
     const cardObject = await MISC.getMultiverseId(parsedCardName, setCode);
-    priceString = `Цены на ${cardObject.name} [${cardObject.set_name}]:\n TCG Mid: ${cardObject.usd ? `$${cardObject.usd}` : STRINGS.NO_DATA}\n MTGO: ${cardObject.tix ? `${cardObject.tix} tix` : STRINGS.NO_DATA}`;
+    priceString = `Цены на ${cardObject.printed_name ? cardObject.printed_name : cardObject.name} [${cardObject.set_name}]:\n TCG Mid: ${cardObject.usd ? `$${cardObject.usd}` : STRINGS.NO_DATA}\n MTGO: ${cardObject.tix ? `${cardObject.tix} tix` : STRINGS.NO_DATA}`;
 
     let cardName = cardObject.name;
     if (cardObject.card_faces) {

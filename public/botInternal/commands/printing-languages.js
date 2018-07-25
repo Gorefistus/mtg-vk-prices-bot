@@ -28,7 +28,7 @@ function addPrintingLanguagesCommand(bot, stats) {
                     if (printings.total_cards <= 0) {
                         return bot.send(STRINGS.ERR_NO_PRINTINGS, message.peer_id);
                     }
-                    let printingsLanguagesString = `Напечатанные языки ${cardObject.name} [${cardObject.set_name}]:\n`;
+                    let printingsLanguagesString = `Напечатанные языки ${cardObject.printed_name ? cardObject.printed_name : cardObject.name} [${cardObject.set_name}]:\n`;
                     const alreadyShownLanguages = [];
                     for (let printing of printings.data) {
                         if (!alreadyShownLanguages.includes(printing.lang)) {

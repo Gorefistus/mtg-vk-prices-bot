@@ -17,9 +17,9 @@ function addPrintingsCommand(bot, stats) {
                 pageName = parseInt(tempValue[1]);
             }
             MISC.getMultiverseId(cardName)
-                .then((value) => {
+                .then((cardObject) => {
                     request({
-                        uri: value.prints_search_uri,
+                        uri: cardObject.prints_search_uri,
                         json: true,
                     })
                         .then((printings) => {
@@ -34,17 +34,17 @@ function addPrintingsCommand(bot, stats) {
                                         endIndex = i;
                                     }
                                     const totalPrintingsShown = endIndex - startIndex + 1;
-                                    printingsString = `${totalPrintingsShown} изданий (всего ${printings.data.length}) ${value.name} (Страница ${pageName}/${pages}): \n${printingsString}`;
+                                    printingsString = `${totalPrintingsShown} изданий (всего ${printings.data.length}) ${cardObject.printed_name ? cardObject.printed_name : cardObject.name} (Страница ${pageName}/${pages}): \n${printingsString}`;
                                 } else {
                                     printingsString =
-                                        `10 изданий (всего ${printings.data.length}) ${value.name} (Страница 1/${pages}):\n`;
+                                        `10 изданий (всего ${printings.data.length}) ${cardObject.printed_name ? cardObject.printed_name : cardObject.name} (Страница 1/${pages}):\n`;
                                     for (let i = 0; i < 10 && i < printings.data.length; i++) {
                                         printingsString =
                                             `${printingsString}${printings.data[i].set_name} (${printings.data[i].set.toUpperCase()})\n`;
                                     }
                                 }
                             } else {
-                                printingsString = `${printings.data.length} изданий (всего ${printings.data.length}) ${value.name}: \n`;
+                                printingsString = `${printings.data.length} изданий (всего ${printings.data.length}) ${cardObject.printed_name ? cardObject.printed_name : cardObject.name}: \n`;
                                 for (let i = 0; i < 10 && i < printings.data.length; i++) {
                                     printingsString = `${printingsString}${printings.data[i].set_name} (${printings.data[i].set.toUpperCase()})\n`;
                                 }
