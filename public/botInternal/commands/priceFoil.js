@@ -8,7 +8,7 @@ const MISC = require('../../common/misc');
 
 async function getFoilPrices(parsedCardName, setCode) {
     const cardObject = await MISC.getMultiverseId(parsedCardName, setCode);
-    let priceString = `Цены на английскую фойлу ${cardObject.printed_name ? cardObject.printed_name : cardObject.name} [${cardObject.set_name}]: `;
+    let priceString = `Цены на английскую фойлу ${cardObject.printed_name ? cardObject.printed_name : cardObject.name} [${cardObject.set_name}](ТEST COMMAND): `;
 
 
     let cardName = cardObject.name;
@@ -17,7 +17,7 @@ async function getFoilPrices(parsedCardName, setCode) {
     }
 
     if (!cardObject.foil && cardObject.digital !== undefined && !cardObject.digital) {
-        return `${cardObject.printed_name ? cardObject.printed_name : cardObject.name} не имеет ${cardObject.digital ? 'физической' : ''} фойлы в ${cardObject.set_name} (ТEST COMMAND`;
+        return `${cardObject.printed_name ? cardObject.printed_name : cardObject.name} не имеет ${cardObject.digital ? 'физической' : ''} фойлы в ${cardObject.set_name} (ТEST COMMAND)`;
     } else {
         let scgPriceObject = CARD_CACHE.getCardFromCache(cardObject, true);
         if (scgPriceObject) {
