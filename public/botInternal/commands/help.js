@@ -27,6 +27,4 @@ function addHelpCommand(bot, stats) {
 }
 
 
-module.exports = {
-    addHelpCommand,
-};
+module.exports = addHelpCommand;

@@ -9,6 +9,7 @@ const helpCommand = require('./commands/help');
 const miscCommand = require('./commands/misc');
 const oracleCommand = require('./commands/oracle');
 const priceCommand = require('./commands/price');
+const priceFoilCommand = require('./commands/priceFoil');
 const printingsCommand = require('./commands/printings');
 const advancedSearchCommand = require('./commands/advanced-search');
 const announcmentCommand = require('./commands/announcment');
@@ -18,19 +19,20 @@ const wikiCommand = require('./commands/wiki');
 function addCommands(bot) {
     console.log('Commands addition started');
 
-    announcmentCommand.addAnouncmentCommand(bot, stats);
-    cardCommand.addCardCommand(bot, stats);
-    artCommand.addArtCommand(bot, stats);
-    helpmeCommand.addHelpmeCommand(bot, stats);
-    legalityCommand.addLegalityCommand(bot, stats);
-    oracleCommand.addOracleCommand(bot, stats);
-    priceCommand.addPriceCommand(bot, stats);
-    printingsCommand.addPrintingsCommand(bot, stats);
-    advancedSearchCommand.addAdvancedSearchCommand(bot, stats);
-    printingLanguagesCommand.addPrintingLanguagesCommand(bot, stats);
-    wikiCommand.addWikiCommand(bot, stats);
-    helpCommand.addHelpCommand(bot, stats);
-    miscCommand.addMiscCommands(bot, stats);
+    announcmentCommand(bot, stats);
+    cardCommand(bot, stats);
+    artCommand(bot, stats);
+    helpmeCommand(bot, stats);
+    legalityCommand(bot, stats);
+    oracleCommand(bot, stats);
+    priceCommand(bot, stats);
+    priceFoilCommand(bot, stats);
+    printingsCommand(bot, stats);
+    advancedSearchCommand(bot, stats);
+    printingLanguagesCommand(bot, stats);
+    wikiCommand(bot, stats);
+    helpCommand(bot, stats);
+    miscCommand(bot, stats);
 
     console.log('Commands addition finished');
 }

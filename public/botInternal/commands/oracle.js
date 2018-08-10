@@ -41,6 +41,4 @@ function addOracleCommand(bot, stats) {
 }
 
 
-module.exports = {
-    addOracleCommand,
-};
+module.exports = addOracleCommand;

@@ -80,6 +80,4 @@ function addAdvancedSearchCommand(bot, stats) {
     }
 }
 
-module.exports = {
-    addAdvancedSearchCommand,
-};
+module.exports = addAdvancedSearchCommand;

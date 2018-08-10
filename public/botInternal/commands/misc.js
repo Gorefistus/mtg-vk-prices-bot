@@ -34,6 +34,4 @@ function addMiscCommands(bot, stats) {
 }
 
 
-module.exports = {
-    addMiscCommands,
-};
+module.exports = addMiscCommands;

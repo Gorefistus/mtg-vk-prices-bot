@@ -7,11 +7,11 @@ class CardCache {
     }
 
 
-    getCardFromCache(cardObject) {
+    getCardFromCache(cardObject, isFoil) {
         let cardObjectToReturn;
         let i = 0;
         for (const card of this.cardCache) {
-            if (card.name === cardObject.name && card.set === cardObject.set_name) {
+            if (card.name === cardObject.name && card.set === cardObject.set_name && card.foil === isFoil) {
                 if (this.validateCacheEntry(i)) {
                     cardObjectToReturn = card;
                     break;
@@ -53,6 +53,5 @@ class CardCache {
     }
 }
 
-module.exports = {
-    cache: new CardCache(),
-};
+module.exports = new CardCache();
+

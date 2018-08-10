@@ -73,6 +73,4 @@ function addHelpmeCommand(bot, stats) {
 }
 
 
-module.exports = {
-    addHelpmeCommand,
-};
+module.exports = addHelpmeCommand;

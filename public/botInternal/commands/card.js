@@ -129,6 +129,4 @@ function addCardCommand(bot, stats) {
     }
 }
 
-module.exports = {
-    addCardCommand,
-};
+module.exports = addCardCommand;

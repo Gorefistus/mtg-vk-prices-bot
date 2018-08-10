@@ -74,6 +74,4 @@ const SCGDict = [
 
 
 ];
-module.exports = {
-    SCGDict,
-};
+module.exports = SCGDict;

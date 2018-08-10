@@ -45,6 +45,4 @@ function addPrintingLanguagesCommand(bot, stats) {
 }
 
 
-module.exports = {
-    addPrintingLanguagesCommand
-};
+module.exports = addPrintingLanguagesCommand;

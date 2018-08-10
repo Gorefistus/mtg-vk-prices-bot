@@ -39,6 +39,4 @@ function addWikiCommand(bot, stats) {
 }
 
 
-module.exports = {
-    addWikiCommand,
-};
+module.exports = addWikiCommand;

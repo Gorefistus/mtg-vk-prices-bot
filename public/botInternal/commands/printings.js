@@ -70,6 +70,4 @@ function addPrintingsCommand(bot, stats) {
     }
 }
 
-module.exports = {
-    addPrintingsCommand,
-};
+module.exports = addPrintingsCommand;

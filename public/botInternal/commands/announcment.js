@@ -25,6 +25,4 @@ function addAnnouncmentCommand(bot) {
 }
 
 
-module.exports = {
-    addAnouncmentCommand: addAnnouncmentCommand,
-};
+module.exports = addAnnouncmentCommand;

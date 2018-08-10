@@ -32,6 +32,4 @@ function addLegalityCommand(bot, stats) {
 }
 
 
-module.exports = {
-    addLegalityCommand,
-};
+module.exports = addLegalityCommand;

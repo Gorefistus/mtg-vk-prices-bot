@@ -129,6 +129,4 @@ function addArtCommand(bot, stats) {
     }
 }
 
-module.exports = {
-    addArtCommand,
-};
+module.exports = addArtCommand;

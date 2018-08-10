@@ -17,7 +17,7 @@ async function getCardPrices(parsedCardName, setCode) {
     }
 
     // SCG PRICES SCRAPING START
-    let scgPriceObject = CARD_CACHE.cache.getCardFromCache(cardObject);
+    let scgPriceObject = CARD_CACHE.getCardFromCache(cardObject, false);
 
     if (scgPriceObject) {
         priceString = `${priceString} \n SCG: ${scgPriceObject.value}`;
@@ -26,9 +26,10 @@ async function getCardPrices(parsedCardName, setCode) {
             const starCityPage = await request(`${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=Y`);
             scgPriceObject = MISC.getStarCityPrice(starCityPage, cardObject);
             if (scgPriceObject) {
-                CARD_CACHE.cache.addCardToCache({
+                CARD_CACHE.addCardToCache({
                     ...scgPriceObject,
                     name: cardObject.name,
+                    foil: false,
                 });
                 priceString =
                     `${priceString} \n SCG:${scgPriceObject.set !== cardObject.set_name ? ` [${scgPriceObject.set}] ` : ''} ${scgPriceObject.value}`;
@@ -105,6 +106,4 @@ function addPriceCommand(bot, stats) {
 }
 
 
-module.exports = {
-    addPriceCommand,
-};
+module.exports = addPriceCommand;

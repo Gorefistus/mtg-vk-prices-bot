@@ -12,58 +12,58 @@ const STRINGS = require('./strings');
 
 function getLegality(legality) {
     switch (legality) {
-    case CONSTANTS.LEGALITY_LEGAL:
-        return STRINGS.LEGALITY_LEGAL;
-    case CONSTANTS.LEGALITY_BANNED:
-        return STRINGS.LEGALITY_BANNED;
-    case CONSTANTS.LEGALITY_NOT_LEGAL:
-        return STRINGS.LEGALITY_NOT_LEGAL;
-    case CONSTANTS.LEGALITY_RESTRICTED:
-        return STRINGS.LEGALITY_RESTRICTED;
-    default:
-        return STRINGS.LEGALITY_NOT_LEGAL;
+        case CONSTANTS.LEGALITY_LEGAL:
+            return STRINGS.LEGALITY_LEGAL;
+        case CONSTANTS.LEGALITY_BANNED:
+            return STRINGS.LEGALITY_BANNED;
+        case CONSTANTS.LEGALITY_NOT_LEGAL:
+            return STRINGS.LEGALITY_NOT_LEGAL;
+        case CONSTANTS.LEGALITY_RESTRICTED:
+            return STRINGS.LEGALITY_RESTRICTED;
+        default:
+            return STRINGS.LEGALITY_NOT_LEGAL;
     }
 }
 
 
 function getLanguageByLangCode(langCode) {
     switch (langCode) {
-    case CONSTANTS.LANG_DE:
-        return STRINGS.LANG_DE;
-    case CONSTANTS.LANG_RUS_SCRY:
-        return STRINGS.LANG_RUS;
-    case CONSTANTS.LANG_ENG_SCRY:
-        return STRINGS.LANG_ENG;
-    case CONSTANTS.LANG_ESP:
-        return STRINGS.LANG_ESP;
-    case CONSTANTS.LANG_FR:
-        return STRINGS.LANG_FR;
-    case CONSTANTS.LANG_IT:
-        return STRINGS.LANG_IT;
-    case CONSTANTS.LANG_PT:
-        return STRINGS.LANG_PT;
-    case CONSTANTS.LANG_JA:
-        return STRINGS.LANG_JA;
-    case CONSTANTS.LANG_KO:
-        return STRINGS.LANG_KO;
-    case CONSTANTS.LANG_ZHT:
-        return STRINGS.LANG_ZHT;
-    case CONSTANTS.LANG_ZHS:
-        return STRINGS.LANG_ZHS;
-    case CONSTANTS.LANG_HE:
-        return STRINGS.LANG_HE;
-    case CONSTANTS.LANG_LA:
-        return STRINGS.LANG_LA;
-    case CONSTANTS.LANG_GRC:
-        return STRINGS.LANG_GRC;
-    case CONSTANTS.LANG_AR:
-        return STRINGS.LANG_AR;
-    case CONSTANTS.LANG_SA:
-        return STRINGS.LANG_SA;
-    case CONSTANTS.LANG_PX:
-        return STRINGS.LANG_PX;
-    default:
-        return STRINGS.LANG_ENG;
+        case CONSTANTS.LANG_DE:
+            return STRINGS.LANG_DE;
+        case CONSTANTS.LANG_RUS_SCRY:
+            return STRINGS.LANG_RUS;
+        case CONSTANTS.LANG_ENG_SCRY:
+            return STRINGS.LANG_ENG;
+        case CONSTANTS.LANG_ESP:
+            return STRINGS.LANG_ESP;
+        case CONSTANTS.LANG_FR:
+            return STRINGS.LANG_FR;
+        case CONSTANTS.LANG_IT:
+            return STRINGS.LANG_IT;
+        case CONSTANTS.LANG_PT:
+            return STRINGS.LANG_PT;
+        case CONSTANTS.LANG_JA:
+            return STRINGS.LANG_JA;
+        case CONSTANTS.LANG_KO:
+            return STRINGS.LANG_KO;
+        case CONSTANTS.LANG_ZHT:
+            return STRINGS.LANG_ZHT;
+        case CONSTANTS.LANG_ZHS:
+            return STRINGS.LANG_ZHS;
+        case CONSTANTS.LANG_HE:
+            return STRINGS.LANG_HE;
+        case CONSTANTS.LANG_LA:
+            return STRINGS.LANG_LA;
+        case CONSTANTS.LANG_GRC:
+            return STRINGS.LANG_GRC;
+        case CONSTANTS.LANG_AR:
+            return STRINGS.LANG_AR;
+        case CONSTANTS.LANG_SA:
+            return STRINGS.LANG_SA;
+        case CONSTANTS.LANG_PX:
+            return STRINGS.LANG_PX;
+        default:
+            return STRINGS.LANG_ENG;
     }
 }
 
@@ -182,7 +182,7 @@ function getCardByName(cardName, setCode, multilang = false) {
     });
 }
 
-function getStarCityPrice(htmlString, cardObject = undefined) {
+function getStarCityPrice(htmlString, cardObject = undefined, isFoil = false) {
     if (!cardObject) {
         return undefined;
     }
@@ -193,8 +193,8 @@ function getStarCityPrice(htmlString, cardObject = undefined) {
         .each(function (i) {
             if (checkAgainstSCGDict(htmlPage(this)
                 .text()
-                .trim())
-                .toLowerCase() === cardObject.set_name.toLowerCase()) {
+                .trim(), isFoil)
+                .toLowerCase() === `${cardObject.set_name}${isFoil ? ' (Foil)' : ''}`.toLowerCase()) {
                 scgCardIndex = i;
                 SCGCard.set = cardObject.set_name;
             }
@@ -203,6 +203,28 @@ function getStarCityPrice(htmlString, cardObject = undefined) {
         SCGCard.value = htmlPage('.search_results_9')
             .eq(scgCardIndex)
             .text();
+    } else if (isFoil) {
+        scgCardIndex = -1;
+        htmlPage('.search_results_2')
+            .each(function (i) {
+                if (htmlPage(this)
+                    .text()
+                    .trim()
+                    .includes('(Foil)')) {
+                    scgCardIndex = i;
+                }
+            });
+        if (scgCardIndex >= 0) {
+            SCGCard.value = htmlPage('.search_results_9')
+                .eq(scgCardIndex)
+                .text();
+            SCGCard.set = htmlPage('.search_results_2')
+                .eq(scgCardIndex)
+                .text();
+        } else {
+            SCGCard = undefined;
+
+        }
     } else {
         try {
             SCGCard.set = htmlPage('.search_results_2')
@@ -221,11 +243,12 @@ function getStarCityPrice(htmlString, cardObject = undefined) {
     return SCGCard;
 }
 
-function checkAgainstSCGDict(setName) {
+function checkAgainstSCGDict(setName, isFoil = false) {
     let setNameToReturn = setName;
-    SCGDict.SCGDict.forEach((scgDictItem) => {
-        if (setName.toLowerCase() === scgDictItem.scg.toLowerCase()) {
-            setNameToReturn = scgDictItem.scry;
+    SCGDict.forEach((scgDictItem) => {
+        if ((isFoil ? setName.split('(Foil)')[0].trim()
+            .toLowerCase() : setName.toLowerCase()) === scgDictItem.scg.toLowerCase()) {
+            setNameToReturn = `${scgDictItem.scry}${isFoil ? ' (Foil)' : ''}`;
         }
     });
     return setNameToReturn;
