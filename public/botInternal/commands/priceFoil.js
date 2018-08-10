@@ -17,7 +17,7 @@ async function getFoilPrices(parsedCardName, setCode) {
     }
 
     if (!cardObject.foil && cardObject.digital !== undefined && !cardObject.digital) {
-        return `${cardObject.printed_name ? cardObject.printed_name : cardObject.name} не имеет ${cardObject.digital ? 'физической' : ''} фойлы в ${cardObject.set_name}`;
+        return `${cardObject.printed_name ? cardObject.printed_name : cardObject.name} не имеет ${cardObject.digital ? 'физической' : ''} фойлы в ${cardObject.set_name} (ТEST COMMAND`;
     } else {
         let scgPriceObject = CARD_CACHE.getCardFromCache(cardObject, true);
         if (scgPriceObject) {
@@ -50,7 +50,7 @@ async function getFoilPrices(parsedCardName, setCode) {
 function addPriceFoilCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/([m|h][\s]priceFoil[\s]|[m|h][\s]pf[\s])/i, (message) => {
-            // stats.track(message.user_id, { msg: message.body }, 'pf');
+            stats.track(message.user_id, { msg: message.body }, 'pf');
             let cardName = message.body.match(/([m|h][\s]priceFoil[\s]|[m|h][\s]pf[\s])(.*)/i)[2];
             const setNameRegex = message.body.match(/([m|h][\s]priceFoil[\s]|[m|h][\s]pf[\s])(.*)\[(.{3,4})\]/i);
             const setCode = setNameRegex !== null ? setNameRegex[3] : undefined;
