@@ -1,11 +1,12 @@
-const REQ_TIMEOUT = 'One or more requests have timed out';
+const REQ_TIMEOUT = 'Один или несколько запросов превысили время на ожидание';
 const CARD_NOT_FOUND = 'Одна или несколько карт не были найдены!';
 const SUGGESTIONS_NOT_FOUND = 'Не могу найти рекомендации';
-const NAME_SHORT_ERR = 'Card Name is too short!';
+const NAME_SHORT_ERR = 'Имя карты слишком короткое!';
 const NO_DATA = 'Нет информации!';
+const PRICE_ERROR = 'Ошибка поиска цены';
 const WIKI_PAGE_LINK = 'Wiki ссылка:';
 
-const ERR_PRICES_GENERAL = 'Couldn\'t find prices, please try again';
+const ERR_PRICES_GENERAL = 'Невозможно найти цены, попробуйте позднее';
 const ERR_VK_UPLOAD = 'Couldn\'t upload image to the VK';
 const ERR_NO_PRINTINGS = 'Было найдено 0 изданий этой карты по этому сету';
 const ERR_NO_WIKI_PAGE = 'Нет такой страницы на Wiki';
@@ -18,6 +19,8 @@ const FORMAT_LEGACY = 'Legacy';
 const FORMAT_PAUPER = 'Pauper';
 const FORMAT_COMMANDER = 'Commander';
 const FORMAT_VINTAGE = 'Vintage';
+const FORMAT_PENNY = 'Penny Dreadful';
+const FORMAT_MTGO_COMMANDER = 'MTGO 1v1 Commander';
 
 
 const LEGALITY_LEGAL = 'LEGAL';
@@ -58,6 +61,7 @@ module.exports = {
     NAME_SHORT_ERR,
     COMMAND_NOT_FOUND,
     NO_DATA,
+    PRICE_ERROR,
     WIKI_PAGE_LINK,
     FORMAT_STANDARD,
     FORMAT_MODERN,
@@ -65,6 +69,8 @@ module.exports = {
     FORMAT_PAUPER,
     FORMAT_COMMANDER,
     FORMAT_VINTAGE,
+    FORMAT_PENNY,
+    FORMAT_MTGO_COMMANDER,
     LEGALITY_LEGAL,
     LEGALITY_NOT_LEGAL,
     LEGALITY_BANNED,

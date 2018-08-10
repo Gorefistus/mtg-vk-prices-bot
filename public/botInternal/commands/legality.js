@@ -14,14 +14,16 @@ function addLegalityCommand(bot, stats) {
         ${STRINGS.FORMAT_MODERN}: ${MISC.getLegality(cardObject.legalities.modern)}
         ${STRINGS.FORMAT_LEGACY}: ${MISC.getLegality(cardObject.legalities.legacy)}
         ${STRINGS.FORMAT_PAUPER}: ${MISC.getLegality(cardObject.legalities.pauper)}
+        ${STRINGS.FORMAT_PENNY}: ${MISC.getLegality(cardObject.legalities.penny)}
         ${STRINGS.FORMAT_COMMANDER}: ${MISC.getLegality(cardObject.legalities.commander)}
+        ${STRINGS.FORMAT_MTGO_COMMANDER}: ${MISC.getLegality(cardObject.legalities['1v1'])}
         ${STRINGS.FORMAT_VINTAGE}: ${MISC.getLegality(cardObject.legalities.vintage)}`, message.peer_id);
             }, (reason) => {
                 if (CONSTANTS.TIMEOUT_CODE === reason.error.code) {
                     return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
                 }
                 const options = { forward_messages: message.id };
-                bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
+                return bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
             });
         });
     } else {

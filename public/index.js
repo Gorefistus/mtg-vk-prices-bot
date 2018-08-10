@@ -1,7 +1,7 @@
 const { Bot } = require('node-vk-bot');
 const path = require('path');
 const express = require('express');
-const http = require("http");
+const http = require('http');
 
 const botStarter = require('./botInternal/bot-config');
 // THIS IS JUST NEEDED SO HEROKU WON"T STOPP OUR APPLICATION

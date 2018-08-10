@@ -1,13 +1,11 @@
 const request = require('request-promise-native');
 
+const CARD_CACHE = require('../../common/CardCache');
 const STRINGS = require('../../common/strings');
 const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
 
-const cardCache = [];
-
 async function getCardPrices(parsedCardName, setCode) {
-    let cardIndex = -1;
     let priceString = '';
 
     const cardObject = await MISC.getMultiverseId(parsedCardName, setCode);
@@ -19,50 +17,56 @@ async function getCardPrices(parsedCardName, setCode) {
     }
 
     // SCG PRICES SCRAPING START
-    let scgPriceObject;
-    cardCache.forEach((card, index) => {
-        if (card.name === cardObject.name && card.set === cardObject.set_name) {
-            cardIndex = index;
-        }
-    });
-    if (cardIndex >= 0) {
-        priceString = `${priceString} \n SCG: ${cardCache[cardIndex].value}`;
+    let scgPriceObject = CARD_CACHE.cache.getCardFromCache(cardObject);
+
+    if (scgPriceObject) {
+        priceString = `${priceString} \n SCG: ${scgPriceObject.value}`;
     } else {
-        const starCityPage = await request(`${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=Y`);
-        scgPriceObject = MISC.getStarCityPrice(starCityPage, cardObject);
-        if (scgPriceObject) {
-            cardCache.push({
-                ...scgPriceObject,
-                name: cardObject.name,
-            });
-            priceString =
-                `${priceString} \n SCG:${scgPriceObject.set !== cardObject.set_name ? ` [${scgPriceObject.set}] ` : ''} ${scgPriceObject.value}`;
-        } else {
-            priceString = `${priceString} \n SCG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=Y`;
+        try {
+            const starCityPage = await request(`${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=Y`);
+            scgPriceObject = MISC.getStarCityPrice(starCityPage, cardObject);
+            if (scgPriceObject) {
+                CARD_CACHE.cache.addCardToCache({
+                    ...scgPriceObject,
+                    name: cardObject.name,
+                });
+                priceString =
+                    `${priceString} \n SCG:${scgPriceObject.set !== cardObject.set_name ? ` [${scgPriceObject.set}] ` : ''} ${scgPriceObject.value}`;
+            } else {
+                priceString = `${priceString} \n SCG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=Y`;
+            }
+        } catch (e) {
+            console.error('SCG REQUEST ERROR\n', e);
+            priceString = `${priceString} \n SCG: ${STRINGS.PRICE_ERROR}`;
         }
     }
     // TOPDECK PRICES SCRAP START
 
-    const topDeckPrices = await request({
-        method: 'GET',
-        uri: `${CONSTANTS.TOPDECK_PRICE_LINK}${encodeURIComponent(cardName)}`,
-        ecdhCurve: 'auto',
-        json: true,
-    });
-    const filterByNameAndPrice = topDeckPrices.filter(price => {
-        if (scgPriceObject) {
-            const scgPriceInNumber = parseFloat(scgPriceObject.value.split('$')[1]);
-            return price.eng_name.toLowerCase() === cardName.toLowerCase() && price.cost > scgPriceInNumber * 25;
+    try {
+        const topDeckPrices = await request({
+            method: 'GET',
+            uri: `${CONSTANTS.TOPDECK_PRICE_LINK}${encodeURIComponent(cardName)}`,
+            ecdhCurve: 'auto',
+            json: true,
+        });
+        const filterByNameAndPrice = topDeckPrices.filter(price => {
+            if (scgPriceObject) {
+                const scgPriceInNumber = parseFloat(scgPriceObject.value.split('$')[1]);
+                return price.eng_name.toLowerCase() === cardName.toLowerCase() && price.cost > scgPriceInNumber * 25;
+            }
+            return price.eng_name.toLowerCase() === cardName.toLowerCase();
+        });
+        if (filterByNameAndPrice.length > 0) {
+            priceString = `${priceString} \n TopDeck(неизвестное издание): ${filterByNameAndPrice[0].cost} RUB`;
+        } else {
+            const filterByName = topDeckPrices.filter(price => price.eng_name.toLowerCase() === cardName.toLowerCase());
+            if (filterByName.length > 0) {
+                priceString = `${priceString} \n TopDeck(неизвестное издание): ${filterByName[0].cost} RUB`;
+            }
         }
-        return price.eng_name.toLowerCase() === cardName.toLowerCase();
-    });
-    if (filterByNameAndPrice.length > 0) {
-        priceString = `${priceString} \n TopDeck(неизвестное издание): ${filterByNameAndPrice[0].cost} RUB`;
-    } else {
-        const filterByName = topDeckPrices.filter(price => price.eng_name.toLowerCase() === cardName.toLowerCase());
-        if (filterByName.length > 0) {
-            priceString = `${priceString} \n TopDeck(неизвестное издание): ${filterByName[0].cost} RUB`;
-        }
+    } catch (e) {
+        console.error('TOPDECK REQUEST ERROR\n', e);
+        priceString = `${priceString} \n TopDeck: ${STRINGS.PRICE_ERROR}`;
     }
     return priceString;
 

@@ -42,6 +42,7 @@ const TOPDECK_PRICE_LINK = 'https://topdeck.ru/apps/toptrade/api-v1/singles/sear
 const SCRY_API_LINK = "https://api.scryfall.com/cards/search?q=";
 const WIKI_LINK = "https://mtg.gamepedia.com/api.php";
 
+const CACHE_ENTRY_DURATION = 4320000;//Three days in milliseconds;
 
 module.exports = {
     TIMEOUT_CODE,
@@ -78,4 +79,5 @@ module.exports = {
     TOPDECK_PRICE_LINK,
     SCRY_API_LINK,
     WIKI_LINK,
+    CACHE_ENTRY_DURATION,
 };
