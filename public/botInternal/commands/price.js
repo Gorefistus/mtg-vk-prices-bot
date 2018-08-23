@@ -26,7 +26,8 @@ async function getCardPrices(parsedCardName, setCode, bot) {
         await page.on('onResourceRequested', function (requestData) {
             console.info('Requesting', requestData.url);
         });
-        const url = `${CONSTANTS.MTGGOLDFISH_PRICE_LINK}${encodeURIComponent(cardObject.set_name)}/${encodeURIComponent(cardName)}#paper`;
+        const cardNameUrl = cardObject.replace(',', '');
+        const url = `${CONSTANTS.MTGGOLDFISH_PRICE_LINK}${encodeURIComponent(cardObject.set_name)}/${encodeURIComponent(cardNameUrl)}#paper`;
 
         const status = await page.open(url);
         const clipRect = await page.evaluate(function () {
