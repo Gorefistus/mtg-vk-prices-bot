@@ -23,6 +23,7 @@
     "express": "^4.16.3",
     "franc": "^4.0.0",
     "node-vk-bot": "0.3.1",
+    "phantom": "^6.0.3",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
     "scryfall-sdk": "1.2.0",

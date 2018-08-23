@@ -38,6 +38,7 @@ const LANG_PX = 'px';
 
 const STAR_CITY_PRICE_LINK = 'http://www.starcitygames.com/results?name=';
 const TOPDECK_PRICE_LINK = 'https://topdeck.ru/apps/toptrade/api-v1/singles/search?q=';
+const MTGGOLDFISH_PRICE_LINK = 'https://www.mtggoldfish.com/price/';
 
 const SCRY_API_LINK = "https://api.scryfall.com/cards/search?q=";
 const WIKI_LINK = "https://mtg.gamepedia.com/api.php";
@@ -77,6 +78,7 @@ module.exports = {
     LANG_PX,
     STAR_CITY_PRICE_LINK,
     TOPDECK_PRICE_LINK,
+    MTGGOLDFISH_PRICE_LINK,
     SCRY_API_LINK,
     WIKI_LINK,
     CACHE_ENTRY_DURATION,

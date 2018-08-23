@@ -1,11 +1,14 @@
 const request = require('request-promise-native');
+const phantom = require('phantom');
+const path = require('path');
+const fs = require('fs');
 
 const CARD_CACHE = require('../../common/CardCache');
 const STRINGS = require('../../common/strings');
 const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
 
-async function getCardPrices(parsedCardName, setCode) {
+async function getCardPrices(parsedCardName, setCode, bot) {
     let priceString = '';
 
     const cardObject = await MISC.getMultiverseId(parsedCardName, setCode);
@@ -14,6 +17,37 @@ async function getCardPrices(parsedCardName, setCode) {
     let cardName = cardObject.name;
     if (cardObject.card_faces) {
         cardName = cardObject.name.split('//')[0].trim();
+    }
+
+    let image;
+    try {
+        const instance = await phantom.create();
+        const page = await instance.createPage();
+        await page.on('onResourceRequested', function (requestData) {
+            console.info('Requesting', requestData.url);
+        });
+        const url = `${CONSTANTS.MTGGOLDFISH_PRICE_LINK}${encodeURIComponent(cardObject.set_name)}/${encodeURIComponent(cardName)}#paper`;
+
+        const status = await page.open(url);
+        const clipRect = await page.evaluate(function () {
+            return document.querySelector('#tab-paper')
+                .getBoundingClientRect();
+        });
+        page.property('clipRect', {
+            top: clipRect.top,
+            left: clipRect.left,
+            width: clipRect.width,
+            height: clipRect.height,
+        });
+        const imageName = `${cardObject.set_name}${cardObject.name}${Date.now()}.png`;
+        page.render(imageName);
+        await instance.exit();
+        image = await bot.uploadPhoto(path.resolve(imageName));
+        fs.unlink(imageName, () => {
+            console.log(STRINGS.LOG_FILE_DELETED);
+        });
+    } catch (e) {
+        //do nothing
     }
 
     // SCG PRICES SCRAPING START
@@ -69,7 +103,10 @@ async function getCardPrices(parsedCardName, setCode) {
         console.error('TOPDECK REQUEST ERROR\n', e);
         priceString = `${priceString} \n TopDeck: ${STRINGS.PRICE_ERROR}`;
     }
-    return priceString;
+    return {
+        priceString,
+        image,
+    };
 
 }
 
@@ -85,9 +122,16 @@ function addPriceCommand(bot, stats) {
                 cardName = setNameRegex[2];
             }
 
-            getCardPrices(cardName, setCode)
+            getCardPrices(cardName, setCode, bot)
                 .then((prices) => {
-                    bot.send(prices, message.peer_id);
+                    let attachmentString = '';
+                    if (prices.image) {
+                        attachmentString =
+                            `${attachmentString}photo${prices.image.owner_id}_${prices.image.id},`;
+                    }
+                    const options = { attachment: attachmentString };
+
+                    bot.send(prices.priceString, message.peer_id, options);
                 }, (reason) => {
                     if (reason && reason.statusCode && reason.statusCode === 404) {
                         const options = { forward_messages: message.id };
