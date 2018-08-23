@@ -8,6 +8,14 @@ const STRINGS = require('../../common/strings');
 const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
 
+function escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
 async function getCardPrices(parsedCardName, setCode, bot) {
     let priceString = '';
 
@@ -26,8 +34,9 @@ async function getCardPrices(parsedCardName, setCode, bot) {
         await page.on('onResourceRequested', function (requestData) {
             console.info('Requesting', requestData.url);
         });
-        const cardNameUrl = cardObject.replace(',', '');
-        const url = `${CONSTANTS.MTGGOLDFISH_PRICE_LINK}${encodeURIComponent(cardObject.set_name)}/${encodeURIComponent(cardNameUrl)}#paper`;
+        const cardNameUrl = replaceAll(replaceAll(cardName, ',', ''), ' ', '+');
+        const cardSetUrl = replaceAll(cardObject.set_name, ' ', '+');
+        const url = `${CONSTANTS.MTGGOLDFISH_PRICE_LINK}${cardSetUrl}/${cardNameUrl}#paper`;
 
         const status = await page.open(url);
         const clipRect = await page.evaluate(function () {
