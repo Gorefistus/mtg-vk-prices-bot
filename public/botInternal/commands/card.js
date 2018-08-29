@@ -12,11 +12,11 @@ function downloadAndPostCardImage(bot, cards, peerId) {
             if (card.image_uris === undefined && card.card_faces && card.card_faces.length > 0) {
                 card.card_faces.forEach((face) => {
                     if (imageCounter < 10) {
-                        cardLinks = `${cardLinks} ${face.image_uris.art_crop} \n`;
+                        cardLinks = `${cardLinks} ${face.image_uris.normal} \n`;
                     }
                 });
             } else if (imageCounter < 10) {
-                cardLinks = `${cardLinks} ${card.image_uris.art_crop} \n`;
+                cardLinks = `${cardLinks} ${card.image_uris.normal} \n`;
             }
         }
         return bot.send(cardLinks, peerId);
