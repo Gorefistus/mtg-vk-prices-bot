@@ -254,6 +254,25 @@ function checkAgainstSCGDict(setName, isFoil = false) {
     return setNameToReturn;
 }
 
+
+function escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
+function removeAllSymbols(str, arrSymbolsToRemove){
+    let finalStr = str;
+    if (str && arrSymbolsToRemove && Array.isArray(arrSymbolsToRemove)) {
+        arrSymbolsToRemove.forEach((symbol) => {
+            finalStr = replaceAll(finalStr, symbol, '');
+        });
+    }
+    return finalStr;
+}
+
 module.exports = {
     getLegality,
     downloadCardImage,
@@ -262,4 +281,6 @@ module.exports = {
     delay,
     getStarCityPrice,
     getLanguageByLangCode,
+    removeAllSymbols,
+    replaceAll,
 };
