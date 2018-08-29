@@ -1,5 +1,4 @@
 const request = require('request-promise-native');
-const phantom = require('phantom');
 const createPhantomPool = require('phantom-pool');
 const path = require('path');
 const fs = require('fs');
@@ -132,7 +131,7 @@ function addPriceCommand(bot, stats) {
             testOnBorrow: true, // default
             // For all opts, see opts at https://github.com/coopernurse/node-pool#createpool
             phantomArgs: [['--ignore-ssl-errors=true', '--disk-cache=true'], {
-                logLevel: 'debug',
+                logLevel: 'error',
             }], // arguments passed to phantomjs-node directly, default is `[]`. For all opts, see https://github.com/amir20/phantomjs-node#phantom-object-api
         });
 
