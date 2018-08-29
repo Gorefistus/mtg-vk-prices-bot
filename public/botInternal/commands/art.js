@@ -21,7 +21,9 @@ function downloadAndPostCardImage(bot, cards, peerId) {
     if (cards && cards.length > 0 && bot && peerId) {
         const promisesDownloadArray = [];
         // generating array of Promises for us to resolve, we need to wait for all of them to post a message
+        let artistNames = cards.length > 1 ? 'Иллюстрации: ' : 'Иллюстрация: ';
         for (const card of cards) {
+            artistNames = `${artistNames} ${card.artist};`;
             // double faced cards have many images in them, we need to handle that
             if (card.image_uris === undefined && card.card_faces && card.card_faces.length > 0) {
                 card.card_faces.forEach((face) => {
@@ -48,7 +50,7 @@ function downloadAndPostCardImage(bot, cards, peerId) {
                                     `${attachmentString}photo${photoPromise.v.owner_id}_${photoPromise.v.id},`;
                             }
                             const options = { attachment: attachmentString };
-                            bot.send('', peerId, options)
+                            bot.send(artistNames, peerId, options)
                                 .catch((reason) => {
                                     console.log(reason);
                                 });
