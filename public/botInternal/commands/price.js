@@ -119,8 +119,8 @@ async function getCardPrices(parsedCardName, setCode, bot, pool) {
 function addPriceCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
         const pool = createPhantomPool({
-            max: 10, // default
-            min: 2, // default
+            max: 3, // default
+            min: 1, // default
             // how long a resource can stay idle in pool before being removed
             idleTimeoutMillis: 30000, // default.
             // maximum number of times an individual resource can be reused before being destroyed; set to 0 to disable
