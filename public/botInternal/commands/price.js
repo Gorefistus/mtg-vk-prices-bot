@@ -1,5 +1,5 @@
 const request = require('request-promise-native');
-const createPhantomPool = require('phantom-pool');
+const phantom = require('phantom');
 const path = require('path');
 const fs = require('fs');
 
@@ -9,7 +9,7 @@ const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
 
 
-async function getCardPrices(parsedCardName, setCode, bot, pool) {
+async function getCardPrices(parsedCardName, setCode, bot) {
     let priceString = '';
 
     const cardObject = await MISC.getMultiverseId(parsedCardName, setCode);
@@ -22,31 +22,31 @@ async function getCardPrices(parsedCardName, setCode, bot, pool) {
 
     let image;
     try {
-       const imageName = await pool.use(async (instance) => {
-            const page = await instance.createPage();
-            const cardNameUrl = MISC.replaceAll(MISC.removeAllSymbols(cardName, [',', `'`]), ' ', '+');
-            const cardSetUrl = MISC.replaceAll(MISC.removeAllSymbols(cardObject.set_name, [',', `'`]), ' ', '+');
-            const url = `${CONSTANTS.MTGGOLDFISH_PRICE_LINK}${cardSetUrl}/${cardNameUrl}#paper`;
+        const instance = await phantom.create();
+        const page = await instance.createPage();
+        await page.on('onResourceRequested', function (requestData) {
+            console.info('Requesting', requestData.url);
+        });
+        const cardNameUrl = MISC.replaceAll(MISC.removeAllSymbols(cardName, [',', `'`]), ' ', '+');
+        const cardSetUrl = MISC.replaceAll(MISC.removeAllSymbols(cardObject.set_name, [',', `'`]), ' ', '+');
 
-            const status = await page.open(url);
-            if (status !== 'success') {
-                throw new Error(`cannot open ${url}`);
-            }
-            const clipRect = await page.evaluate(function () {
-                return document.querySelector('#tab-paper')
-                    .getBoundingClientRect();
-            });
-            page.property('clipRect', {
-                top: clipRect.top,
-                left: clipRect.left,
-                width: clipRect.width,
-                height: clipRect.height,
-            });
-            const imageNamePromise = `${cardObject.set_name}${cardObject.name}${Date.now()}.png`;
-            await page.render(imageNamePromise);
-            return imageNamePromise;
+        const url = `${CONSTANTS.MTGGOLDFISH_PRICE_LINK}${cardSetUrl}/${cardNameUrl}#paper`;
+
+        const status = await page.open(url);
+        const clipRect = await page.evaluate(function () {
+            return document.querySelector('#tab-paper')
+                .getBoundingClientRect();
+        });
+        page.property('clipRect', {
+            top: clipRect.top,
+            left: clipRect.left,
+            width: clipRect.width,
+            height: clipRect.height,
         });
 
+        const imageName = `${cardObject.set_name}${cardObject.name}${Date.now()}.png`;
+        page.render(imageName);
+        await instance.exit();
         image = await bot.uploadPhoto(path.resolve(imageName));
         fs.unlink(imageName, () => {
             console.log(STRINGS.LOG_FILE_DELETED);
@@ -118,23 +118,6 @@ async function getCardPrices(parsedCardName, setCode, bot, pool) {
 
 function addPriceCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        const pool = createPhantomPool({
-            max: 3, // default
-            min: 1, // default
-            // how long a resource can stay idle in pool before being removed
-            idleTimeoutMillis: 30000, // default.
-            // maximum number of times an individual resource can be reused before being destroyed; set to 0 to disable
-            maxUses: 50, // default
-            // function to validate an instance prior to use; see https://github.com/coopernurse/node-pool#createpool
-            validator: () => Promise.resolve(true), // defaults to always resolving true
-            // validate resource before borrowing; required for `maxUses and `validator`
-            testOnBorrow: true, // default
-            // For all opts, see opts at https://github.com/coopernurse/node-pool#createpool
-            phantomArgs: [['--ignore-ssl-errors=true', '--disk-cache=true'], {
-                logLevel: 'error',
-            }], // arguments passed to phantomjs-node directly, default is `[]`. For all opts, see https://github.com/amir20/phantomjs-node#phantom-object-api
-        });
-
 
         bot.get(/([m|h][\s]price[\s]|[m|h][\s]p[\s])/i, (message) => {
             stats.track(message.user_id, { msg: message.body }, 'p');
@@ -145,7 +128,7 @@ function addPriceCommand(bot, stats) {
                 cardName = setNameRegex[2];
             }
 
-            getCardPrices(cardName, setCode, bot, pool)
+            getCardPrices(cardName, setCode, bot)
                 .then((prices) => {
                     let attachmentString = '';
                     if (prices.image) {
