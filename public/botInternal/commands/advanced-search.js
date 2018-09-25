@@ -8,13 +8,13 @@ function sendResults(bot, message, values, page) {
         const pages = Math.ceil(values.length / 10);
         let results = '';
         if (page > 0 && page <= pages) {
-            results = `Эти карты подходят под критерии поиска (Страница: ${page}/${pages}):`;
+            results = `${STRINGS.CARDS_MATCH_CRITERIA}(Страница: ${page}/${pages}):`;
             const startIndex = (page - 1) * 10;
             for (let i = startIndex; i < ((page - 1) * 10) + 10 && i < values.length; i++) {
                 results = results + `\n ${values[i].name}`;
             }
         } else {
-            results = `Эти карты подходят под критерии поиска (Страница: 1/${pages}):`;
+            results = `${STRINGS.CARDS_MATCH_CRITERIA} (Страница: 1/${pages}):`;
             for (let i = 0; i < 10 && i < values.length; i++) {
                 results = results + `\n ${values[i].name}`;
             }

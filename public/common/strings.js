@@ -5,6 +5,8 @@ const NAME_SHORT_ERR = 'Имя карты слишком короткое!';
 const NO_DATA = 'Нет информации!';
 const PRICE_ERROR = 'Ошибка поиска цены';
 const WIKI_PAGE_LINK = 'Wiki ссылка:';
+const PRICES_TOPDECK = 'TopDeck(неизвестное издание)';
+const CARDS_MATCH_CRITERIA = 'Эти карты подходят под критерии поиска ';
 
 const ERR_PRICES_GENERAL = 'Невозможно найти цены, попробуйте позднее';
 const ERR_VK_UPLOAD = 'Couldn\'t upload image to the VK';
@@ -99,4 +101,6 @@ module.exports = {
     ERR_VK_UPLOAD,
     ERR_NO_PRINTINGS,
     ERR_NO_WIKI_PAGE,
+    PRICES_TOPDECK,
+    CARDS_MATCH_CRITERIA,
 };

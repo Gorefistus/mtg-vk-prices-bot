@@ -9,6 +9,7 @@ const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
 
 
+
 async function getCardPrices(parsedCardName, setCode, bot) {
     let priceString = '';
 
@@ -22,17 +23,16 @@ async function getCardPrices(parsedCardName, setCode, bot) {
 
     let image;
     try {
-        const instance = await phantom.create();
-        const page = await instance.createPage();
-        await page.on('onResourceRequested', function (requestData) {
-            console.info('Requesting', requestData.url);
+        const instance = await phantom.create([], {
+            logLevel: 'error',
         });
+        const page = await instance.createPage();
         const cardNameUrl = MISC.replaceAll(MISC.removeAllSymbols(cardName, [',', `'`]), ' ', '+');
         const cardSetUrl = MISC.replaceAll(MISC.removeAllSymbols(cardObject.set_name, [',', `'`]), ' ', '+');
 
         const url = `${CONSTANTS.MTGGOLDFISH_PRICE_LINK}${cardSetUrl}/${cardNameUrl}#paper`;
 
-        const status = await page.open(url);
+        await page.open(url);
         const clipRect = await page.evaluate(function () {
             return document.querySelector('#tab-paper')
                 .getBoundingClientRect();
@@ -97,11 +97,11 @@ async function getCardPrices(parsedCardName, setCode, bot) {
             return price.eng_name.toLowerCase() === cardName.toLowerCase();
         });
         if (filterByNameAndPrice.length > 0) {
-            priceString = `${priceString} \n TopDeck(неизвестное издание): ${filterByNameAndPrice[0].cost} RUB`;
+            priceString = `${priceString} \n ${STRINGS.PRICES_TOPDECK}: ${filterByNameAndPrice[0].cost} RUB`;
         } else {
             const filterByName = topDeckPrices.filter(price => price.eng_name.toLowerCase() === cardName.toLowerCase());
             if (filterByName.length > 0) {
-                priceString = `${priceString} \n TopDeck(неизвестное издание): ${filterByName[0].cost} RUB`;
+                priceString = `${priceString} \n ${STRINGS.PRICES_TOPDECK}: ${filterByName[0].cost} RUB`;
             }
         }
     } catch (e) {
