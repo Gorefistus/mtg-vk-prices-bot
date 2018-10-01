@@ -203,6 +203,9 @@ function getStarCityPrice(htmlString, cardObject = undefined, isFoil = false) {
         SCGCard.value = htmlPage('.search_results_9')
             .eq(scgCardIndex)
             .text();
+        SCGCard.stock = htmlPage('.search_results_8')
+            .eq(scgCardIndex)
+            .text();
     } else if (isFoil) {
         scgCardIndex = -1;
         htmlPage('.search_results_2')
@@ -221,6 +224,9 @@ function getStarCityPrice(htmlString, cardObject = undefined, isFoil = false) {
             SCGCard.set = htmlPage('.search_results_2')
                 .eq(scgCardIndex)
                 .text();
+            SCGCard.stock = htmlPage('.search_results_8')
+                .eq(scgCardIndex)
+                .text();
         } else {
             SCGCard = undefined;
 
@@ -235,6 +241,9 @@ function getStarCityPrice(htmlString, cardObject = undefined, isFoil = false) {
                 .first()
                 .text()
                 .trim();
+            SCGCard.stock = htmlPage('.search_results_8')
+                .eq(scgCardIndex)
+                .text();
             SCGCard.name = cardObject.name;
         } catch (e) {
             SCGCard = undefined;

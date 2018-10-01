@@ -9,7 +9,6 @@ const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
 
 
-
 async function getCardPrices(parsedCardName, setCode, bot) {
     let priceString = '';
 
@@ -71,7 +70,7 @@ async function getCardPrices(parsedCardName, setCode, bot) {
                     foil: false,
                 });
                 priceString =
-                    `${priceString} \n SCG:${scgPriceObject.set !== cardObject.set_name ? ` [${scgPriceObject.set}] ` : ''} ${scgPriceObject.value}`;
+                    `${priceString} \n SCG (наличие: ${scgPriceObject.stock === 'Out of Stock' ? 'Нет в наличии' : scgPriceObject.stock})  :${scgPriceObject.set !== cardObject.set_name ? ` [${scgPriceObject.set}] ` : ''} ${scgPriceObject.value}`;
             } else {
                 priceString = `${priceString} \n SCG: ${CONSTANTS.STAR_CITY_PRICE_LINK}${encodeURIComponent(cardName)}&auto=Y`;
             }
