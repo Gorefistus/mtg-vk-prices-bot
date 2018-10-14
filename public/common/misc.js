@@ -93,7 +93,7 @@ function downloadCardImage(uri) {
         try {
             request.head(uri, () => {
                 const fileName = `${Date.now()
-                    .toString()}.jpg`;
+                    .toString()}${Math.random()}.jpg`;
                 request(uri)
                     .pipe(fs.createWriteStream(fileName))
                     .on('close', () => resolve(fileName));
