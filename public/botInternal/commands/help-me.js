@@ -22,6 +22,7 @@ function addHelpmeCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/([m|h][\s]helpme[\s]|[m|h][\s]hm[\s])/i, (message) => {
             stats.track(message.user_id, { msg: message.body }, 'hm');
+            bot.sendTyping(message);
             const cardName = message.body.match(/([m|h][\s]helpme[\s]|[m|h][\s]hm[\s,])(.*)/i)[2].trim();
             if (cardName.length < 2) {
                 return bot.send(STRINGS.NAME_SHORT_ERR, message.peer_id);

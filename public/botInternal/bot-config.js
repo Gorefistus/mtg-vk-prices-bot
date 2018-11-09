@@ -19,6 +19,8 @@ const wikiCommand = require('./commands/wiki');
 function addCommands(bot) {
     console.log('Commands addition started');
 
+    _addTypingStatusCommand(bot);
+
     announcmentCommand(bot, stats);
     cardCommand(bot, stats);
     artCommand(bot, stats);
@@ -35,6 +37,21 @@ function addCommands(bot) {
     miscCommand(bot, stats);
 
     console.log('Commands addition finished');
+}
+
+
+function _addTypingStatusCommand(bot) {
+    if (bot && !bot.sendTyping) {
+        bot.sendTyping = async (message) => {
+            const { peer_id } = message;
+            await bot.api('messages.setActivity', {
+                //bot VKId
+                user_id: 488906794,
+                peer_id,
+                type: 'typing',
+            });
+        };
+    }
 }
 
 

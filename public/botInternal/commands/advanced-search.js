@@ -30,6 +30,7 @@ function addAdvancedSearchCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])/i, message => {
             stats.track(message.user_id, { msg: message.body }, 'as');
+            bot.sendTyping(message);
             //VK replaces quotes "" with &quot; characters, so we replace them back again
             let searchQuery = message.body.match(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])(.*)/i)[2].replace(new RegExp('&quot;', 'g'), '"')
                 .replace(new RegExp('&gt;', 'g'), '>')

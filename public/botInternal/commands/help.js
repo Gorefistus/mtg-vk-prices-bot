@@ -5,6 +5,7 @@ function addHelpCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/[m|h][\s]help\b|[m|h][\s]h\b/i, (message) => {
             stats.track(message.user_id, { msg: message.body }, 'help');
+            bot.sendTyping(message);
             const options = { forward_messages: message.id };
             bot.send('Доступные команды:\n ' +
                 '!m card (c) имя_карты [аббривиатура_сета] ; имя_карты [аббривиатура_сета]  -  показывает изображение запрошенных карт (до 10 изображений в сообщении) из заданного сета, поддерживает русские и английские имена  \n\n ' +

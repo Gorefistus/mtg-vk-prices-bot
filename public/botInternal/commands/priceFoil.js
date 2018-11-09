@@ -49,10 +49,13 @@ async function getFoilPrices(parsedCardName, setCode) {
 
 function addPriceFoilCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/([m|h][\s]priceFoil[\s]|[m|h][\s]pf[\s])/i, (message) => {
+        bot.get(/([n|h][\s]priceFoil[\s]|[n|h][\s]pf[\s])/i, (message) => {
+
             stats.track(message.user_id, { msg: message.body }, 'pf');
-            let cardName = message.body.match(/([m|h][\s]priceFoil[\s]|[m|h][\s]pf[\s])(.*)/i)[2];
-            const setNameRegex = message.body.match(/([m|h][\s]priceFoil[\s]|[m|h][\s]pf[\s])(.*)\[(.{3,4})\]/i);
+            bot.sendTyping(message);
+            console.log(message);
+            let cardName = message.body.match(/([n|h][\s]priceFoil[\s]|[n|h][\s]pf[\s])(.*)/i)[2];
+            const setNameRegex = message.body.match(/([n|h][\s]priceFoil[\s]|[n|h][\s]pf[\s])(.*)\[(.{3,4})\]/i);
             const setCode = setNameRegex !== null ? setNameRegex[3] : undefined;
             if (setCode) {
                 cardName = setNameRegex[2];
@@ -61,7 +64,9 @@ function addPriceFoilCommand(bot, stats) {
 
             getFoilPrices(cardName, setCode)
                 .then((prices) => {
-                    bot.send(prices, message.peer_id);
+                    setTimeout(()=>{
+                        bot.send(prices, message.peer_id);
+                    }, 5000);
                 }, (reason) => {
                     if (reason && reason.statusCode && reason.statusCode === 404) {
                         const options = { forward_messages: message.id };

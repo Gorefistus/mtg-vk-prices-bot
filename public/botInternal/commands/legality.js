@@ -7,6 +7,7 @@ function addLegalityCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
         bot.get(/([m|h][\s]legality[\s]|[m|h][\s]l[\s])/i, (message) => {
             stats.track(message.user_id, { msg: message.body }, 'l');
+            bot.sendTyping(message);
             const cardName = message.body.match(/([m|h][\s]legality[\s]|[m|h][\s]l[\s])(.*)/i)[2];
             MISC.getMultiverseId(cardName).then((cardObject) => {
                 bot.send(`Легальность ${cardObject.printed_name ? cardObject.printed_name : cardObject.name} в форматах:\n 
