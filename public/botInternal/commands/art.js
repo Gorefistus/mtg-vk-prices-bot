@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+const imageCache = require('../../common/imageVkCache');
 const STRINGS = require('../../common/strings');
 const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
@@ -9,69 +10,76 @@ const MISC = require('../../common/misc');
 async function runPromisesInSequence(bot, promises) {
     const resultsArray = [];
     for (const promise of promises) {
-        const resolved = await MISC.promiseReflect(bot.uploadPhoto(path.resolve(promise.v.toString())));
+        const resolved = await MISC.promiseReflect(bot.uploadPhoto(path.resolve(promise.v.fileName.toString())));
         if (resolved.status === 'resolved') {
-            resultsArray.push(resolved);
+            resultsArray.push({
+                ...resolved,
+                card: promise.v.card,
+            });
         }
     }
     return resultsArray;
 }
 
-function downloadAndPostCardImage(bot, cards, peerId) {
+async function downloadAndPostCardImage(bot, cards, peerId) {
     if (cards && cards.length > 0 && bot && peerId) {
         const promisesDownloadArray = [];
+        const cardFoundInCache = [];
         // generating array of Promises for us to resolve, we need to wait for all of them to post a message
         let artistNames = cards.length > 1 ? 'Иллюстрации: ' : 'Иллюстрация: ';
         for (const card of cards) {
             artistNames = `${artistNames} ${card.artist};`;
+            const cachedCard = imageCache.getPhotoObj(card.id, { isArt: true });
+            console.log(cachedCard);
+            if (cachedCard) {
+                cardFoundInCache.push(cachedCard);
+                break;
+            }
             // double faced cards have many images in them, we need to handle that
             if (card.image_uris === undefined && card.card_faces && card.card_faces.length > 0) {
                 card.card_faces.forEach((face) => {
                     if (promisesDownloadArray.length < 10) {
-                        promisesDownloadArray.push(MISC.downloadCardImage(face.image_uris.art_crop));
+                        promisesDownloadArray.push(MISC.downloadCardImage(face.image_uris.art_crop, face));
                     }
                 });
             } else if (promisesDownloadArray.length < 10) {
-                promisesDownloadArray.push(MISC.downloadCardImage(card.image_uris.art_crop));
+                promisesDownloadArray.push(MISC.downloadCardImage(card.image_uris.art_crop, card));
             }
         }
-        Promise.all(promisesDownloadArray.map(MISC.promiseReflect))
-            .then(
-                (values) => {
-                    const resolvedPromises = values.filter(value => value.status === 'resolved');
-                    // do something with rejected promises
-
-                    runPromisesInSequence(bot, resolvedPromises)
-                        .then((photoValues) => {
-                            const resolvedPhotoPromises = photoValues.filter(value => value.status === 'resolved');
-                            let attachmentString = '';
-                            for (const photoPromise of resolvedPhotoPromises) {
-                                attachmentString =
-                                    `${attachmentString}photo${photoPromise.v.owner_id}_${photoPromise.v.id},`;
-                            }
-                            const options = { attachment: attachmentString };
-                            bot.send(artistNames, peerId, options)
-                                .catch((reason) => {
-                                    console.log(reason);
-                                });
-                            resolvedPromises.forEach(((value) => {
-                                fs.unlink(value.v, () => {
-                                    console.log(STRINGS.LOG_FILE_DELETED);
-                                });
-                            }));
-                        })
-                        .catch(() => {
-                            bot.send(STRINGS.ERR_VK_UPLOAD, peerId);
-                        });
-                },
-                (reason) => {
-                    // this should never occur due to our reflect pattern
+        try {
+            const values = await Promise.all(promisesDownloadArray.map(MISC.promiseReflect));
+            const resolvedPromises = values.filter(value => value.status === 'resolved');
+            const photoValues = await runPromisesInSequence(bot, resolvedPromises);
+            const resolvedPhotoPromises = photoValues.filter(value => value.status === 'resolved');
+            let attachmentString = '';
+            for (const cachedCard of cardFoundInCache) {
+                attachmentString =
+                    `${attachmentString}photo${cachedCard.item.photoObject.owner_id}_${cachedCard.item.photoObject.id},`;
+            }
+            for (const photoPromise of resolvedPhotoPromises) {
+                imageCache.addCacheObject(photoPromise.v, {
+                    id: photoPromise.card.id || photoPromise.card.illustration_id,
+                    name: photoPromise.card.name,
+                    set: photoPromise.card.set,
+                }, { isArt: true });
+                attachmentString =
+                    `${attachmentString}photo${photoPromise.v.owner_id}_${photoPromise.v.id},`;
+            }
+            const options = { attachment: attachmentString };
+            bot.send(artistNames, peerId, options)
+                .catch((reason) => {
                     console.log(reason);
-                },
-            )
-            .catch((reason) => {
-                console.log(reason);
-            });
+                });
+            resolvedPromises.forEach(((value) => {
+                fs.unlink(value.v.fileName, () => {
+                    console.log(STRINGS.LOG_FILE_DELETED);
+                });
+            }));
+
+        } catch (reason) {
+            bot.send(STRINGS.ERR_VK_UPLOAD, peerId);
+            console.log(reason);
+        }
     } else {
         console.error('Error uploading photos to VK');
     }
@@ -80,7 +88,7 @@ function downloadAndPostCardImage(bot, cards, peerId) {
 
 function addArtCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/[m|h][\s]art[\s,]|[m|h][\s]a[\s]/i, (message) => {
+        bot.get(/[m|h][\s]art[\s]|[m|h][\s]a[\s]/i, (message) => {
             stats.track(message.user_id, { msg: message.body }, 'a');
             bot.sendTyping(message);
             const cardNames = message.body.match(/([m|h][\s]art[\s]|[m|h][\s]a[\s])(.*)/i)[2];

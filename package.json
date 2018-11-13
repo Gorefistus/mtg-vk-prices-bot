@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "start": "node public/index.js",
+    "dev": "node node_modules/nodemon/bin/nodemon.js public/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +23,7 @@
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.3",
     "franc": "^4.0.0",
+    "fuse.js": "^3.3.0",
     "node-vk-bot": "0.3.1",
     "phantom": "^6.0.3",
     "request": "^2.87.0",
@@ -32,6 +34,7 @@
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.12.0"
+    "eslint-plugin-import": "^2.12.0",
+    "nodemon": "^1.18.6"
   }
 }

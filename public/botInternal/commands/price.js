@@ -3,6 +3,7 @@ const phantom = require('phantom');
 const path = require('path');
 const fs = require('fs');
 
+const imageCache = require('../../common/imageVkCache');
 const CARD_CACHE = require('../../common/CardCache');
 const STRINGS = require('../../common/strings');
 const CONSTANTS = require('../../common/constants');
@@ -22,34 +23,46 @@ async function getCardPrices(parsedCardName, setCode, bot) {
 
     let image;
     try {
-        const instance = await phantom.create([], {
-            logLevel: 'error',
-        });
-        const page = await instance.createPage();
-        const cardNameUrl = MISC.replaceAll(MISC.removeAllSymbols(cardName, [',', `'`]), ' ', '+');
-        const cardSetUrl = MISC.replaceAll(MISC.removeAllSymbols(cardObject.set_name, [',', `'`]), ' ', '+');
+        const cachedImagePrice = imageCache.getPhotoObj(cardObject.id, { isTrade: true });
+        console.log(cachedImagePrice);
+        if (!cachedImagePrice) {
+            const instance = await phantom.create([], {
+                logLevel: 'error',
+            });
+            const page = await instance.createPage();
+            const cardNameUrl = MISC.replaceAll(MISC.removeAllSymbols(cardName, [',', `'`]), ' ', '+');
+            const cardSetUrl = MISC.replaceAll(MISC.removeAllSymbols(cardObject.set_name, [',', `'`]), ' ', '+');
 
-        const url = `${CONSTANTS.MTGGOLDFISH_PRICE_LINK}${cardSetUrl}/${cardNameUrl}#paper`;
+            const url = `${CONSTANTS.MTGGOLDFISH_PRICE_LINK}${cardSetUrl}/${cardNameUrl}#paper`;
 
-        await page.open(url);
-        const clipRect = await page.evaluate(function () {
-            return document.querySelector('#tab-paper')
-                .getBoundingClientRect();
-        });
-        page.property('clipRect', {
-            top: clipRect.top,
-            left: clipRect.left,
-            width: clipRect.width,
-            height: clipRect.height,
-        });
+            await page.open(url);
+            const clipRect = await page.evaluate(function () {
+                return document.querySelector('#tab-paper')
+                    .getBoundingClientRect();
+            });
+            page.property('clipRect', {
+                top: clipRect.top,
+                left: clipRect.left,
+                width: clipRect.width,
+                height: clipRect.height,
+            });
 
-        const imageName = `${cardObject.set_name}${cardObject.name}${Date.now()}.png`;
-        page.render(imageName);
-        await instance.exit();
-        image = await bot.uploadPhoto(path.resolve(imageName));
-        fs.unlink(imageName, () => {
-            console.log(STRINGS.LOG_FILE_DELETED);
-        });
+            const imageName = `${cardObject.set_name}${cardObject.name}${Date.now()}.png`;
+            page.render(imageName);
+            await instance.exit();
+            image = await bot.uploadPhoto(path.resolve(imageName));
+            imageCache.addCacheObject(image, {
+                id: cardObject.id || cardObject.illustration_id,
+                name: cardObject.name,
+                set: cardObject.set,
+            }, { isTrade: true });
+            fs.unlink(imageName, () => {
+                console.log(STRINGS.LOG_FILE_DELETED);
+            });
+        } else {
+            image = cachedImagePrice.item.photoObject;
+        }
+
     } catch (e) {
         //do nothing
     }

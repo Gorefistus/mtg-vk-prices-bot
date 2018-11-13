@@ -88,7 +88,7 @@ function promiseReflect(promise) {
 }
 
 
-function downloadCardImage(uri) {
+function downloadCardImage(uri, card) {
     return new Promise((resolve, reject) => {
         try {
             request.head(uri, () => {
@@ -96,7 +96,10 @@ function downloadCardImage(uri) {
                     .toString()}${Math.random()}.jpg`;
                 request(uri)
                     .pipe(fs.createWriteStream(fileName))
-                    .on('close', () => resolve(fileName));
+                    .on('close', () => resolve({
+                        fileName,
+                        card
+                    }));
             });
         } catch (e) {
             reject(e);
