@@ -24,7 +24,6 @@ async function getCardPrices(parsedCardName, setCode, bot) {
     let image;
     try {
         const cachedImagePrice = imageCache.getPhotoObj(cardObject.id, { isTrade: true });
-        console.log(cachedImagePrice);
         if (!cachedImagePrice) {
             const instance = await phantom.create([], {
                 logLevel: 'error',
