@@ -33,7 +33,7 @@ async function downloadAndPostCardImage(bot, cards, peerId) {
             const cachedCard = imageCache.getPhotoObj(card.id);
             if (cachedCard) {
                 cardFoundInCache.push(cachedCard);
-                break;
+                continue;
             }
             if (card.image_uris === undefined && card.card_faces && card.card_faces.length > 0) {
                 card.card_faces.forEach((face) => {

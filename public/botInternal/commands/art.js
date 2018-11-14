@@ -33,7 +33,7 @@ async function downloadAndPostCardImage(bot, cards, peerId) {
             console.log(cachedCard);
             if (cachedCard) {
                 cardFoundInCache.push(cachedCard);
-                break;
+                continue;
             }
             // double faced cards have many images in them, we need to handle that
             if (card.image_uris === undefined && card.card_faces && card.card_faces.length > 0) {
