@@ -50,10 +50,9 @@ class ImageVkCache {
                 if (options && options.isTrade) {
                     return value.score === 0 && value.item.trade;
                 } else if (options && options.isArt) {
-                    console.log(value.item.art, value.score === 0 && value.item.art);
                     return value.score === 0 && value.item.art;
                 }
-                return value.score === 0;
+                return !value.item.trade && !value.item.art && value.score === 0;
             });
         return result[0];
     }
