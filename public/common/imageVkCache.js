@@ -1,4 +1,6 @@
-const Fuse = require('fuse.js');
+const CONSTANTS = require('../common/constants');
+const DBHelper = require('../common/db/DBHelper');
+
 
 /**
  *  Cache object is looking like this {photoObject:'vk photo object', cardObject:{id, name, set}, trade:'only present if this is a card price graph from MTGGOLDFISH {timeOfCreation}' }
@@ -7,56 +9,49 @@ const Fuse = require('fuse.js');
  */
 
 class ImageVkCache {
-    constructor() {
-        this._imageCache = [];
-        this.searchHelper = undefined;
-        this._initializeFuzeSearch();
-    }
 
-
-    _initializeFuzeSearch() {
-        const options = {
-            shouldSort: true,
-            includeScore: true,
-            threshold: 0.6,
-            location: 0,
-            distance: 100,
-            maxPatternLength: 32,
-            minMatchCharLength: 1,
-            keys: [
-                'tags',
-            ],
-        };
-        this.searchHelper = new Fuse(this._imageCache, options);
-    }
-
-
-    addCacheObject(photoObject, cardObject, options){
+    addCacheObject(photoObject, cardObject, options) {
         const searchObject = {
             photoObject,
             cardObject,
-            trade: options && options.isTrade ? Date.now() : undefined,
+            cacheDate: Date.now(),
+            trade: options && options.isTrade ? true : undefined,
             art: options && options.isArt ? true : undefined,
-            tags: [`${cardObject.id}`],
+            cardId: cardObject.id,
         };
-        this._imageCache.push(searchObject);
-        this._initializeFuzeSearch();
+        DBHelper.addItemDocumentToCollection(searchObject, CONSTANTS.DB_NAME_IMAGES)
+            .catch(reason => console.log(reason));
     }
 
 
-    getPhotoObj(cardId, options) {
-        const result = this.searchHelper.search(`${cardId}`)
-            .filter((value) => {
-                if (options && options.isTrade) {
-                    return value.score === 0 && value.item.trade;
-                } else if (options && options.isArt) {
-                    return value.score === 0 && value.item.art;
-                }
-                return !value.item.trade && !value.item.art && value.score === 0;
-            });
-        return result[0];
+    async getPhotoObj(cardId, options) {
+        const searchObject = { cardId };
+        if (options) {
+            if (options.isArt) {
+                searchObject.art = true;
+            }
+            if (options.isTrade) {
+                searchObject.trade = true;
+            }
+        }
+        let cachedImage = await DBHelper.getItemFromCollection(searchObject, CONSTANTS.DB_NAME_IMAGES);
+        if (!this.validateCacheEntry(cachedImage) && cachedImage && cachedImage.trade) {
+            this.removeEntryFromCache(cachedImage);
+            cachedImage = undefined;
+        }
+        return cachedImage;
     }
 
+
+    validateCacheEntry(cacheObject) {
+        return cacheObject && (Date.now() - cacheObject.cacheDate < CONSTANTS.CACHE_ENTRY_DURATION);
+    }
+
+    removeEntryFromCache(cacheObject) {
+        if (cacheObject) {
+            DBHelper.removeFromCollection(cacheObject, CONSTANTS.DB_NAME_IMAGES);
+        }
+    }
 
 }
 

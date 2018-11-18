@@ -1,6 +1,6 @@
 const request = require('request-promise-native');
 
-const CARD_CACHE = require('../../common/CardCache');
+const CARD_CACHE = require('../../common/cardCache');
 const STRINGS = require('../../common/strings');
 const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
@@ -19,7 +19,7 @@ async function getFoilPrices(parsedCardName, setCode) {
     if (!cardObject.foil && cardObject.digital !== undefined && !cardObject.digital) {
         return `${cardObject.printed_name ? cardObject.printed_name : cardObject.name} не имеет ${cardObject.digital ? 'физической' : ''} фойлы в ${cardObject.set_name} (ТEST COMMAND)`;
     } else {
-        let scgPriceObject = CARD_CACHE.getCardFromCache(cardObject, true);
+        let scgPriceObject = await CARD_CACHE.getCardFromCache(cardObject, true);
         if (scgPriceObject) {
             priceString = `${priceString} \n SCG: ${scgPriceObject.value}`;
         } else {

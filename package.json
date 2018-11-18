@@ -24,6 +24,7 @@
     "express": "^4.16.3",
     "franc": "^4.0.0",
     "fuse.js": "^3.3.0",
+    "mongodb": "^3.1.10",
     "node-vk-bot": "0.3.1",
     "phantom": "^6.0.3",
     "request": "^2.87.0",

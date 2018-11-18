@@ -43,7 +43,9 @@ const MTGGOLDFISH_PRICE_LINK = 'https://www.mtggoldfish.com/price/';
 const SCRY_API_LINK = "https://api.scryfall.com/cards/search?q=";
 const WIKI_LINK = "https://mtg.gamepedia.com/api.php";
 
-const CACHE_ENTRY_DURATION = 4320000;//Three days in milliseconds;
+const DB_NAME_PRICES = 'prices';
+const DB_NAME_IMAGES = 'images';
+const CACHE_ENTRY_DURATION = 1000*15;//Three days in milliseconds;
 
 module.exports = {
     TIMEOUT_CODE,
@@ -82,4 +84,6 @@ module.exports = {
     SCRY_API_LINK,
     WIKI_LINK,
     CACHE_ENTRY_DURATION,
+    DB_NAME_PRICES,
+    DB_NAME_IMAGES,
 };

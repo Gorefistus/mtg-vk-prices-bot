@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 
 const imageCache = require('../../common/imageVkCache');
-const CARD_CACHE = require('../../common/CardCache');
+const CARD_CACHE = require('../../common/cardCache');
 const STRINGS = require('../../common/strings');
 const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
@@ -23,7 +23,7 @@ async function getCardPrices(parsedCardName, setCode, bot) {
 
     let image;
     try {
-        const cachedImagePrice = imageCache.getPhotoObj(cardObject.id, { isTrade: true });
+        const cachedImagePrice = await imageCache.getPhotoObj(cardObject.id, { isTrade: true });
         if (!cachedImagePrice) {
             const instance = await phantom.create([], {
                 logLevel: 'error',
@@ -67,7 +67,13 @@ async function getCardPrices(parsedCardName, setCode, bot) {
     }
 
     // SCG PRICES SCRAPING START
-    let scgPriceObject = CARD_CACHE.getCardFromCache(cardObject, false);
+    let scgPriceObject;
+    try {
+        scgPriceObject = await CARD_CACHE.getCardFromCache(cardObject, false);
+
+    } catch (e) {
+        console.log(e);
+    }
 
     if (scgPriceObject) {
         priceString = `${priceString} \n SCG: ${scgPriceObject.value}`;
