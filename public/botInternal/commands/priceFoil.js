@@ -19,7 +19,12 @@ async function getFoilPrices(parsedCardName, setCode) {
     if (!cardObject.foil && cardObject.digital !== undefined && !cardObject.digital) {
         return `${cardObject.printed_name ? cardObject.printed_name : cardObject.name} не имеет ${cardObject.digital ? 'физической' : ''} фойлы в ${cardObject.set_name} (ТEST COMMAND)`;
     } else {
-        let scgPriceObject = await CARD_CACHE.getCardFromCache(cardObject, true);
+        let scgPriceObject;
+        try {
+            scgPriceObject = await CARD_CACHE.getCardFromCache(cardObject, true);
+        } catch (e) {
+            console.log(e);
+        }
         if (scgPriceObject) {
             priceString = `${priceString} \n SCG: ${scgPriceObject.value}`;
         } else {

@@ -7,7 +7,6 @@ const CONSTANTS = require('../../common/constants');
 const MISC = require('../../common/misc');
 
 
-
 async function runPromisesInSequence(bot, promises) {
     const resultsArray = [];
     for (const promise of promises) {
@@ -30,7 +29,12 @@ async function downloadAndPostCardImage(bot, cards, peerId) {
         // generating array of Promises for us to resolve, we need to wait for all of them to post a message
         for (const card of cards) {
             // double faced cards have many images in them, we need to handle that
-            const cachedCard = await imageCache.getPhotoObj(card.id);
+            let cachedCard;
+            try {
+                cachedCard = await imageCache.getPhotoObj(card.id);
+            } catch (e) {
+                console.log(e);
+            }
             if (cachedCard) {
                 cardFoundInCache.push(cachedCard);
                 continue;
