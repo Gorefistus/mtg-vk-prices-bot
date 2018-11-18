@@ -30,7 +30,7 @@ async function downloadAndPostCardImage(bot, cards, peerId) {
         // generating array of Promises for us to resolve, we need to wait for all of them to post a message
         for (const card of cards) {
             // double faced cards have many images in them, we need to handle that
-            const cachedCard = imageCache.getPhotoObj(card.id);
+            const cachedCard = await imageCache.getPhotoObj(card.id);
             if (cachedCard) {
                 cardFoundInCache.push(cachedCard);
                 continue;
