@@ -58,7 +58,7 @@ async function downloadAndPostCardImage(bot, cards, peerId) {
             let attachmentString = '';
             for (const cachedCard of cardFoundInCache) {
                 attachmentString =
-                    `${attachmentString}photo${cachedCard.item.photoObject.owner_id}_${cachedCard.item.photoObject.id},`;
+                    `${attachmentString}photo${cachedCard.photoObject.owner_id}_${cachedCard.photoObject.id},`;
             }
             for (const photoPromise of resolvedPhotoPromises) {
                 imageCache.addCacheObject(photoPromise.v, {
