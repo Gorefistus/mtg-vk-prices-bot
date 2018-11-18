@@ -45,7 +45,7 @@ const WIKI_LINK = "https://mtg.gamepedia.com/api.php";
 
 const DB_NAME_PRICES = 'prices';
 const DB_NAME_IMAGES = 'images';
-const CACHE_ENTRY_DURATION = 1000*15;//Three days in milliseconds;
+const CACHE_ENTRY_DURATION = 4320000;//Three days in milliseconds;
 
 module.exports = {
     TIMEOUT_CODE,
