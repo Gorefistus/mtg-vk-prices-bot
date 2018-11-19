@@ -10,10 +10,10 @@ class DBHelper {
 
     async initDbClinet() {
         // Connection URL
-        const url = process.env.DB_URL || 'DB URL GOES HERE';
+        const url = process.env.DB_URL || 'mongodb://bot:Qweasd123@ds047146.mlab.com:47146/heroku_wvf8h01b';
 
         // Database Name
-        const dbName = process.env.DB_NAME || 'DB NAME GOES HERE';
+        const dbName = process.env.DB_NAME || 'heroku_wvf8h01b';
         const dbClient = await MongoClient.connect(url);
         this.db = dbClient.db(dbName);
     }

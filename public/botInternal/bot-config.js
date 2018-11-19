@@ -15,6 +15,7 @@ const advancedSearchCommand = require('./commands/advanced-search');
 const announcmentCommand = require('./commands/announcment');
 const printingLanguagesCommand = require('./commands/printing-languages');
 const wikiCommand = require('./commands/wiki');
+const customCommand = require('./commands/custom-command');
 
 function addCommands(bot) {
     console.log('Commands addition started');
@@ -24,6 +25,7 @@ function addCommands(bot) {
     announcmentCommand(bot, stats);
     cardCommand(bot, stats);
     artCommand(bot, stats);
+    customCommand(bot, stats);
     helpmeCommand(bot, stats);
     legalityCommand(bot, stats);
     oracleCommand(bot, stats);

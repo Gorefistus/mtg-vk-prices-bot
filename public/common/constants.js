@@ -1,9 +1,9 @@
 const TIMEOUT_CODE = 'ETIMEDOUT';
 
-const BOT_PREFIX_SMALL = '!m';
+const BOT_PREFIX_SMALL = '!n';
 const BOT_PREFIX = '!mth';
 
-const BOT_PREFIX_ENDINGS = 'm|h';
+const BOT_PREFIX_ENDINGS = 'n|h';
 
 const LEGALITY_LEGAL = 'legal';
 const LEGALITY_NOT_LEGAL = 'not_legal';
@@ -49,7 +49,7 @@ const WIKI_LINK = "https://mtg.gamepedia.com/api.php";
 
 const DB_NAME_PRICES = 'prices';
 const DB_NAME_IMAGES = 'images';
-const CACHE_ENTRY_DURATION = 4320000;//Three days in milliseconds;
+const CACHE_ENTRY_DURATION = 1000 * 60 * 60 * 24 * 1; //One day in milliseconds;
 
 module.exports = {
     TIMEOUT_CODE,

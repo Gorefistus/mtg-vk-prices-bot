@@ -12,6 +12,8 @@ const ERR_PRICES_GENERAL = 'Невозможно найти цены, попро
 const ERR_VK_UPLOAD = 'Couldn\'t upload image to the VK';
 const ERR_NO_PRINTINGS = 'Было найдено 0 изданий этой карты по этому сету';
 const ERR_NO_WIKI_PAGE = 'Нет такой страницы на Wiki';
+const ERR_NOT_A_GROUP = 'Эта команда отключена для приватных бесед';
+const ERR_NOT_AN_ADMIN = 'Извините, данная команда доступна только администратору беседы';
 
 const LOG_FILE_DELETED = 'Card image file deleted';
 
@@ -101,6 +103,8 @@ module.exports = {
     ERR_VK_UPLOAD,
     ERR_NO_PRINTINGS,
     ERR_NO_WIKI_PAGE,
+    ERR_NOT_A_GROUP,
+    ERR_NOT_AN_ADMIN,
     PRICES_TOPDECK,
     CARDS_MATCH_CRITERIA,
 };

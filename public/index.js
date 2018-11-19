@@ -21,7 +21,7 @@ setInterval(() => {
 
 // __________________________________________________________
 const bot = new Bot({
-    token: process.env.VK_TOKEN || 'place your token here',
+    token: process.env.VK_TOKEN || 'cc31c8efab84bd7b2b714072de7692b9809d07e5313cb496630da7a74b7bb8a4954abd36083faa47270d6',
     prefix: new RegExp(`^${CONSTANTS.BOT_PREFIX}[\\s]|^${CONSTANTS.BOT_PREFIX_SMALL}[\\s]`, 'i'),
     prefixOnlyInChats: true,
     api: {
