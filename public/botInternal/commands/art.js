@@ -29,8 +29,12 @@ async function downloadAndPostCardImage(bot, cards, peerId) {
         let artistNames = cards.length > 1 ? 'Иллюстрации: ' : 'Иллюстрация: ';
         for (const card of cards) {
             artistNames = `${artistNames} ${card.artist};`;
-            const cachedCard = imageCache.getPhotoObj(card.id, { isArt: true });
-            console.log(cachedCard);
+            let cachedCard;
+            try {
+                cachedCard = await imageCache.getPhotoObj(card.id);
+            } catch (e) {
+                console.log(e);
+            }
             if (cachedCard) {
                 cardFoundInCache.push(cachedCard);
                 continue;
@@ -54,7 +58,7 @@ async function downloadAndPostCardImage(bot, cards, peerId) {
             let attachmentString = '';
             for (const cachedCard of cardFoundInCache) {
                 attachmentString =
-                    `${attachmentString}photo${cachedCard.item.photoObject.owner_id}_${cachedCard.item.photoObject.id},`;
+                    `${attachmentString}photo${cachedCard.photoObject.owner_id}_${cachedCard.photoObject.id},`;
             }
             for (const photoPromise of resolvedPhotoPromises) {
                 imageCache.addCacheObject(photoPromise.v, {
