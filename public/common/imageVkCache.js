@@ -25,15 +25,12 @@ class ImageVkCache {
 
 
     async getPhotoObj(cardId, options) {
-        const searchObject = { cardId };
-        if (options) {
-            if (options.isArt) {
-                searchObject.art = true;
-            }
-            if (options.isTrade) {
-                searchObject.trade = true;
-            }
-        }
+        const searchObject = {
+            cardId,
+            trade: options && options.isTrade ? true : undefined,
+            art: options && options.isArt ? true : undefined,
+        };
+
         let cachedImage = await DBHelper.getItemFromCollection(searchObject, CONSTANTS.DB_NAME_IMAGES);
         if (!this.validateCacheEntry(cachedImage) && cachedImage && cachedImage.trade) {
             this.removeEntryFromCache(cachedImage);
