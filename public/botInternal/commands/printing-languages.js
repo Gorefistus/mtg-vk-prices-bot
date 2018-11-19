@@ -7,11 +7,11 @@ const MISC = require('../../common/misc');
 
 function addPrintingLanguagesCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/([m|h][\s]printinglanguages[\s]|[m|h][\s]pl[\s])/i, (message) => {
+        bot.get(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]printinglanguages[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]pl[\\s])`, 'i'), (message) => {
             stats.track(message.user_id, { msg: message.body }, 'pl');
             bot.sendTyping(message);
-            let cardName = message.body.match(/([m|h][\s]printinglanguages[\s,]|[m|h][\s]pl[\s])(.*)/i)[2];
-            const setNameRegex = message.body.match(/([m|h][\s]printinglanguages[\s,]|[m|h][\s]pl[\s])(.*)\[(.{3,4})\]/i);
+            let cardName = message.body.match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]printinglanguages[\\s,]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]pl[\\s])(.*)`, 'i'))[2];
+            const setNameRegex = message.body.match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]printinglanguages[\\s,]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]pl[\\s])(.*)\\[(.{3,4})\\]`, 'i'));
             const setCode = setNameRegex !== null ? setNameRegex[3] : undefined;
             if (setCode) {
                 cardName = setNameRegex[2];

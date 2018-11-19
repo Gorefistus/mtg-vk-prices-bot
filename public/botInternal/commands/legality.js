@@ -5,12 +5,13 @@ const MISC = require('../../common/misc');
 
 function addLegalityCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/([m|h][\s]legality[\s]|[m|h][\s]l[\s])/i, (message) => {
+        bot.get(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]legality[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]l[\\s])`, 'i'), (message) => {
             stats.track(message.user_id, { msg: message.body }, 'l');
             bot.sendTyping(message);
-            const cardName = message.body.match(/([m|h][\s]legality[\s]|[m|h][\s]l[\s])(.*)/i)[2];
-            MISC.getMultiverseId(cardName).then((cardObject) => {
-                bot.send(`Легальность ${cardObject.printed_name ? cardObject.printed_name : cardObject.name} в форматах:\n 
+            const cardName = message.body.match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]legality[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]l[\\s])(.*)`, 'i'))[2];
+            MISC.getMultiverseId(cardName)
+                .then((cardObject) => {
+                    bot.send(`Легальность ${cardObject.printed_name ? cardObject.printed_name : cardObject.name} в форматах:\n 
         ${STRINGS.FORMAT_STANDARD}: ${MISC.getLegality(cardObject.legalities.standard)}
         ${STRINGS.FORMAT_MODERN}: ${MISC.getLegality(cardObject.legalities.modern)}
         ${STRINGS.FORMAT_LEGACY}: ${MISC.getLegality(cardObject.legalities.legacy)}
@@ -19,13 +20,13 @@ function addLegalityCommand(bot, stats) {
         ${STRINGS.FORMAT_COMMANDER}: ${MISC.getLegality(cardObject.legalities.commander)}
         ${STRINGS.FORMAT_MTGO_COMMANDER}: ${MISC.getLegality(cardObject.legalities['1v1'])}
         ${STRINGS.FORMAT_VINTAGE}: ${MISC.getLegality(cardObject.legalities.vintage)}`, message.peer_id);
-            }, (reason) => {
-                if (CONSTANTS.TIMEOUT_CODE === reason.error.code) {
-                    return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
-                }
-                const options = { forward_messages: message.id };
-                return bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
-            });
+                }, (reason) => {
+                    if (CONSTANTS.TIMEOUT_CODE === reason.error.code) {
+                        return bot.send(STRINGS.REQ_TIMEOUT, message.peer_id);
+                    }
+                    const options = { forward_messages: message.id };
+                    return bot.send(STRINGS.CARD_NOT_FOUND, message.peer_id, options);
+                });
         });
     } else {
         console.error(STRINGS.COMMAND_NOT_ADDED);

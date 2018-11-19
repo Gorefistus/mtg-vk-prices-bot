@@ -28,11 +28,11 @@ function sendResults(bot, message, values, page) {
 
 function addAdvancedSearchCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])/i, message => {
+        bot.get(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]advancedsearch[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]as[\\s])`, 'i') , message => {
             stats.track(message.user_id, { msg: message.body }, 'as');
             bot.sendTyping(message);
             //VK replaces quotes "" with &quot; characters, so we replace them back again
-            let searchQuery = message.body.match(/([m|h][\s]advancedsearch[\s]|[m|h][\s]as[\s])(.*)/i)[2].replace(new RegExp('&quot;', 'g'), '"')
+            let searchQuery = message.body.match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]advancedsearch[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]as[\\s])(.*)`, 'i'))[2].replace(new RegExp('&quot;', 'g'), '"')
                 .replace(new RegExp('&gt;', 'g'), '>')
                 .replace(new RegExp('&lt;', 'g'), '<');
             let page = 0;

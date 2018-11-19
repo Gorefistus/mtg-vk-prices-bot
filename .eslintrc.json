@@ -8,8 +8,8 @@
   },
   "rules": {
     "linebreak-style": [
-      1,
-      "windows"
+      0,
+      "unix"
     ],
     "no-underscore-dangle": [
       0
@@ -38,7 +38,7 @@
     ],
     "max-len": [
       1,
-      150
+      200
     ],
     "no-await-in-loop": [
       0

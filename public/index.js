@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const http = require('http');
 
+const CONSTANTS = require('./common/constants');
 const botStarter = require('./botInternal/bot-config');
 // THIS IS JUST NEEDED SO HEROKU WON"T STOPP OUR APPLICATION
 const app = express();
@@ -21,7 +22,7 @@ setInterval(() => {
 // __________________________________________________________
 const bot = new Bot({
     token: process.env.VK_TOKEN || 'place your token here',
-    prefix: /^!mth[\s,]|^!m[\s]/i,
+    prefix: new RegExp(`^${CONSTANTS.BOT_PREFIX}[\\s]|^${CONSTANTS.BOT_PREFIX_SMALL}[\\s]`, 'i'),
     prefixOnlyInChats: true,
     api: {
         v: 5.38, // must be >= 5.38
