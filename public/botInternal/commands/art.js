@@ -31,7 +31,7 @@ async function downloadAndPostCardImage(bot, cards, peerId) {
             artistNames = `${artistNames} ${card.artist};`;
             let cachedCard;
             try {
-                cachedCard = await imageCache.getPhotoObj(card.id);
+                cachedCard = await imageCache.getPhotoObj(card.id, {isArt: true});
             } catch (e) {
                 console.log(e);
             }
