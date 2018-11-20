@@ -1,9 +1,9 @@
 const TIMEOUT_CODE = 'ETIMEDOUT';
 
-const BOT_PREFIX_SMALL = '!n';
+const BOT_PREFIX_SMALL = '!m';
 const BOT_PREFIX = '!mth';
 
-const BOT_PREFIX_ENDINGS = 'n|h';
+const BOT_PREFIX_ENDINGS = 'm|h';
 
 const LEGALITY_LEGAL = 'legal';
 const LEGALITY_NOT_LEGAL = 'not_legal';
