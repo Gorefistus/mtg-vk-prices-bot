@@ -31,7 +31,7 @@ async function downloadAndPostCardImage(bot, cards, peerId) {
             artistNames = `${artistNames} ${card.artist};`;
             let cachedCard;
             try {
-                cachedCard = await imageCache.getPhotoObj(card.id, {isArt: true});
+                cachedCard = await imageCache.getPhotoObj(card.id, { isArt: true });
             } catch (e) {
                 console.log(e);
             }
@@ -92,10 +92,10 @@ async function downloadAndPostCardImage(bot, cards, peerId) {
 
 function addArtCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/[m|h][\s]art[\s]|[m|h][\s]a[\s]/i, (message) => {
+        bot.get(new RegExp(`[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]art[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]a[\\s]`, 'i'), (message) => {
             stats.track(message.user_id, { msg: message.body }, 'a');
             bot.sendTyping(message);
-            const cardNames = message.body.match(/([m|h][\s]art[\s]|[m|h][\s]a[\s])(.*)/i)[2];
+            const cardNames = message.body.match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]art[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]a[\\s])(.*)`, 'i'))[2];
             const splittedCardNames = cardNames.split(';');
             // make it no more than 10 cards
 

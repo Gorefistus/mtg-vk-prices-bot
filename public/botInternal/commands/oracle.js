@@ -4,10 +4,10 @@ const MISC = require('../../common/misc');
 
 function addOracleCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(/([m|h][\s]oracle[\s]|[m|h][\s]o[\s])/i, (message) => {
+        bot.get(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]oracle[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]o[\\s])`, 'i'), (message) => {
             stats.track(message.user_id, { msg: message.body }, 'o');
             bot.sendTyping(message);
-            const cardName = message.body.match(/([m|h][\s]oracle[\s,]|[m|h][\s]o[\s])(.*)/i)[2];
+            const cardName = message.body.match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]oracle[\\s,]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]o[\\s])(.*)`, 'i'))[2];
             MISC.getMultiverseId(cardName)
                 .then((value) => {
                     let oracleText = '';

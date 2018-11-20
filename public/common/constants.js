@@ -1,5 +1,9 @@
 const TIMEOUT_CODE = 'ETIMEDOUT';
 
+const BOT_PREFIX_SMALL = '!m';
+const BOT_PREFIX = '!mth';
+
+const BOT_PREFIX_ENDINGS = 'm|h';
 
 const LEGALITY_LEGAL = 'legal';
 const LEGALITY_NOT_LEGAL = 'not_legal';
@@ -86,4 +90,7 @@ module.exports = {
     CACHE_ENTRY_DURATION,
     DB_NAME_PRICES,
     DB_NAME_IMAGES,
+    BOT_PREFIX_SMALL,
+    BOT_PREFIX,
+    BOT_PREFIX_ENDINGS,
 };
