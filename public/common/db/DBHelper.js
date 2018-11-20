@@ -48,6 +48,31 @@ class DBHelper {
         }
     }
 
+    async updateItemInCollection(searchParams, updatedFields, collectionName) {
+        try {
+            await this.db.collection(collectionName)
+                .findOneAndUpdate(searchParams, { $set: updatedFields });
+            return true;
+        } catch (e) {
+            console.log(e);
+            return false;
+        }
+    }
+
+
+    async getAllItemsFromCollection(collectionName) {
+        try {
+            const items = await this.db.collection(collectionName)
+                .find({})
+                .toArray();
+            console.log(items);
+            return items;
+        } catch (e) {
+            console.log(e);
+            return undefined;
+        }
+    }
+
 }
 
 

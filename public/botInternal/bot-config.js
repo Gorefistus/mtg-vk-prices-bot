@@ -1,6 +1,8 @@
 const stats = require('bot-metrica')(process.env.YA_TOKEN || 'place your ya metrika token here');
 
 const STRINGS = require('../common/strings');
+
+const notificationsCommand = require('./commands/notifications');
 const cardCommand = require('./commands/card');
 const artCommand = require('./commands/art');
 const helpmeCommand = require('./commands/help-me');
@@ -32,6 +34,7 @@ function addCommands(bot) {
     printingsCommand(bot, stats);
     advancedSearchCommand(bot, stats);
     printingLanguagesCommand(bot, stats);
+    notificationsCommand(bot, stats);
     wikiCommand(bot, stats);
     helpCommand(bot, stats);
     miscCommand(bot, stats);
