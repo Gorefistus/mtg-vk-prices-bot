@@ -30,7 +30,7 @@ function addNotificationsCommand(bot, stats) {
                 const group = await SpoilerCache.getMailingGroup(message.peer_id);
                 if (group) {
                     SpoilerCache.updateMailingGroupStatus(message.peer_id, !group.mailing);
-                    return bot.send(`${STRINGS.NOTIFICATIONS_GENERAL}${group.mailing ? `${STRINGS.NOTIFICATIONS_ENABLED}` : `${STRINGS.NOTIFICATIONS_DISABLED}`}`, message.peer_id);
+                    return bot.send(`${STRINGS.NOTIFICATIONS_GENERAL}${!group.mailing ? `${STRINGS.NOTIFICATIONS_ENABLED}` : `${STRINGS.NOTIFICATIONS_DISABLED}`}`, message.peer_id);
                 }
                 SpoilerCache.addGroupToSpoilersMailing(message.peer_id);
                 return bot.send(`${STRINGS.NOTIFICATIONS_GENERAL}${STRINGS.NOTIFICATIONS_ENABLED}`, message.peer_id);
