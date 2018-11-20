@@ -25,7 +25,7 @@ function triggerAnnouncment(bot) {
             const mailingGroups = (await SpoilerCache.getAllMailingGroups()).filter(elem => (elem.mailing));
             const newCardsLength = spoilers.total_cards - spoilerCount;
             const newSpoilers = spoilers.data.filter((elem, index) => {
-                return index + 1 <= newCardsLength;
+                return index + 1 <= newCardsLength && index < 10;
             });
             let sendText = 'Новые спойлеры: \n';
             for (const newSpoiler of newSpoilers) {
@@ -35,6 +35,7 @@ function triggerAnnouncment(bot) {
             for (const newSpoiler of newSpoilers) {
                 sendText = `${sendText} ${newSpoiler.image_uris.normal} \n`;
             }
+            sendText = `${sendText} \n Эти уведомления администратор беседы командой !m notifications`;
             mailingGroups.forEach(async (group, index) => {
                 setTimeout(() => {
                     bot.send(sendText, group.groupId)

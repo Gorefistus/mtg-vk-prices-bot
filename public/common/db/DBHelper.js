@@ -65,7 +65,6 @@ class DBHelper {
             const items = await this.db.collection(collectionName)
                 .find({})
                 .toArray();
-            console.log(items);
             return items;
         } catch (e) {
             console.log(e);
