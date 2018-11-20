@@ -59,7 +59,7 @@ async function getCardPrices(parsedCardName, setCode, bot) {
                 console.log(STRINGS.LOG_FILE_DELETED);
             });
         } else {
-            image = cachedImagePrice.item.photoObject;
+            image = cachedImagePrice.photoObject;
         }
 
     } catch (e) {
