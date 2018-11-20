@@ -35,13 +35,14 @@ function triggerAnnouncment(bot) {
             for (const newSpoiler of newSpoilers) {
                 sendText = `${sendText} ${newSpoiler.image_uris.normal} \n`;
             }
-            sendText = `${sendText} \n Эти уведомления администратор беседы командой !m notifications`;
+            sendText = `${sendText} \n Эти уведомления администратор беседы может отключить командой !m notifications`;
             mailingGroups.forEach(async (group, index) => {
                 setTimeout(() => {
                     bot.send(sendText, group.groupId)
                         .catch(reason => console.log(reason));
                 }, 1000 * (index + 1));
             });
+            spoilerCount = spoilers.total_cards;
         } else {
             //do nothing
 
