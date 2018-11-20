@@ -47,7 +47,7 @@ function triggerAnnouncment(bot) {
             //do nothing
 
         }
-    }, 1000 * 60);
+    }, 1000 * 60 * 5);
 }
 
 
