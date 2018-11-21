@@ -35,7 +35,7 @@ function triggerAnnouncment(bot) {
             for (const newSpoiler of newSpoilers) {
                 sendText = `${sendText} ${newSpoiler.image_uris.normal} \n`;
             }
-            sendText = `${sendText} \n Эти уведомления администратор беседы может отключить командой !m notifications`;
+            sendText = `${sendText} \n  Эти уведомления администратор беседы может отключить командой !m notifications`;
             mailingGroups.forEach(async (group, index) => {
                 setTimeout(() => {
                     bot.send(sendText, group.groupId)
@@ -55,7 +55,7 @@ function startMailingSpoilers(bot) {
     if (bot && typeof bot.get === 'function') {
         const regex = new RegExp(`[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]globalann`, 'i');
         bot.get(regex, async (message) => {
-            const sendText = 'Ваша группы была случайна выбрана для тестирования новой функции нотификаций, в ваш чат будут приходить спойлеры нового сета UMA. Если возникли какие либо проблемы, просьба оставлять отзыв в группе VK: https://vk.com/mtgbot \n Эти нотификации могут быть выключены/включены создателем или администратором беседы командой !m notifications';
+            const sendText = 'Полный спойлер: \n https://magic.wizards.com/en/articles/archive/card-image-gallery/ultimate-masters-2018-11-19?a';
             const mailingGroups = (await SpoilerCache.getAllMailingGroups()).filter(elem => (elem.mailing));
             mailingGroups.forEach(async (group, index) => {
                 setTimeout(() => {
