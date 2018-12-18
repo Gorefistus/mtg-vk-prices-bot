@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
   "scripts": {
     "start": "node public/index.js",
     "dev": "node node_modules/nodemon/bin/nodemon.js public/index.js",
