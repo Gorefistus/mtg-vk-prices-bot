@@ -18,6 +18,7 @@ function addNotificationsCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
         const regex = new RegExp(`[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]notifications|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]n`, 'i');
         bot.get(regex, async (message) => {
+            stats.track(message.user_id, { msg: message.body }, 'n');
             const admins = (await bot.api('messages.getConversationMembers', { peer_id: message.peer_id }))
                 .items
                 .filter(member => (

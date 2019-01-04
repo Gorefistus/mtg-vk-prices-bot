@@ -16,6 +16,7 @@ const printingsCommand = require('./commands/printings');
 const advancedSearchCommand = require('./commands/advanced-search');
 const announcmentCommand = require('./commands/announcment');
 const printingLanguagesCommand = require('./commands/printing-languages');
+const auctionsCommand = require('./commands/auctions');
 const wikiCommand = require('./commands/wiki');
 
 function addCommands(bot) {
@@ -31,6 +32,7 @@ function addCommands(bot) {
     oracleCommand(bot, stats);
     priceCommand(bot, stats);
     priceFoilCommand(bot, stats);
+    auctionsCommand(bot, stats);
     printingsCommand(bot, stats);
     advancedSearchCommand(bot, stats);
     printingLanguagesCommand(bot, stats);

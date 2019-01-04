@@ -5,8 +5,9 @@ const NAME_SHORT_ERR = 'Имя карты слишком короткое!';
 const NO_DATA = 'Нет информации!';
 const PRICE_ERROR = 'Ошибка поиска цены';
 const WIKI_PAGE_LINK = 'Wiki ссылка:';
-const PRICES_TOPDECK = 'TopDeck(неизвестное издание)';
+const PRICES_TOPDECK = 'TopDeck (неизвестное издание)';
 const CARDS_MATCH_CRITERIA = 'Эти карты подходят под критерии поиска ';
+const AUCTIONS_MATCH_CRITERIA = 'Текущие аукционы подходящие под критерии поиска: ';
 
 const NOTIFICATIONS_GENERAL = 'Нотификации: ';
 const NOTIFICATIONS_ENABLED = 'включены';
@@ -18,6 +19,8 @@ const ERR_NO_PRINTINGS = 'Было найдено 0 изданий этой ка
 const ERR_NO_WIKI_PAGE = 'Нет такой страницы на Wiki';
 const ERR_NOT_A_GROUP = 'Эта команда отключена для приватных бесед';
 const ERR_NOT_AN_ADMIN = 'Извините, данная команда доступна только администратору беседы';
+const ERR_QUERY_IS_TOO_SMALL = 'Длина запроса должна быть больше 3 символов';
+const ERR_AUCTIONS_NOT_FOUND = 'Не найдено аукционов по этому запросу';
 
 
 const LOG_FILE_DELETED = 'Card image file deleted';
@@ -110,8 +113,11 @@ module.exports = {
     ERR_NO_WIKI_PAGE,
     ERR_NOT_A_GROUP,
     ERR_NOT_AN_ADMIN,
+    ERR_QUERY_IS_TOO_SMALL,
+    ERR_AUCTIONS_NOT_FOUND,
     PRICES_TOPDECK,
     CARDS_MATCH_CRITERIA,
+    AUCTIONS_MATCH_CRITERIA,
     NOTIFICATIONS_GENERAL,
     NOTIFICATIONS_ENABLED,
     NOTIFICATIONS_DISABLED,
