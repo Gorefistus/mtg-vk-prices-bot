@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
   "scripts": {
     "start": "node public/index.js",
     "dev": "node node_modules/nodemon/bin/nodemon.js public/index.js",
@@ -21,21 +25,21 @@
   "dependencies": {
     "bot-metrica": "^1.0.2",
     "cheerio": "^1.0.0-rc.2",
-    "express": "^4.16.3",
+    "express": "^4.16.4",
     "franc": "^4.0.0",
     "fuse.js": "^3.3.0",
     "mongodb": "^3.1.10",
     "node-vk-bot": "0.3.1",
     "phantom": "^6.0.3",
-    "request": "^2.87.0",
+    "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
     "scryfall-sdk": "1.2.0",
-    "wikijs": "^4.10.0"
+    "wikijs": "^4.10.2"
   },
   "devDependencies": {
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.12.0",
-    "nodemon": "^1.18.6"
+    "eslint": "^5.10.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "nodemon": "^1.18.9"
   }
 }

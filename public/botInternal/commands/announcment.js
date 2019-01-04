@@ -2,12 +2,12 @@ const CONSTANTS = require('../../common/constants');
 const SpoilerCache = require('../../common/spoiler');
 const request = require('request-promise-native');
 
-let spoilerCount = 74;
+let spoilerCount = 11;
 
 
 async function checkNewSpoilers() {
     try {
-        const spoilers = JSON.parse(await request('https://api.scryfall.com/cards/search?order=spoiled&q=e%3Auma&unique=prints'));
+        const spoilers = JSON.parse(await request('https://api.scryfall.com/cards/search?order=spoiled&q=e%3Arna&unique=prints'));
         if (spoilers.total_cards > spoilerCount) {
             return spoilers;
         }
@@ -55,7 +55,7 @@ function startMailingSpoilers(bot) {
     if (bot && typeof bot.get === 'function') {
         const regex = new RegExp(`[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]globalann`, 'i');
         bot.get(regex, async (message) => {
-            const sendText = 'Полный спойлер: \n https://magic.wizards.com/en/articles/archive/card-image-gallery/ultimate-masters-2018-11-19?a';
+            const sendText = '`Tis spoiler season again. \n Ваша группа подписана на получение уведомлений, а это значит что Вы будете получать спойлеры нового сета Ravnica Allegiance, спойлеры берутся с сайта ScryFall.com, поэтому могут быть немного медленными. Интересного сезона спойлеров вам \n Эти оповещения могут быть выключены администратором беседы командой !m notifications';
             const mailingGroups = (await SpoilerCache.getAllMailingGroups()).filter(elem => (elem.mailing));
             mailingGroups.forEach(async (group, index) => {
                 setTimeout(() => {
@@ -73,7 +73,7 @@ function addAnnouncmentCommand(bot) {
     if (bot && typeof bot.get === 'function') {
         startMailingSpoilers(bot);
         const regex = new RegExp(`[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]announcment|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]an`, 'i');
-        request('https://api.scryfall.com/cards/search?order=spoiled&q=e%3Auma&unique=prints')
+        request('https://api.scryfall.com/cards/search?order=spoiled&q=e%3Arna&unique=prints')
             .then((value) => {
                 const parsedValue = JSON.parse(value);
                 spoilerCount = parsedValue.total_cards;
