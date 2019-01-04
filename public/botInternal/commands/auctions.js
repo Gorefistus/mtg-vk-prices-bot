@@ -16,7 +16,7 @@ function addAuctionsCommand(bot, stats) {
             stats.track(message.user_id, { msg: message.body }, 'ac');
             bot.sendTyping(message);
             const paramsFromMessage = message.body.trim()
-                .match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]auctions[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]ac)(.*)`, 'i'))[2];
+                .match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]auctions|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]ac)(.*)`, 'i'))[2];
             if (paramsFromMessage && paramsFromMessage.length < 3) {
                 return bot.send(STRINGS.ERR_QUERY_IS_TOO_SMALL, message.peer_id);
             }
