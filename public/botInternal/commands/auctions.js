@@ -20,6 +20,10 @@ function addAuctionsCommand(bot, stats) {
             if (paramsFromMessage && paramsFromMessage.length < 3) {
                 return bot.send(STRINGS.ERR_QUERY_IS_TOO_SMALL, message.peer_id);
             }
+            let stringToReturn = `${STRINGS.AUCTIONS_MATCH_CRITERIA}`;
+
+
+            // TopDeck current auctions prices GET
             try {
                 const topDeckAuctionPrices = await request({
                     method: 'GET',
@@ -56,18 +60,33 @@ function addAuctionsCommand(bot, stats) {
                     }
                 }
                 if (filteredResults.length === 0) {
-                    return bot.send(STRINGS.ERR_AUCTIONS_NOT_FOUND, message.peer_id);
                 } else {
-                    console.log(filteredResults);
-                    let stringToReturn = `${STRINGS.AUCTIONS_MATCH_CRITERIA}`;
                     filteredResults.forEach((res) => {
-                        stringToReturn = `${stringToReturn} \n\n Лот: ${res.lot} | Текущая ставка: ${res.current_bid} | Дата окончания: ${res.date_estimated_conv} | Автор: ${res.seller.name} | Кол-во отзывов: ${res.seller.refs}`;
+                        stringToReturn = `${stringToReturn} \n Лот: ${res.lot} | Текущая ставка: ${res.current_bid} | Дата окончания: ${res.date_estimated_conv} | Автор: ${res.seller.name} | Кол-во отзывов: ${res.seller.refs}`;
                     });
-                    return bot.send(stringToReturn, message.peer_id);
                 }
             } catch (e) {
                 console.error('TOPDECK REQUEST ERROR\n', e);
             }
+
+            try {
+                let auctionsLink = CONSTANTS.TOPDECK_AUCTIONS_FINISHED_LINK;
+                if (paramsFromMessage) {
+                    auctionsLink = `${CONSTANTS.TOPDECK_AUCTIONS_FINISHED_SEARCH_LINK}${encodeURIComponent(paramsFromMessage)}`;
+                }
+                const topDeckPage = await request(auctionsLink);
+                const auctionsArray = MISC.getTopdeckEndedAuctionsArray(topDeckPage);
+                if (auctionsArray.length > 0) {
+                    stringToReturn = `${stringToReturn} \n\n ${STRINGS.AUCTIONS_ENDED_MATCH_CRITERIA}: `;
+                    auctionsArray.forEach(auc => {
+                        stringToReturn = `${stringToReturn} \n Лот: ${auc.lot} |  Финальная ставка: ${auc.current_bid} | Дата окончания: ${auc.date_estimated_conv}`;
+                    });
+                }
+            } catch (e) {
+                console.error('TOPDECK REQUEST ERROR\n', e);
+            }
+
+            return bot.send(stringToReturn, message.peer_id);
         });
     } else {
         console.error(STRINGS.COMMAND_NOT_ADDED);

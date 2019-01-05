@@ -255,6 +255,40 @@ function getStarCityPrice(htmlString, cardObject = undefined, isFoil = false) {
     return SCGCard;
 }
 
+
+function getTopdeckEndedAuctionsArray(htmlString) {
+    const htmlPage = cheerio.load(htmlString);
+    const auctionsArray = [];
+    htmlPage('tbody tr')
+        .each(function (i) {
+            if (auctionsArray.length < 5) {
+                auctionsArray.push({});
+            }
+            htmlPage(this)
+                .children('td')
+                .each(function (j) {
+                    if (i < 5) {
+                        const aucObj = auctionsArray[i];
+                        if (j === 0) {
+                            aucObj.lot = htmlPage(this)
+                                .text()
+                                .trim();
+                        } else if (j === 1) {
+                            aucObj.current_bid = htmlPage(this)
+                                .text()
+                                .trim();
+                        } else if (j === 4) {
+                            aucObj.date_estimated_conv = htmlPage(this)
+                                .text()
+                                .trim();
+                        }
+                    }
+                });
+        });
+    return auctionsArray;
+}
+
+
 function checkAgainstSCGDict(setName, isFoil = false) {
     let setNameToReturn = setName;
     SCGDict.forEach((scgDictItem) => {
@@ -268,14 +302,14 @@ function checkAgainstSCGDict(setName, isFoil = false) {
 
 
 function escapeRegExp(str) {
-    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
 }
 
 function replaceAll(str, find, replace) {
     return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }
 
-function removeAllSymbols(str, arrSymbolsToRemove){
+function removeAllSymbols(str, arrSymbolsToRemove) {
     let finalStr = str;
     if (str && arrSymbolsToRemove && Array.isArray(arrSymbolsToRemove)) {
         arrSymbolsToRemove.forEach((symbol) => {
@@ -292,6 +326,7 @@ module.exports = {
     promiseReflect,
     delay,
     getStarCityPrice,
+    getTopdeckEndedAuctionsArray,
     getLanguageByLangCode,
     removeAllSymbols,
     replaceAll,

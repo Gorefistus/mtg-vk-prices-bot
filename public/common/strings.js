@@ -7,7 +7,8 @@ const PRICE_ERROR = 'Ошибка поиска цены';
 const WIKI_PAGE_LINK = 'Wiki ссылка:';
 const PRICES_TOPDECK = 'TopDeck (неизвестное издание)';
 const CARDS_MATCH_CRITERIA = 'Эти карты подходят под критерии поиска ';
-const AUCTIONS_MATCH_CRITERIA = 'Текущие аукционы подходящие под критерии поиска: ';
+const AUCTIONS_MATCH_CRITERIA = 'ТЕКУЩИЕ аукционы подходящие под критерии поиска: ';
+const AUCTIONS_ENDED_MATCH_CRITERIA = 'ЗАВЕРШЕННЫЕ аукционы подходящие под критерии поиска: '
 
 const NOTIFICATIONS_GENERAL = 'Нотификации: ';
 const NOTIFICATIONS_ENABLED = 'включены';
@@ -118,6 +119,7 @@ module.exports = {
     PRICES_TOPDECK,
     CARDS_MATCH_CRITERIA,
     AUCTIONS_MATCH_CRITERIA,
+    AUCTIONS_ENDED_MATCH_CRITERIA,
     NOTIFICATIONS_GENERAL,
     NOTIFICATIONS_ENABLED,
     NOTIFICATIONS_DISABLED,
