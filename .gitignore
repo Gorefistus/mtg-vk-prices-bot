@@ -62,4 +62,3 @@ typings/
 .idea/
 
 #credentials file for testing
-creds.json
