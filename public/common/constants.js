@@ -56,6 +56,8 @@ const DB_NAME_SPOILERS = 'spoilers';
 
 const CACHE_ENTRY_DURATION = 1000 * 60 * 60 * 24;//Three days in milliseconds;
 
+const MOMENT_AUCTIONS_FORMAT ='Do MMM YYYY';
+
 module.exports = {
     TIMEOUT_CODE,
     LEGALITY_BANNED,
@@ -102,4 +104,5 @@ module.exports = {
     BOT_PREFIX_SMALL,
     BOT_PREFIX,
     BOT_PREFIX_ENDINGS,
+    MOMENT_AUCTIONS_FORMAT,
 };

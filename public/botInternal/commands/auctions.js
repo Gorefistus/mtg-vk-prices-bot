@@ -63,7 +63,7 @@ function addAuctionsCommand(bot, stats) {
                     stringToReturn = `${STRINGS.AUCTIONS_MATCH_CRITERIA}`;
                     filteredResults.forEach((res) => {
                         stringToReturn = `${stringToReturn} \n Лот: ${res.lot} | Текущая ставка: ${res.current_bid} | Дата окончания: ${moment.unix(res.date_estimated)
-                            .format('Do MMM YY')}`;
+                            .format(CONSTANTS.MOMENT_AUCTIONS_FORMAT)}`;
                     });
                 }
             } catch (e) {
@@ -83,7 +83,7 @@ function addAuctionsCommand(bot, stats) {
                         stringToReturn = `${stringToReturn} \n\n ${STRINGS.AUCTIONS_ENDED_MATCH_CRITERIA}: `;
                         topDeckAuctionPrices.auctions.forEach((auc, index) => {
                             if (index < 5) {
-                                stringToReturn = `${stringToReturn} \n Лот: ${auc.lot} |  Финальная ставка: ${auc.winning_bid} | Дата окончания: ${moment.unix(auc.date_ended).format('Do MMM YY')} `;
+                                stringToReturn = `${stringToReturn} \n Лот: ${auc.lot} |  Финальная ставка: ${auc.winning_bid} | Дата окончания: ${moment.unix(auc.date_ended).format(CONSTANTS.MOMENT_AUCTIONS_FORMAT)} `;
                             }
                         });
                     }
