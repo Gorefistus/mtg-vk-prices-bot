@@ -1,4 +1,7 @@
-const stats = require('bot-metrica')(process.env.YA_TOKEN || 'place your ya metrika token here');
+const creds = require('../../creds');
+
+
+const stats = require('bot-metrica')(process.env.YA_TOKEN || creds.yandexToken || 'place your ya metrika token here');
 
 const STRINGS = require('../common/strings');
 

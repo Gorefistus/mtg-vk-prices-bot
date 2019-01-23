@@ -44,7 +44,7 @@ const STAR_CITY_PRICE_LINK = 'http://www.starcitygames.com/results?name=';
 const TOPDECK_PRICE_LINK = 'https://topdeck.ru/apps/toptrade/api-v1/singles/search?q=';
 const TOPDECK_AUCTIONS_LINK = 'https://topdeck.ru/apps/toptrade/api-v1/auctions';
 const TOPDECK_AUCTIONS_FINISHED_LINK = 'https://topdeck.ru/apps/toptrade/auctions/finished';
-const TOPDECK_AUCTIONS_FINISHED_SEARCH_LINK = 'https://topdeck.ru/apps/toptrade/auctions/search?q=';
+const TOPDECK_AUCTIONS_FINISHED_SEARCH_LINK = 'https://topdeck.ru/apps/toptrade/api-v1/auctions/search?q=';
 const MTGGOLDFISH_PRICE_LINK = 'https://www.mtggoldfish.com/price/';
 
 const SCRY_API_LINK = 'https://api.scryfall.com/cards/search?q=';

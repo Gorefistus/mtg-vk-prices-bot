@@ -1,3 +1,5 @@
+const creds = require('../../../creds');
+
 const MongoClient = require('mongodb').MongoClient;
 
 
@@ -10,10 +12,10 @@ class DBHelper {
 
     async initDbClinet() {
         // Connection URL
-        const url = process.env.DB_URL || 'DB URL GOES HERE';
+        const url = process.env.DB_URL || creds.dbUrl || 'DB URL GOES HERE';
 
         // Database Name
-        const dbName = process.env.DB_NAME || 'DB NAME GOES HERE';
+        const dbName = process.env.DB_NAME || creds.dbName || 'DB NAME GOES HERE';
         const dbClient = await MongoClient.connect(url);
         this.db = dbClient.db(dbName);
     }

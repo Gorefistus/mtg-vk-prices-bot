@@ -1,5 +1,6 @@
 const request = require('request-promise-native');
-
+const moment = require('moment');
+moment.locale('ru');
 
 const imageCache = require('../../common/imageVkCache');
 const CARD_CACHE = require('../../common/cardCache');
@@ -16,12 +17,11 @@ function addAuctionsCommand(bot, stats) {
             stats.track(message.user_id, { msg: message.body }, 'ac');
             bot.sendTyping(message);
             const paramsFromMessage = message.body.trim()
-                .match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]auctions|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]ac)(.*)`, 'i'))[2];
+                .match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]auctions|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]ac)(.*)`, 'i'))[2].trim();
             if (paramsFromMessage && paramsFromMessage.length < 3) {
                 return bot.send(STRINGS.ERR_QUERY_IS_TOO_SMALL, message.peer_id);
             }
-            let stringToReturn = `${STRINGS.AUCTIONS_MATCH_CRITERIA}`;
-
+            let stringToReturn = '';
 
             // TopDeck current auctions prices GET
             try {
@@ -59,10 +59,11 @@ function addAuctionsCommand(bot, stats) {
                         }
                     }
                 }
-                if (filteredResults.length === 0) {
-                } else {
+                if (filteredResults.length > 0) {
+                    stringToReturn = `${STRINGS.AUCTIONS_MATCH_CRITERIA}`;
                     filteredResults.forEach((res) => {
-                        stringToReturn = `${stringToReturn} \n Лот: ${res.lot} | Текущая ставка: ${res.current_bid} | Дата окончания: ${res.date_estimated_conv} | Автор: ${res.seller.name} | Кол-во отзывов: ${res.seller.refs}`;
+                        stringToReturn = `${stringToReturn} \n Лот: ${res.lot} | Текущая ставка: ${res.current_bid} | Дата окончания: ${moment.unix(res.date_estimated)
+                            .format('Do MMM YY')}`;
                     });
                 }
             } catch (e) {
@@ -70,17 +71,22 @@ function addAuctionsCommand(bot, stats) {
             }
 
             try {
-                let auctionsLink = CONSTANTS.TOPDECK_AUCTIONS_FINISHED_LINK;
                 if (paramsFromMessage) {
-                    auctionsLink = `${CONSTANTS.TOPDECK_AUCTIONS_FINISHED_SEARCH_LINK}${encodeURIComponent(paramsFromMessage)}`;
-                }
-                const topDeckPage = await request(auctionsLink);
-                const auctionsArray = MISC.getTopdeckEndedAuctionsArray(topDeckPage);
-                if (auctionsArray.length > 0) {
-                    stringToReturn = `${stringToReturn} \n\n ${STRINGS.AUCTIONS_ENDED_MATCH_CRITERIA}: `;
-                    auctionsArray.forEach(auc => {
-                        stringToReturn = `${stringToReturn} \n Лот: ${auc.lot} |  Финальная ставка: ${auc.current_bid} | Дата окончания: ${auc.date_estimated_conv}`;
+                    const auctionsLink = `${CONSTANTS.TOPDECK_AUCTIONS_FINISHED_SEARCH_LINK}${encodeURIComponent(paramsFromMessage)}`;
+                    const topDeckAuctionPrices = await request({
+                        method: 'GET',
+                        uri: auctionsLink,
+                        ecdhCurve: 'auto',
+                        json: true,
                     });
+                    if (topDeckAuctionPrices.auctions.length > 0) {
+                        stringToReturn = `${stringToReturn} \n\n ${STRINGS.AUCTIONS_ENDED_MATCH_CRITERIA}: `;
+                        topDeckAuctionPrices.auctions.forEach((auc, index) => {
+                            if (index < 5) {
+                                stringToReturn = `${stringToReturn} \n Лот: ${auc.lot} |  Финальная ставка: ${auc.winning_bid} | Дата окончания: ${moment.unix(auc.date_ended).format('Do MMM YY')} `;
+                            }
+                        });
+                    }
                 }
             } catch (e) {
                 console.error('TOPDECK REQUEST ERROR\n', e);

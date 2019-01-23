@@ -8,7 +8,7 @@ const WIKI_PAGE_LINK = 'Wiki ссылка:';
 const PRICES_TOPDECK = 'TopDeck (неизвестное издание)';
 const CARDS_MATCH_CRITERIA = 'Эти карты подходят под критерии поиска ';
 const AUCTIONS_MATCH_CRITERIA = 'ТЕКУЩИЕ аукционы подходящие под критерии поиска: ';
-const AUCTIONS_ENDED_MATCH_CRITERIA = 'ЗАВЕРШЕННЫЕ аукционы подходящие под критерии поиска: '
+const AUCTIONS_ENDED_MATCH_CRITERIA = 'ЗАВЕРШЕННЫЕ аукционы подходящие под критерии поиска: ';
 
 const NOTIFICATIONS_GENERAL = 'Нотификации: ';
 const NOTIFICATIONS_ENABLED = 'включены';

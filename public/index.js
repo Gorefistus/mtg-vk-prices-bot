@@ -2,6 +2,7 @@ const { Bot } = require('node-vk-bot');
 const path = require('path');
 const express = require('express');
 const http = require('http');
+const creds = require('../creds.json');
 
 const CONSTANTS = require('./common/constants');
 const botStarter = require('./botInternal/bot-config');
@@ -21,7 +22,7 @@ setInterval(() => {
 
 // __________________________________________________________
 const bot = new Bot({
-    token: process.env.VK_TOKEN || 'place your token here',
+    token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
     prefix: new RegExp(`^${CONSTANTS.BOT_PREFIX}[\\s]|^${CONSTANTS.BOT_PREFIX_SMALL}[\\s]`, 'i'),
     prefixOnlyInChats: true,
     api: {
