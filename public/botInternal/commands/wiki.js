@@ -16,12 +16,11 @@ function addWikiCommand(bot, stats) {
             })
                 .search(searchQuery)
                 .then((res) => {
-                    if (res && res.length > 0) {
+                    if (res && res.results.length > 0) {
                         return wiki({
                             apiUrl: CONSTANTS.WIKI_LINK,
                             origin: null,
-                        })
-                            .page(res[0]);
+                        }).page(res.results[0]);
                     }
                     // throwing error
                     throw false;
