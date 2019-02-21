@@ -24,7 +24,7 @@ console.log(process.env.VK_TOKEN, process.env.VK_ID);
 // __________________________________________________________
 const bot = new Bot({
     token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
-    group_id: process.env.VK_ID || creds.groupId || 'place your group id here',
+    group_id: Number.parseInt(process.env.VK_ID, 10) || creds.groupId.toString() || 'place your group id here',
     api: {
         v: '5.80',
         lang: 'ru',
