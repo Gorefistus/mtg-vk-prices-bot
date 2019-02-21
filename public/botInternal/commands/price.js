@@ -135,15 +135,16 @@ async function getCardPrices(parsedCardName, setCode, bot) {
 
 function addPriceCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
+        const priceRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (price|p) (.*)`, 'im');
 
-        bot.get(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]price[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]p[\\s])`, 'i'), (message) => {
-            stats.track(message.user_id, { msg: message.body }, 'p');
+        bot.get(priceRegexp, (message) => {
+            stats.track(message.user_id, { msg: message.text }, 'p');
             bot.sendTyping(message);
-            let cardName = message.body.match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]price[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]p[\\s])(.*)`, 'i'))[2];
-            const setNameRegex = message.body.match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]price[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]p[\\s])(.*)\\[(.{3,4})\\]`, 'i'));
-            const setCode = setNameRegex !== null ? setNameRegex[3] : undefined;
+            let cardName = message.text.match(priceRegexp)[3];
+            const setNameRegex = message.text.match(new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (price|p) (.*)\\[(.{3,4})\\]`, 'im'));
+            const setCode = setNameRegex !== null ? setNameRegex[4] : undefined;
             if (setCode) {
-                cardName = setNameRegex[2];
+                cardName = setNameRegex[3];
             }
 
             getCardPrices(cardName, setCode, bot)

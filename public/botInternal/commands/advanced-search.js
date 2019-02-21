@@ -28,11 +28,13 @@ function sendResults(bot, message, values, page) {
 
 function addAdvancedSearchCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]advancedsearch[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]as[\\s])`, 'i') , message => {
-            stats.track(message.user_id, { msg: message.body }, 'as');
+        const advancedSearchRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (advancedsearch|as) (.*)`, 'im');
+
+        bot.get(advancedSearchRegexp, (message) => {
+            stats.track(message.user_id, { msg: message.text }, 'as');
             bot.sendTyping(message);
             //VK replaces quotes "" with &quot; characters, so we replace them back again
-            let searchQuery = message.body.match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]advancedsearch[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]as[\\s])(.*)`, 'i'))[2].replace(new RegExp('&quot;', 'g'), '"')
+            let searchQuery = message.text.match(advancedSearchRegexp)[3].replace(new RegExp('&quot;', 'g'), '"')
                 .replace(new RegExp('&gt;', 'g'), '>')
                 .replace(new RegExp('&lt;', 'g'), '<');
             let page = 0;
@@ -44,7 +46,7 @@ function addAdvancedSearchCommand(bot, stats) {
             const cardEmitter = Scry.Cards.search(`${searchQuery}`);
             const resultArray = [];
             let alreadyFired = false;
-            cardEmitter.on('data', data => {
+            cardEmitter.on('data', (data) => {
                 if (resultArray.length < 100) {
                     resultArray.push(data);
                 } else {

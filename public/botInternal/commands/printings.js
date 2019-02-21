@@ -7,11 +7,13 @@ const MISC = require('../../common/misc');
 
 function addPrintingsCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]printings[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]pr[\\s])`, 'i'), (message) => {
-            stats.track(message.user_id, { msg: message.body }, 'pr');
+        const printingRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (printings|pr) (.*)`, 'im');
+
+        bot.get(printingRegexp, (message) => {
+            stats.track(message.user_id, { msg: message.text }, 'pr');
             bot.sendTyping(message);
             let pageName = 0;
-            let cardName = message.body.match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]printings[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]pr[\\s,])(.*)`, 'i'))[2];
+            let cardName = message.text.match(printingRegexp)[3];
             if (cardName.split('|').length > 1) {
                 const tempValue = cardName.split('|');
                 cardName = tempValue[0];

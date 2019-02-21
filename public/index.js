@@ -23,10 +23,9 @@ setInterval(() => {
 // __________________________________________________________
 const bot = new Bot({
     token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
-    prefix: new RegExp(`^${CONSTANTS.BOT_PREFIX}[\\s]|^${CONSTANTS.BOT_PREFIX_SMALL}[\\s]`, 'i'),
-    prefixOnlyInChats: true,
+    group_id: process.env.GROUP_ID || creds.groupId,
     api: {
-        v: 5.38, // must be >= 5.38
+        v: '5.80',
         lang: 'ru',
     },
 });

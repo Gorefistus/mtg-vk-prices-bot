@@ -5,10 +5,12 @@ const MISC = require('../../common/misc');
 
 function addLegalityCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]legality[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]l[\\s])`, 'i'), (message) => {
-            stats.track(message.user_id, { msg: message.body }, 'l');
+        const legalitydRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (legality|l) (.*)`, 'im');
+
+        bot.get(legalitydRegexp, (message) => {
+            stats.track(message.user_id, { msg: message.text }, 'l');
             bot.sendTyping(message);
-            const cardName = message.body.match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]legality[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]l[\\s])(.*)`, 'i'))[2];
+            const cardName = message.text.match(legalitydRegexp)[3];
             MISC.getMultiverseId(cardName)
                 .then((cardObject) => {
                     bot.send(`Легальность ${cardObject.printed_name ? cardObject.printed_name : cardObject.name} в форматах:\n 

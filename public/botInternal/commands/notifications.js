@@ -16,9 +16,10 @@ function checkForAdmin(userId, admins) {
 
 function addNotificationsCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        const regex = new RegExp(`[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]notifications|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]n`, 'i');
-        bot.get(regex, async (message) => {
-            stats.track(message.user_id, { msg: message.body }, 'n');
+        const notificationsRegexRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (notifications|n)`, 'im');
+
+        bot.get(notificationsRegexRegexp, async (message) => {
+            stats.track(message.user_id, { msg: message.text }, 'n');
             const admins = (await bot.api('messages.getConversationMembers', { peer_id: message.peer_id }))
                 .items
                 .filter(member => (

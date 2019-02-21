@@ -12,12 +12,13 @@ const MISC = require('../../common/misc');
 function addAuctionsCommand(bot, stats) {
 
     if (bot && typeof bot.get === 'function') {
+        const auctionsRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (auctions|ac) (.*)`, 'im');
 
-        bot.get(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]auctions|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]ac)`, 'i'), async (message) => {
-            stats.track(message.user_id, { msg: message.body }, 'ac');
+        bot.get(auctionsRegexp, async (message) => {
+            stats.track(message.user_id, { msg: message.text }, 'ac');
             bot.sendTyping(message);
-            const paramsFromMessage = message.body.trim()
-                .match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]auctions|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]ac)(.*)`, 'i'))[2].trim();
+            const paramsFromMessage = message.text.trim()
+                .match(auctionsRegexp)[3].trim();
             if (paramsFromMessage && paramsFromMessage.length < 3) {
                 return bot.send(STRINGS.ERR_QUERY_IS_TOO_SMALL, message.peer_id);
             }

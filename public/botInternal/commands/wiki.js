@@ -6,10 +6,12 @@ const CONSTANTS = require('../../common/constants');
 
 function addWikiCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]wiki[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]w[\\s])`, 'i'), (message) => {
-            stats.track(message.user_id, { msg: message.body }, 'w');
+        const wikiRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (wiki|w) (.*)`, 'im');
+
+        bot.get(wikiRegexp, (message) => {
+            stats.track(message.user_id, { msg: message.text }, 'w');
             bot.sendTyping(message);
-            const searchQuery = message.body.match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]wiki[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]w[\\s])(.*)`, 'i'))[2];
+            const searchQuery = message.text.match(wikiRegexp)[3];
             wiki({
                 apiUrl: CONSTANTS.WIKI_LINK,
                 origin: null,

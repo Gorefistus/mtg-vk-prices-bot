@@ -1,7 +1,9 @@
 const TIMEOUT_CODE = 'ETIMEDOUT';
 
+
 const BOT_PREFIX_SMALL = '!m';
 const BOT_PREFIX = '!mth';
+const BOT_PREFIX_GROUP = '([club168593903|@mtgbot] )?';
 
 const BOT_PREFIX_ENDINGS = 'm|h';
 
@@ -104,5 +106,6 @@ module.exports = {
     BOT_PREFIX_SMALL,
     BOT_PREFIX,
     BOT_PREFIX_ENDINGS,
+    BOT_PREFIX_GROUP,
     MOMENT_AUCTIONS_FORMAT,
 };

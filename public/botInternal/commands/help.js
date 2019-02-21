@@ -4,7 +4,9 @@ const CONSTANTS = require('../../common/constants');
 
 function addHelpCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(new RegExp(`[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]help\\b|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]h\\b`, 'i'), (message) => {
+        const helpRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] help\\b`, 'im');
+
+        bot.get(new RegExp(helpRegexp, 'i'), (message) => {
             stats.track(message.user_id, { msg: message.body }, 'help');
             bot.sendTyping(message);
             const options = { forward_messages: message.id };

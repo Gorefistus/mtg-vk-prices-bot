@@ -30,7 +30,7 @@
     "fuse.js": "^3.3.0",
     "moment": "^2.24.0",
     "mongodb": "^3.1.10",
-    "node-vk-bot": "0.3.1",
+    "node-vk-bot": "^1.2.3",
     "phantom": "^6.0.3",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",

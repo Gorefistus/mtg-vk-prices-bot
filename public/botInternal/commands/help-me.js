@@ -20,10 +20,13 @@ function sendResults(bot, message, values) {
 
 function addHelpmeCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]helpme[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]hm[\\s])`, 'i'), (message) => {
-            stats.track(message.user_id, { msg: message.body }, 'hm');
+        const helpMeRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (helpme|hm) (.*)`, 'im');
+
+
+        bot.get(helpMeRegexp, (message) => {
+            stats.track(message.user_id, { msg: message.text }, 'hm');
             bot.sendTyping(message);
-            const cardName = message.body.match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]helpme[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]hm[\\s,])(.*)`, 'i'))[2].trim();
+            const cardName = message.text.match(helpMeRegexp)[3].trim();
             if (cardName.length < 2) {
                 return bot.send(STRINGS.NAME_SHORT_ERR, message.peer_id);
             }

@@ -92,10 +92,11 @@ async function downloadAndPostCardImage(bot, cards, peerId) {
 
 function addArtCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        bot.get(new RegExp(`[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]art[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]a[\\s]`, 'i'), (message) => {
-            stats.track(message.user_id, { msg: message.body }, 'a');
+        const artRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (art|a) (.*)`, 'im');
+        bot.get(artRegexp, (message) => {
+            stats.track(message.user_id, { msg: message.text }, 'a');
             bot.sendTyping(message);
-            const cardNames = message.body.match(new RegExp(`([${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]art[\\s]|[${CONSTANTS.BOT_PREFIX_ENDINGS}][\\s]a[\\s])(.*)`, 'i'))[2];
+            const cardNames = message.text.match(artRegexp)[3];
             const splittedCardNames = cardNames.split(';');
             // make it no more than 10 cards
 
