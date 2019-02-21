@@ -22,7 +22,7 @@ setInterval(() => {
 // __________________________________________________________
 const bot = new Bot({
     token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
-    group_id: process.env.GROUP_ID || creds.groupId || 'place your group id here',
+    group_id: process.env.VK_ID || creds.groupId || 'place your group id here',
     api: {
         v: '5.80',
         lang: 'ru',
