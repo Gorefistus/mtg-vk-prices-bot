@@ -4,7 +4,6 @@ const express = require('express');
 const http = require('http');
 const creds = require('../creds.json');
 
-const CONSTANTS = require('./common/constants');
 const botStarter = require('./botInternal/bot-config');
 // THIS IS JUST NEEDED SO HEROKU WON"T STOP OUR APPLICATION
 const app = express();
@@ -23,7 +22,7 @@ setInterval(() => {
 // __________________________________________________________
 const bot = new Bot({
     token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
-    group_id: process.env.GROUP_ID || creds.groupId,
+    group_id: process.env.GROUP_ID || creds.groupId || 'place your group id here',
     api: {
         v: '5.80',
         lang: 'ru',
