@@ -54,14 +54,14 @@ async function getFoilPrices(parsedCardName, setCode) {
 
 function addPriceFoilCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        const priceFoilRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (priceFoil|pf) (.*)`, 'im');
+        const priceFoilRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?(priceFoil|pf) (.*)`, 'im');
 
         bot.get(priceFoilRegexp, (message) => {
 
             stats.track(message.user_id, { msg: message.text }, 'pf');
             bot.sendTyping(message);
             let cardName = message.text.match(priceFoilRegexp)[3];
-            const setNameRegex = message.text.match(new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (priceFoil|pf) (.*)\\[(.{3,4})\\]`, 'i'));
+            const setNameRegex = message.text.match(new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?(priceFoil|pf) (.*)\\[(.{3,4})\\]`, 'i'));
             const setCode = setNameRegex !== null ? setNameRegex[4] : undefined;
             if (setCode) {
                 cardName = setNameRegex[3];

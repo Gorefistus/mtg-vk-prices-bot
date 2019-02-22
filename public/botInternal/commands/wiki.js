@@ -6,7 +6,7 @@ const CONSTANTS = require('../../common/constants');
 
 function addWikiCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        const wikiRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (wiki|w) (.*)`, 'im');
+        const wikiRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?(wiki|w) (.*)`, 'im');
 
         bot.get(wikiRegexp, (message) => {
             stats.track(message.user_id, { msg: message.text }, 'w');

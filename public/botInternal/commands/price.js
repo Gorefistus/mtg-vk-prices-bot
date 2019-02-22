@@ -135,13 +135,13 @@ async function getCardPrices(parsedCardName, setCode, bot) {
 
 function addPriceCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        const priceRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (price|p) (.*)`, 'im');
+        const priceRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?(price|p) (.*)`, 'im');
 
         bot.get(priceRegexp, (message) => {
             stats.track(message.user_id, { msg: message.text }, 'p');
             bot.sendTyping(message);
             let cardName = message.text.match(priceRegexp)[3];
-            const setNameRegex = message.text.match(new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (price|p) (.*)\\[(.{3,4})\\]`, 'im'));
+            const setNameRegex = message.text.match(new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?(price|p) (.*)\\[(.{3,4})\\]`, 'im'));
             const setCode = setNameRegex !== null ? setNameRegex[4] : undefined;
             if (setCode) {
                 cardName = setNameRegex[3];
