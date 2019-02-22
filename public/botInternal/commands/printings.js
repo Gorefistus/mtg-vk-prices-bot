@@ -7,7 +7,7 @@ const MISC = require('../../common/misc');
 
 function addPrintingsCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        const printingRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?(printings|pr) (.*)`, 'im');
+        const printingRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\b(printings|pr) (.*)`, 'im');
 
         bot.get(printingRegexp, (message) => {
             stats.track(message.user_id, { msg: message.text }, 'pr');

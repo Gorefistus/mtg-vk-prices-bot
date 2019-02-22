@@ -20,7 +20,7 @@ function sendResults(bot, message, values) {
 
 function addHelpmeCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        const helpMeRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?(helpme|hm) (.*)`, 'im');
+        const helpMeRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\b(helpme|hm) (.*)`, 'im');
 
 
         bot.get(helpMeRegexp, (message) => {

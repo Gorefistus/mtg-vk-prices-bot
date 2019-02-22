@@ -4,7 +4,7 @@ const MISC = require('../../common/misc');
 
 function addOracleCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        const oracleRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?(oracle|o) (.*)`, 'im');
+        const oracleRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\b(oracle|o) (.*)`, 'im');
 
         bot.get(oracleRegexp, (message) => {
             stats.track(message.user_id, { msg: message.text }, 'o');

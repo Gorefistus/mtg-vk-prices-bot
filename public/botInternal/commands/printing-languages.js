@@ -7,13 +7,13 @@ const MISC = require('../../common/misc');
 
 function addPrintingLanguagesCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        const printignLanguagesRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?(printinglanguages|pl) (.*)`, 'im');
+        const printignLanguagesRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\b(printinglanguages|pl) (.*)`, 'im');
 
         bot.get(printignLanguagesRegexp, (message) => {
             stats.track(message.user_id, { msg: message.text }, 'pl');
             bot.sendTyping(message);
             let cardName = message.text.match(printignLanguagesRegexp)[3];
-            const setNameRegex = message.text.match(new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?(printinglanguages|pl) (.*)\\[(.{3,4})\\]`, 'i'));
+            const setNameRegex = message.text.match(new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\b(printinglanguages|pl) (.*)\\[(.{3,4})\\]`, 'i'));
             const setCode = setNameRegex !== null ? setNameRegex[4] : undefined;
             if (setCode) {
                 cardName = setNameRegex[3];

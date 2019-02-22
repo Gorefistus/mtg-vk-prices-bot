@@ -12,7 +12,7 @@ const MISC = require('../../common/misc');
 function addAuctionsCommand(bot, stats) {
 
     if (bot && typeof bot.get === 'function') {
-        const auctionsRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?(auctions|ac) (.*)`, 'im');
+        const auctionsRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\b(auctions|ac) (.*)`, 'im');
 
         bot.get(auctionsRegexp, async (message) => {
             stats.track(message.user_id, { msg: message.text }, 'ac');
