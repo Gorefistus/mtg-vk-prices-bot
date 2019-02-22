@@ -7,6 +7,7 @@ function addMiscCommands(bot, stats) {
         });
 
         bot.on('command-notfound', (msg) => {
+            console.log(msg);
             stats.track(msg.user_id, { msg: msg.body }, 'uc');
             bot.send(STRINGS.COMMAND_NOT_FOUND, msg.peer_id);
         });

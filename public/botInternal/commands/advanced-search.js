@@ -28,7 +28,7 @@ function sendResults(bot, message, values, page) {
 
 function addAdvancedSearchCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        const advancedSearchRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\b(advancedsearch|as) (.*)`, 'im');
+        const advancedSearchRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\\b(advancedsearch|as) (.*)`, 'im');
 
         bot.get(advancedSearchRegexp, (message) => {
             stats.track(message.user_id, { msg: message.text }, 'as');

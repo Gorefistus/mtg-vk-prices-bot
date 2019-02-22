@@ -92,7 +92,7 @@ async function downloadAndPostCardImage(bot, cards, peerId) {
 
 function addArtCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        const artRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\b(art|a) (.*)`, 'im');
+        const artRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\\b(art|a) (.*)`, 'im');
         bot.get(artRegexp, (message) => {
             stats.track(message.user_id, { msg: message.text }, 'a');
             bot.sendTyping(message);

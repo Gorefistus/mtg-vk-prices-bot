@@ -5,7 +5,7 @@ const MISC = require('../../common/misc');
 
 function addLegalityCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
-        const legalitydRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\b(legality|l) (.*)`, 'im');
+        const legalitydRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\\b(legality|l) (.*)`, 'im');
 
         bot.get(legalitydRegexp, (message) => {
             stats.track(message.user_id, { msg: message.text }, 'l');
