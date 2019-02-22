@@ -19,7 +19,6 @@ setInterval(() => {
     http.get('http://mtgvkbotprices.herokuapp.com/');
 }, 300000);
 
-console.log(process.env.VK_TOKEN, process.env.VK_ID);
 
 // __________________________________________________________
 const bot = new Bot({

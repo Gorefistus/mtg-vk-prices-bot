@@ -1,4 +1,6 @@
 const STRINGS = require('../../common/strings');
+const CONSTANTS = require('../../common/constants');
+
 
 function addMiscCommands(bot, stats) {
     if (bot && typeof bot.get === 'function') {
@@ -7,7 +9,6 @@ function addMiscCommands(bot, stats) {
         });
 
         bot.on('command-notfound', (msg) => {
-            console.log(msg);
             stats.track(msg.user_id, { msg: msg.body }, 'uc');
             bot.send(STRINGS.COMMAND_NOT_FOUND, msg.peer_id);
         });

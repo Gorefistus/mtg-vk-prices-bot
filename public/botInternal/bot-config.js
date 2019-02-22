@@ -27,7 +27,7 @@ function addCommands(bot) {
 
     _addTypingStatusCommand(bot);
 
-    announcmentCommand(bot, stats);
+    // announcmentCommand(bot, stats);
     cardCommand(bot, stats);
     artCommand(bot, stats);
     helpmeCommand(bot, stats);
