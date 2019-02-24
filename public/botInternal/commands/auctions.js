@@ -15,7 +15,7 @@ function addAuctionsCommand(bot, stats) {
         const auctionsRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\\b(auctions|ac) (.*)`, 'im');
 
         bot.get(auctionsRegexp, async (message) => {
-            stats.track(message.user_id, { msg: message.text }, 'ac');
+            stats.track(message.from_id, { msg: message.text }, 'ac');
             bot.sendTyping(message);
             const paramsFromMessage = message.text.trim()
                 .match(auctionsRegexp)[3].trim();

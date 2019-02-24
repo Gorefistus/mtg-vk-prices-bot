@@ -7,7 +7,7 @@ function addHelpCommand(bot, stats) {
         const helpRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\\bhelp\\b`, 'im');
 
         bot.get(new RegExp(helpRegexp, 'i'), (message) => {
-            stats.track(message.user_id, { msg: message.body }, 'help');
+            stats.track(message.from_id, { msg: message.body }, 'help');
             bot.sendTyping(message);
             const options = { forward_messages: message.id };
             bot.send('Доступные команды:\n ' +

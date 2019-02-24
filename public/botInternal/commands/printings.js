@@ -10,7 +10,7 @@ function addPrintingsCommand(bot, stats) {
         const printingRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\\b(printings|pr) (.*)`, 'im');
 
         bot.get(printingRegexp, (message) => {
-            stats.track(message.user_id, { msg: message.text }, 'pr');
+            stats.track(message.from_id, { msg: message.text }, 'pr');
             bot.sendTyping(message);
             let pageName = 0;
             let cardName = message.text.match(printingRegexp)[3];

@@ -30,7 +30,7 @@ function addAdvancedSearchCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
         const advancedSearchRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\\b(advancedsearch|as) (.*)`, 'im');
         bot.get(advancedSearchRegexp, (message) => {
-            stats.track(message.user_id, { msg: message.text }, 'as');
+            stats.track(message.from_id, { msg: message.text }, 'as');
             bot.sendTyping(message);
             //VK replaces quotes "" with &quot; characters, so we replace them back again
             let searchQuery = message.text.match(advancedSearchRegexp)[3].replace(new RegExp('&quot;', 'g'), '"')

@@ -9,7 +9,7 @@ function addWikiCommand(bot, stats) {
         const wikiRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\\b(wiki|w) (.*)`, 'im');
 
         bot.get(wikiRegexp, (message) => {
-            stats.track(message.user_id, { msg: message.text }, 'w');
+            stats.track(message.from_id, { msg: message.text }, 'w');
             bot.sendTyping(message);
             const searchQuery = message.text.match(wikiRegexp)[3];
             wiki({

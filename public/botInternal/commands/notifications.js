@@ -19,7 +19,7 @@ function addNotificationsCommand(bot, stats) {
         const notificationsRegexRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}] (notifications|n)`, 'im');
 
         bot.get(notificationsRegexRegexp, async (message) => {
-            stats.track(message.user_id, { msg: message.text }, 'n');
+            stats.track(message.from_id, { msg: message.text }, 'n');
             const admins = (await bot.api('messages.getConversationMembers', { peer_id: message.peer_id }))
                 .items
                 .filter(member => (
@@ -28,7 +28,7 @@ function addNotificationsCommand(bot, stats) {
             if (admins.length === 0) {
                 return bot.send(STRINGS.ERR_NOT_A_GROUP, message.peer_id);
             }
-            if (checkForAdmin(message.user_id, admins)) {
+            if (checkForAdmin(message.from_id, admins)) {
                 const group = await SpoilerCache.getMailingGroup(message.peer_id);
                 if (group) {
                     SpoilerCache.updateMailingGroupStatus(message.peer_id, !group.mailing);

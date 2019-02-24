@@ -80,7 +80,7 @@ function addAnnouncmentCommand(bot) {
             });
 
         bot.get(regex, async (message) => {
-            if (message.user_id === 6874525) {
+            if (message.from_id === 6874525) {
                 // bot.api('messages.getDialogs')
                 //     .then((dialogs) => {
                 //         const userGroups = dialogs.items
@@ -95,7 +95,7 @@ function addAnnouncmentCommand(bot) {
                     // .catch(reason => console.log(reason));
                 triggerAnnouncment(bot);
             } else {
-                console.log(`Wrong foul tried to use this command${message.user_id}`);
+                console.log(`Wrong foul tried to use this command${message.from_id}`);
             }
         });
     }

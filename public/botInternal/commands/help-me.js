@@ -24,7 +24,7 @@ function addHelpmeCommand(bot, stats) {
 
 
         bot.get(helpMeRegexp, (message) => {
-            stats.track(message.user_id, { msg: message.text }, 'hm');
+            stats.track(message.from_id, { msg: message.text }, 'hm');
             bot.sendTyping(message);
             const cardName = message.text.match(helpMeRegexp)[3].trim();
             if (cardName.length < 2) {

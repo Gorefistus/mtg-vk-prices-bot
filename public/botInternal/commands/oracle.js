@@ -7,7 +7,7 @@ function addOracleCommand(bot, stats) {
         const oracleRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\\b(oracle|o) (.*)`, 'im');
 
         bot.get(oracleRegexp, (message) => {
-            stats.track(message.user_id, { msg: message.text }, 'o');
+            stats.track(message.from_id, { msg: message.text }, 'o');
             bot.sendTyping(message);
             const cardName = message.text.match(oracleRegexp)[3];
             MISC.getMultiverseId(cardName)

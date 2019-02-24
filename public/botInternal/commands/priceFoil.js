@@ -58,7 +58,7 @@ function addPriceFoilCommand(bot, stats) {
 
         bot.get(priceFoilRegexp, (message) => {
 
-            stats.track(message.user_id, { msg: message.text }, 'pf');
+            stats.track(message.from_id, { msg: message.text }, 'pf');
             bot.sendTyping(message);
             let cardName = message.text.match(priceFoilRegexp)[3];
             const setNameRegex = message.text.match(new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\\b(priceFoil|pf) (.*)\\[(.{3,4})\\]`, 'i'));

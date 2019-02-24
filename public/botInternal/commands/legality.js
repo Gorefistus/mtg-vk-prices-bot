@@ -8,7 +8,7 @@ function addLegalityCommand(bot, stats) {
         const legalitydRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\\b(legality|l) (.*)`, 'im');
 
         bot.get(legalitydRegexp, (message) => {
-            stats.track(message.user_id, { msg: message.text }, 'l');
+            stats.track(message.from_id, { msg: message.text }, 'l');
             bot.sendTyping(message);
             const cardName = message.text.match(legalitydRegexp)[3];
             MISC.getMultiverseId(cardName)

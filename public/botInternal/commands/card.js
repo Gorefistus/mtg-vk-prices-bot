@@ -94,7 +94,7 @@ function addCardCommand(bot, stats) {
     if (bot && typeof bot.get === 'function') {
         const cardRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\\b(card|c) (.*)`, 'im');
         bot.get(cardRegexp, (message) => {
-            stats.track(message.user_id, { msg: message.text }, 'c');
+            stats.track(message.from_id, { msg: message.text }, 'c');
             bot.sendTyping(message);
             const cardNames = message.text.match(cardRegexp)[3];
             const splittedCardNames = cardNames.split(';');

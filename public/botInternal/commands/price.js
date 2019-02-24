@@ -138,7 +138,7 @@ function addPriceCommand(bot, stats) {
         const priceRegexp = new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\\b(price|p) (.*)`, 'im');
 
         bot.get(priceRegexp, (message) => {
-            stats.track(message.user_id, { msg: message.text }, 'p');
+            stats.track(message.from_id, { msg: message.text }, 'p');
             bot.sendTyping(message);
             let cardName = message.text.match(priceRegexp)[3];
             const setNameRegex = message.text.match(new RegExp(`${CONSTANTS.BOT_PREFIX_GROUP}[${CONSTANTS.BOT_PREFIX_ENDINGS}]? ?\\b(price|p) (.*)\\[(.{3,4})\\]`, 'im'));
