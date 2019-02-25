@@ -9,8 +9,10 @@ function addMiscCommands(bot, stats) {
         });
 
         bot.on('command-notfound', (msg) => {
-            stats.track(msg.user_id, { msg: msg.body }, 'uc');
-            bot.send(STRINGS.COMMAND_NOT_FOUND, msg.peer_id);
+            if (msg.fwd_messages && msg.fwd_messages.length === 0) {
+                stats.track(msg.user_id, { msg: msg.body }, 'uc');
+                bot.send(STRINGS.COMMAND_NOT_FOUND, msg.peer_id);
+            }
         });
 
     } else {
