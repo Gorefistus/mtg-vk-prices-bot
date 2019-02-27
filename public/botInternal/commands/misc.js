@@ -10,7 +10,7 @@ function addMiscCommands(bot, stats) {
 
         bot.on('command-notfound', (msg) => {
             if (msg.fwd_messages && msg.fwd_messages.length === 0) {
-                if (msg.id === 0 && (!msg.text.startsWith('!') || !msg.text.includes('club168593903'))) {
+                if (msg.id === 0 && (!msg.text.startsWith('!') && !msg.text.includes('club168593903'))) {
                     return;
                 }
                 stats.track(msg.user_id, { msg: msg.body }, 'uc');
