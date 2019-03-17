@@ -109,9 +109,9 @@ async function getCardPrices(parsedCardName, setCode, bot) {
         const filterByNameAndPrice = topDeckPrices.filter(price => {
             if (scgPriceObject) {
                 const scgPriceInNumber = parseFloat(scgPriceObject.value.split('$')[1]);
-                return price.eng_name.toLowerCase() === cardName.toLowerCase() && price.cost > scgPriceInNumber * 25;
+                return price.name.toLowerCase() === cardName.toLowerCase() && price.cost > scgPriceInNumber * 25;
             }
-            return price.eng_name.toLowerCase() === cardName.toLowerCase();
+            return price.name.toLowerCase() === cardName.toLowerCase();
         });
         if (filterByNameAndPrice.length > 0) {
             priceString = `${priceString} \n ${STRINGS.PRICES_TOPDECK}: ${filterByNameAndPrice[0].cost} RUB`;
