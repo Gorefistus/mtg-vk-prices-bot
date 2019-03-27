@@ -21,6 +21,7 @@ const announcmentCommand = require('./commands/announcment');
 const printingLanguagesCommand = require('./commands/printing-languages');
 const auctionsCommand = require('./commands/auctions');
 const wikiCommand = require('./commands/wiki');
+const test = require('./commands/test');
 
 function addCommands(bot) {
     console.log('Commands addition started');
@@ -63,10 +64,12 @@ function _addTypingStatusCommand(bot) {
 }
 
 
-function startBot(bot, pollDelay = 3000) {
-    if (bot && typeof bot.start === 'function') {
-        addCommands(bot);
-        bot.start(pollDelay); // we meed this delay or VK return and error
+function startBot(bot, vkApi, pollDelay = 3000) {
+    if (bot) {
+        // addCommands(bot);
+        test(bot, vkApi);
+        bot.startPolling();
+        // bot.start(pollDelay); // we meed this delay or VK return and error
         console.log('____________________________________\n|             Bot started           |\n____________________________________');
     } else {
         console.error(STRINGS.BOT_ERROR);

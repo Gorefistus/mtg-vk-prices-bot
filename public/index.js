@@ -1,4 +1,6 @@
 const { Bot } = require('node-vk-bot');
+const VkBot = require('node-vk-bot-api');
+const { VK } = require('vk-io');
 const path = require('path');
 const express = require('express');
 const http = require('http');
@@ -21,13 +23,26 @@ setInterval(() => {
 
 
 // __________________________________________________________
-const bot = new Bot({
+// const bot = new Bot({
+//     token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
+//     group_id: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || 'place your group id here',
+//     api: {
+//         v: '5.80',
+//         lang: 'ru',
+//     },
+// });
+
+
+
+const vkApi = new VK({
     token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
-    group_id: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || 'place your group id here',
-    api: {
-        v: '5.80',
-        lang: 'ru',
-    },
+    pollingGroupId: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || 'place your group id here',
+
 });
 
-botStarter.startBot(bot);
+const bot = new VkBot({
+    token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
+    group_id: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || 'place your group id here',
+});
+
+botStarter.startBot(bot, vkApi);

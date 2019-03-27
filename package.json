@@ -31,10 +31,12 @@
     "moment": "^2.24.0",
     "mongodb": "^3.1.10",
     "node-vk-bot": "^1.2.3",
+    "node-vk-bot-api": "^2.4.10",
     "phantom": "^6.0.3",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
     "scryfall-sdk": "1.2.0",
+    "vk-io": "^4.0.0-rc.16",
     "wikijs": "^4.10.2"
   },
   "devDependencies": {
