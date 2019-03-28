@@ -11,7 +11,7 @@ get yourself one:
 https://oauth.vk.com/authorize?client_id=YOUR_APP_ID&scope=photos,messages,offline&display=touch&response_type=token
 ```
 
-Your token goes into bot startup setting in index.js.
+Your token goes into bot startup setting in index-old.js.
 
 
 ### Starting up

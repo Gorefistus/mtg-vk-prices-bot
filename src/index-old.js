@@ -31,18 +31,18 @@ setInterval(() => {
 //         lang: 'ru',
 //     },
 // });
-
-
-
-const vkApi = new VK({
-    token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
-    pollingGroupId: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || 'place your group id here',
-
-});
-
-const bot = new VkBot({
-    token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
-    group_id: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || 'place your group id here',
-});
-
-botStarter.startBot(bot, vkApi);
+//
+//
+//
+// const vkApi = new VK({
+//     token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
+//     pollingGroupId: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || 'place your group id here',
+//
+// });
+//
+// const bot = new VkBot({
+//     token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
+//     group_id: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || 'place your group id here',
+// });
+//
+// botStarter.startBot(bot, vkApi);

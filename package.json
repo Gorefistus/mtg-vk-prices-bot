@@ -8,8 +8,13 @@
     "npm": ">=6.0.0"
   },
   "scripts": {
-    "start": "node public/index.js",
-    "dev": "node node_modules/nodemon/bin/nodemon.js public/index.js",
+    "start": "node dist/src/index.js",
+    "dev": "concurrently -k \"npm run watch-ts\" \"npm run watch-node\"",
+    "watch-node": "node node_modules/nodemon/bin/nodemon.js dist/src/index.js",
+    "build": "npm run build-ts && npm run tslint",
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -31,7 +36,6 @@
     "moment": "^2.24.0",
     "mongodb": "^3.1.10",
     "node-vk-bot": "^1.2.3",
-    "node-vk-bot-api": "^2.4.10",
     "phantom": "^6.0.3",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
@@ -40,9 +44,19 @@
     "wikijs": "^4.10.2"
   },
   "devDependencies": {
+    "@types/async": "^2.0.45",
+    "@types/cheerio": "^0.22.11",
+    "@types/node": "^9.4.6",
+    "@types/node-fetch": "^2.1.7",
+    "@types/request": "^2.47.0",
+    "@types/ws": "^6.0.1",
+    "concurrently": "^4.1.0",
     "eslint": "^5.10.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.9",
+    "ts-node": "^5.0.0",
+    "tslint": "^5.9.1",
+    "typescript": "^3.3.4000"
   }
 }
