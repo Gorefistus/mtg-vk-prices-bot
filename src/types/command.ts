@@ -1,17 +1,16 @@
-import { Bot, replyFunc } from 'node-vk-bot';
-import Message from 'node-vk-bot/build/interfaces/Message';
-import VK from 'vk-io';
+import VK, {MessageContext} from 'vk-io';
 
 export interface CommandInterface {
-    bot: Bot;
-    vkApi?: VK;
+    vkBotApi?: VK;
 
-    regex?: string;
+    regex?: RegExp;
 
-    checkRegex(stringToCheck: string): boolean;
+    regexGroup?: RegExp;
 
-    processCommand(msg: Message, exec: RegExpExecArray, reply: replyFunc): Promise<any>;
+    checkRegex(stringToCheck: string, isGroup?: boolean): boolean;
 
-    processError(errorMsg: string, msg: Message, reply: replyFunc): void;
+    processCommand(msg: MessageContext): Promise<any>;
+
+    processError(errorMsg: string, msg: MessageContext): void;
 
 }

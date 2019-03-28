@@ -1,9 +1,10 @@
-import VK from 'vk-io';
-import { Bot, replyFunc } from 'node-vk-bot';
+import VK, {MessageContext} from 'vk-io';
+import yargs from 'yargs';
+
 import CardCommand from './bot-commands/card';
+import NotFoundCommand from "./bot-commands/not-found";
 import creds from '../creds.json';
-import Message from 'node-vk-bot/build/interfaces/Message';
-import * as util from 'util';
+import {PEER_TYPES} from "./utils/constants";
 
 // const VkBot = require('node-vk-bot-api');
 // const path = require('path');
@@ -13,54 +14,35 @@ import * as util from 'util';
 
 const vkApi = new VK({
     token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
-    pollingGroupId: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || undefined,
+    pollingGroupId: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || undefined, //place your group ID here
 
 });
 
-const bot = new Bot({
-    token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
-    group_id: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || undefined,
-    api: {
-        v: '5.92',
-        lang: 'ru',
-    },
-});
 
-
-const checkRegex = (msg: Message, exec: RegExpExecArray, reply: replyFunc, commands: Array<CardCommand>) => {
+const checkRegex = (msg: MessageContext, commands: Array<CardCommand>) => {
     for (const command of commands) {
-        console.log(command.checkRegex(msg.text));
-        if (command.checkRegex(msg.text)) {
-            command.processCommand(msg, exec, reply);
+        if (command.checkRegex(msg.text, PEER_TYPES.CHAT === msg.peerType)) {
+            command.processCommand(msg);
             break;
         }
     }
 };
 
 
-const startBot = (bot: Bot, vkApi: VK) => {
+const startBot = (vkBotApi: VK) => {
 
-    const commandArray: Array<CardCommand> = [new CardCommand(bot, vkApi)];
+    const commandArray: Array<CardCommand> = [new CardCommand(vkBotApi), new NotFoundCommand(vkBotApi)];
 
-    bot.on('command-notfound', msg => {
-        console.log(msg);
-        // bot.send('What?', msg.peer_id)
+
+    vkBotApi.updates.hear(/.*/i, async (context: MessageContext) => {
+        const test = yargs.option('card', {alias: 'c', type: "string"}).option('set', {alias: 's'}).parse(context.text);
+        console.log(test.card, test.set);
+        checkRegex(context, commandArray);
     });
 
-
-    bot.on('poll-error', error => {
-        console.error('error occurred on a working with the Long Poll server ' +
-            `(${util.inspect(error)})`);
-    });
-
-    bot.get(/.*/i, ((msg: Message, exec: RegExpExecArray, reply: replyFunc) => {
-        console.log(msg, 2);
-        // reply('wow');
-    }));
-
-    bot.start();
+    vkBotApi.updates.startPolling().catch(reason => console.log(reason) );
 
     console.log('Bot Has Started');
 };
 
-startBot(bot, vkApi);
+startBot(vkApi);
