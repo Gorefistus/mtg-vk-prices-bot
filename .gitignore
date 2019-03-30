@@ -65,3 +65,4 @@ typings/
 #credentials file for testing
 creds.json
 dist/
+/creds.json

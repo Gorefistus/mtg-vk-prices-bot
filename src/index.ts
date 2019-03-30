@@ -1,10 +1,9 @@
-import VK, {MessageContext} from 'vk-io';
-import yargs from 'yargs';
+import VK, { MessageContext } from 'vk-io';
 
 import CardCommand from './bot-commands/card';
-import NotFoundCommand from "./bot-commands/not-found";
+import NotFoundCommand from './bot-commands/not-found';
 import creds from '../creds.json';
-import {PEER_TYPES} from "./utils/constants";
+import { PEER_TYPES } from './utils/constants';
 
 // const VkBot = require('node-vk-bot-api');
 // const path = require('path');
@@ -35,12 +34,10 @@ const startBot = (vkBotApi: VK) => {
 
 
     vkBotApi.updates.hear(/.*/i, async (context: MessageContext) => {
-        const test = yargs.option('card', {alias: 'c', type: "string"}).option('set', {alias: 's'}).parse(context.text);
-        console.log(test.card, test.set);
         checkRegex(context, commandArray);
     });
 
-    vkBotApi.updates.startPolling().catch(reason => console.log(reason) );
+    vkBotApi.updates.startPolling().catch(reason => console.log(reason));
 
     console.log('Bot Has Started');
 };

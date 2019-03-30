@@ -2,7 +2,7 @@ import VK, {Keyboard, MessageContext} from 'vk-io';
 
 import {CONSTANTS} from '../utils/constants';
 import {CommandInterface} from '../types/command';
-import {getScryfallCardObjectByName} from "../utils/scryfall-utils";
+import {getCardByName} from "../utils/scryfall-utils";
 
 
 export default class CardCommand implements CommandInterface {
@@ -32,18 +32,15 @@ export default class CardCommand implements CommandInterface {
         const cardName = msg.text.match(this.regexGroup)[1];
         if (cardName.length > 0) {
             try {
-                const foundCard = await getScryfallCardObjectByName(cardName);
+                const foundCard = await getCardByName(cardName);
                 console.log(msg);
                 await msg.sendPhoto(foundCard.image_uris.normal);
                 msg.send({
-                    message: 'Хотите узнать цену на эту карту?',
                     keyboard: Keyboard.keyboard([Keyboard.textButton({
-                        label: 'Да',
-                        color: Keyboard.POSITIVE_COLOR,
+                        label: 'Узнать цену',
                         payload: {command: 'test1'}
                     }), Keyboard.textButton({
-                        label: 'Нет',
-                        color: Keyboard.NEGATIVE_COLOR,
+                        label: 'Посмотреть все издания',
                     })], {oneTime: true}),
                     peer_id: msg.peerId,
                 });
@@ -54,6 +51,8 @@ export default class CardCommand implements CommandInterface {
         }
 
     }
+
+
 
     public processError(errorMsg: string, msg: MessageContext): void {
     }
