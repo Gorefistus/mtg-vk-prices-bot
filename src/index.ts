@@ -1,9 +1,10 @@
-import VK, { MessageContext } from 'vk-io';
+import VK, {MessageContext} from 'vk-io';
 
 import CardCommand from './bot-commands/card';
 import NotFoundCommand from './bot-commands/not-found';
 import creds from '../creds.json';
-import { PEER_TYPES } from './utils/constants';
+import {PEER_TYPES} from './utils/constants';
+import AdministrationCommand from "./bot-commands/administration";
 
 // const VkBot = require('node-vk-bot-api');
 // const path = require('path');
@@ -20,7 +21,7 @@ const vkApi = new VK({
 
 const checkRegex = (msg: MessageContext, commands: Array<CardCommand>) => {
     for (const command of commands) {
-        if (command.checkRegex(msg.text, PEER_TYPES.CHAT === msg.peerType)) {
+        if (command.checkRegex(msg.text, PEER_TYPES.GROUP === msg.peerType)) {
             command.processCommand(msg);
             break;
         }
@@ -30,7 +31,7 @@ const checkRegex = (msg: MessageContext, commands: Array<CardCommand>) => {
 
 const startBot = (vkBotApi: VK) => {
 
-    const commandArray: Array<CardCommand> = [new CardCommand(vkBotApi), new NotFoundCommand(vkBotApi)];
+    const commandArray: Array<CardCommand> = [new CardCommand(vkBotApi), new AdministrationCommand(vkBotApi), new NotFoundCommand(vkBotApi)];
 
 
     vkBotApi.updates.hear(/.*/i, async (context: MessageContext) => {

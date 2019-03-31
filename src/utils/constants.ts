@@ -6,6 +6,11 @@ export enum CONSTANTS {
 
 
 export enum PEER_TYPES {
-    "CHAT" = 'chat',
-    "USER" = 'user',
+    "GROUP" = 'chat',
+    "PRIVATE" = 'user',
+}
+
+
+export enum DB_NAMES {
+    "ADMINISTRATION" = 'db_admin'
 }

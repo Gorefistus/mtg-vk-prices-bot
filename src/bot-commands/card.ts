@@ -20,7 +20,7 @@ export default class CardCommand implements CommandInterface {
         if (regexGroup) {
             this.regexGroup = regexGroup;
         } else {
-            this.regexGroup = new RegExp(`${CONSTANTS.PREFIX} (.*)`, CONSTANTS.REGEX_FLAGS)
+            this.regexGroup = new RegExp(`${CONSTANTS.PREFIX} (asdasdasdasdas)`, CONSTANTS.REGEX_FLAGS)
         }
     }
 
@@ -53,7 +53,10 @@ export default class CardCommand implements CommandInterface {
     }
 
 
-
     public processError(errorMsg: string, msg: MessageContext): void {
+    }
+
+    isCommandAvailable(msg: MessageContext): boolean {
+        return false;
     }
 }

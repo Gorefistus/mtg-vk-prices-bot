@@ -13,4 +13,6 @@ export interface CommandInterface {
 
     processError(errorMsg: string, msg: MessageContext): void;
 
+    isCommandAvailable(msg?: MessageContext): boolean;
+
 }
