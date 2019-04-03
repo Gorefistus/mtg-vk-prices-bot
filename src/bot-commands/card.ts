@@ -1,17 +1,21 @@
-import VK, {Keyboard, MessageContext} from 'vk-io';
+import VK, { Keyboard, MessageContext } from 'vk-io';
 
-import {CONSTANTS} from '../utils/constants';
-import {CommandInterface} from '../types/command';
-import {getCardByName} from "../utils/scryfall-utils";
+import { CONSTANTS } from '../utils/constants';
+import { CommandInterface } from '../types/command';
+import { getCardByName } from "../utils/scryfall-utils";
 
 
 export default class CardCommand implements CommandInterface {
+    fullName: string;// 'card';
+    shortName: string; // 'c';
     public vkBotApi: VK;
     public regex: RegExp;
     public regexGroup: RegExp;
 
     constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
         this.vkBotApi = vkApi;
+        this.fullName = 'card';
+        this.shortName = 'c';
         if (regex) {
             this.regex = regex;
         } else {

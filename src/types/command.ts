@@ -1,7 +1,11 @@
-import VK, {MessageContext} from 'vk-io';
+import VK, { MessageContext } from 'vk-io';
 
 export interface CommandInterface {
-    vkBotApi?: VK;
+    vkBotApi: VK;
+
+    fullName?: string;
+
+    shortName?: string;
 
     regex?: RegExp;
 

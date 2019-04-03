@@ -3,6 +3,8 @@ import VK, {MessageContext} from "vk-io";
 
 
 export default class NotFoundCommand implements CommandInterface {
+    fullName: string;
+    shortName: string;
     regexGroup: RegExp;
     regex: RegExp;
     vkBotApi: VK;
