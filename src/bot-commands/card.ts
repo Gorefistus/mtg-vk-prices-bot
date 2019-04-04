@@ -1,12 +1,13 @@
 import VK, { Keyboard, MessageContext } from 'vk-io';
 
-import { CONSTANTS } from '../utils/constants';
+import { REGEX_CONSTANTS } from '../utils/constants';
+import { ERRORS } from '../utils/strings';
 import { CommandInterface } from '../types/command';
 import { getCardByName } from "../utils/scryfall-utils";
 
 
 export default class CardCommand implements CommandInterface {
-    fullName: string;// 'card';
+    fullName: string; // 'card';
     shortName: string; // 'c';
     public vkBotApi: VK;
     public regex: RegExp;
@@ -24,7 +25,8 @@ export default class CardCommand implements CommandInterface {
         if (regexGroup) {
             this.regexGroup = regexGroup;
         } else {
-            this.regexGroup = new RegExp(`${CONSTANTS.PREFIX} (asdasdasdasdas)`, CONSTANTS.REGEX_FLAGS)
+            this.regexGroup = new RegExp(`(${REGEX_CONSTANTS.GROUP_PREFIX} |${REGEX_CONSTANTS.PREFIX})(${this.shortName}|${this.fullName}) (.*)`, REGEX_CONSTANTS.REGEX_FLAGS);
+            console.log(this.regexGroup);
         }
     }
 
@@ -33,21 +35,35 @@ export default class CardCommand implements CommandInterface {
     }
 
     public async processCommand(msg: MessageContext): Promise<any> {
-        const cardName = msg.text.match(this.regexGroup)[1];
-        if (cardName.length > 0) {
+
+        /**
+         *
+         * Administration managing should be here
+         *
+         */
+
+
+        const cardNames = msg.text.match(this.regexGroup)[3];
+        console.log(msg.text.match(this.regexGroup));
+        if (cardNames.trim().length === 0) {
+            return this.processError(ERRORS.CARD_NO_CARD, msg);
+        }
+        const splittedCardNames = cardNames.split(';');
+
+        if (cardNames.length > 0) {
             try {
-                const foundCard = await getCardByName(cardName);
+                const foundCard = await getCardByName(cardNames);
                 console.log(msg);
                 await msg.sendPhoto(foundCard.image_uris.normal);
-                msg.send({
-                    keyboard: Keyboard.keyboard([Keyboard.textButton({
-                        label: 'Узнать цену',
-                        payload: {command: 'test1'}
-                    }), Keyboard.textButton({
-                        label: 'Посмотреть все издания',
-                    })], {oneTime: true}),
-                    peer_id: msg.peerId,
-                });
+                // msg.send({
+                //     keyboard: Keyboard.keyboard([Keyboard.textButton({
+                //         label: 'Узнать цену',
+                //         payload: {command: 'test1'}
+                //     }), Keyboard.textButton({
+                //         label: 'Посмотреть все издания',
+                //     })], {oneTime: true}),
+                //     peer_id: msg.peerId,
+                // });
             } catch (e) {
                 console.log(e);
                 //nothing

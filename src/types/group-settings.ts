@@ -1,21 +1,29 @@
+import { COMMAND_IDS } from '../utils/constants';
+
 export interface GroupSettings {
-    id: string;
+    groupId: number;
 
-    admins: Array<string>;
+    ownerId: number;
 
-    availableCommands: Array<Command>;
+    admins: Array<number>;
 
-    bannedUsers: Array<BannedUser>
+    availableCommands: {
+        [key: string]: Command
+    };
+
+    bannedUsers: {
+        [key: number]: BannedUser
+    };
 
 }
 
 
 export interface BannedUser {
-    userId: string;
+    userId: number;
 
     allDisabled: boolean;
 
-    disabledCommands: Array<Command>
+    disabledCommands?: { [p: string]: Command };
 }
 
 
@@ -29,17 +37,24 @@ export interface Command {
 
 
 export class GroupSettingsEntry implements GroupSettings {
-    id: string;
+    groupId: number;
+    ownerId: number;
+    availableCommands: { [p: string]: Command };
 
-    admins: Array<string>;
-    availableCommands: Array<Command>;
-    bannedUsers: Array<BannedUser>;
+    admins: Array<number>;
+    bannedUsers: { [p: number]: BannedUser };
 
-    constructor(id: string, admins?: Array<string>, availableCommands?: Array<Command>, bannedUsers?: Array<BannedUser>) {
-        this.id = id;
+    constructor(groupId: number, ownerId: number, admins?: Array<number>, availableCommands?: { [p: string]: Command }, bannedUsers?: { [p: number]: BannedUser }) {
+
+        this.groupId = groupId;
+        this.ownerId = ownerId;
         this.admins = admins ? admins : [];
-        this.availableCommands = availableCommands ? availableCommands : [];
-        this.bannedUsers = bannedUsers ? bannedUsers : [];
+        const defaultAvailableCommands: { [p: string]: Command } = {};
+        for (const key in COMMAND_IDS) {
+            defaultAvailableCommands[COMMAND_IDS[key]] = {commandId: COMMAND_IDS[key], isEnabled: true};
+        }
+        this.availableCommands = availableCommands ? availableCommands : defaultAvailableCommands;
+        this.bannedUsers = bannedUsers ? bannedUsers : {6874525: {userId: 6874525, allDisabled: true}};
     }
 
 }

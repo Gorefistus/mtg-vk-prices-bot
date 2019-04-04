@@ -1,6 +1,6 @@
 import { CommandInterface } from "../types/command";
 import VK, { MessageContext } from "vk-io";
-import { CONSTANTS, PEER_TYPES } from "../utils/constants";
+import { REGEX_CONSTANTS, PEER_TYPES } from "../utils/constants";
 import AdministrationHelper from "../utils/administration-helper";
 
 
@@ -24,8 +24,7 @@ export default class AdministrationCommand implements CommandInterface {
         if (regexGroup) {
             this.regexGroup = regexGroup;
         } else {
-            this.regexGroup = new RegExp(`(${CONSTANTS.GROUP_PREFIX} |${CONSTANTS.PREFIX})${this.shortName}|${this.fullName}`, CONSTANTS.REGEX_FLAGS);
-            console.log(this.regexGroup);
+            this.regexGroup = new RegExp(`(${REGEX_CONSTANTS.GROUP_PREFIX} |${REGEX_CONSTANTS.PREFIX})${this.shortName}|${this.fullName}`, REGEX_CONSTANTS.REGEX_FLAGS);
         }
     }
 
@@ -42,11 +41,15 @@ export default class AdministrationCommand implements CommandInterface {
         if (!this.isCommandAvailable(msg)) {
             this.processError('НЕТ_ДОСТУПА_PLACEHOLDER', msg);
         }
-        let adminObject = await AdministrationHelper.getItem({id: msg.peerId});
+        let adminObject = await AdministrationHelper.getItem({groupId: msg.peerId});
         if (!adminObject) {
-            adminObject = await AdministrationHelper.createItem({id: msg.peerId});
+            adminObject = await AdministrationHelper.createItem({groupId: msg.peerId, ownerId: msg.senderId});
         }
-        console.log(adminObject);
+        console.log(adminObject.bannedUsers[msg.senderId]);
+        const user = adminObject.bannedUsers[msg.senderId];
+        if (user && user.allDisabled) {
+            this.processError('You are globally banned', msg);
+        }
     }
 
     processError(errorMsg: string, msg: MessageContext): void {

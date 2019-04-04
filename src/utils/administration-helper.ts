@@ -14,7 +14,7 @@ class AdministrationHelper implements DbEntityInterface {
     }
 
     async createItem(item: FilterQuery<any>): Promise<GroupSettings> {
-        const groupSettings = new GroupSettingsEntry(item.id);
+        const groupSettings = new GroupSettingsEntry(item.groupId, item.ownerId);
 
         DBHelper.addItemDocumentToCollection(groupSettings, this.dbName);
         return groupSettings;
@@ -25,7 +25,7 @@ class AdministrationHelper implements DbEntityInterface {
     }
 
     async getItem(item: FilterQuery<any>): Promise<GroupSettings> {
-        const groupSettings = await DBHelper.getItemFromCollection({id: item.id}, this.dbName);
+        const groupSettings = await DBHelper.getItemFromCollection({groupId: item.groupId}, this.dbName);
         return <GroupSettings>groupSettings;
     }
 
