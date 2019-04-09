@@ -1,4 +1,4 @@
-import {CommandInterface} from "../types/command";
+import {CommandInterface} from "command.d.ts";
 import VK, {MessageContext} from "vk-io";
 
 

@@ -34,7 +34,7 @@ const startBot = (vkBotApi: VK) => {
     const commandArray: Array<CardCommand> = [new CardCommand(vkBotApi), new AdministrationCommand(vkBotApi), new NotFoundCommand(vkBotApi)];
 
     vkBotApi.updates.on('join_group_member',context => {
-        console.log(context);
+        // console.log(context);
     });
 
 

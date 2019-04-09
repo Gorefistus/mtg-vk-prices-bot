@@ -1,7 +1,7 @@
-import { CommandInterface } from "../types/command";
+import { CommandInterface } from "command.d.ts";
 import VK, { MessageContext } from "vk-io";
 import { REGEX_CONSTANTS, PEER_TYPES } from "../utils/constants";
-import AdministrationHelper from "../utils/administration-helper";
+import AdministrationHelper from "../utils/database/administration-helper";
 
 
 export default class AdministrationCommand implements CommandInterface {

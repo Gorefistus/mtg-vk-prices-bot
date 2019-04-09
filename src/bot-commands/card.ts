@@ -1,10 +1,11 @@
-import VK, { MessageContext } from 'vk-io';
+import VK, {MessageContext} from 'vk-io';
+import {Card} from 'scryfall-sdk';
 
-import { REGEX_CONSTANTS } from '../utils/constants';
-import { ERRORS } from '../utils/strings';
-import { CommandInterface } from '../types/command';
-import { getCardByName } from "../utils/scryfall-utils";
-import { Card } from 'scryfall-sdk';
+import {REGEX_CONSTANTS} from '../utils/constants';
+import {ERRORS} from '../utils/strings';
+import {CommandInterface} from 'command.d.ts';
+import {getCardByName} from "../utils/scryfall-utils";
+import ImageHelper from "../utils/database/image-helper";
 
 
 export default class CardCommand implements CommandInterface {
@@ -45,7 +46,6 @@ export default class CardCommand implements CommandInterface {
 
 
         const cardNames = msg.text.match(this.regexGroup)[3];
-        console.log(msg.text.match(this.regexGroup));
         if (cardNames.trim().length === 0) {
             return this.processError(ERRORS.CARD_NO_CARD, msg);
         }
@@ -67,18 +67,35 @@ export default class CardCommand implements CommandInterface {
                             foundCard = await getCardByName(cardName);
                         }
                         foundCardArray.push(foundCard);
-                        // this.vkBotApi.upload.messagePhoto();
                     }
                 }
-                // console.log(foundCardArray);
-                const uploadRequestArray  = [];
-                foundCardArray.forEach(card => {
 
-                });
-                const test2 = await Promise.all(foundCardArray.map(value => {
-                    return this.vkBotApi.upload.messagePhoto({source: {value: value.image_uris.normal}});
-                }));
-                console.log(test2);
+                const test1 = await ImageHelper.getItem({cardId: foundCardArray[0].id});
+                console.log(test1.photoObject);
+
+                // const uploadRequestArray: Array<Promise<any>> = [];
+                // console.log(foundCardArray);
+                // foundCardArray.forEach((card, index) => {
+                //     if (card.card_faces) {
+                //         card.card_faces.forEach(cardFace => {
+                //             uploadRequestArray.push(this.vkBotApi.upload.messagePhoto({
+                //                 source: {
+                //                     value: cardFace.image_uris.normal,
+                //                     timeout: (index + 1) * 1000
+                //                 }
+                //             }))
+                //         })
+                //     } else {
+                //         uploadRequestArray.push(this.vkBotApi.upload.messagePhoto({
+                //             source: {
+                //                 value: card.image_uris.normal,
+                //                 timeout: (index + 1) * 1000
+                //             }
+                //         }));
+                //     }
+                // });
+                // const test2 = await Promise.all(uploadRequestArray);
+                // console.log(test2);
                 // const test1 = await this.vkBotApi.upload.messagePhoto({source: {values: [foundCardArray[0].image_uris.normal, foundCardArray[1].image_uris.normal]}});
                 // console.log(test1);
                 // const foundCard = await getCardByName(splittedCardNames[0]);

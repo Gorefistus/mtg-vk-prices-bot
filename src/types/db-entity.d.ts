@@ -11,4 +11,6 @@ export interface DbEntityInterface {
 
     deleteItem(item: FilterQuery<any>): Promise<boolean>
 
+    validateCacheEntry?(date: number): boolean,
+
 }
