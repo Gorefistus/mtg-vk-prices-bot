@@ -6,6 +6,7 @@ import {ERRORS} from '../utils/strings';
 import {CommandInterface} from 'command.d.ts';
 import {getCardByName} from "../utils/scryfall-utils";
 import ImageHelper from "../utils/database/image-helper";
+import {ImageCache} from "image-cache";
 
 
 export default class CardCommand implements CommandInterface {
@@ -70,46 +71,52 @@ export default class CardCommand implements CommandInterface {
                     }
                 }
 
-                const test1 = await ImageHelper.getItem({cardId: foundCardArray[0].id});
-                console.log(test1.photoObject);
 
-                // const uploadRequestArray: Array<Promise<any>> = [];
-                // console.log(foundCardArray);
-                // foundCardArray.forEach((card, index) => {
-                //     if (card.card_faces) {
-                //         card.card_faces.forEach(cardFace => {
-                //             uploadRequestArray.push(this.vkBotApi.upload.messagePhoto({
-                //                 source: {
-                //                     value: cardFace.image_uris.normal,
-                //                     timeout: (index + 1) * 1000
-                //                 }
-                //             }))
-                //         })
-                //     } else {
-                //         uploadRequestArray.push(this.vkBotApi.upload.messagePhoto({
-                //             source: {
-                //                 value: card.image_uris.normal,
-                //                 timeout: (index + 1) * 1000
-                //             }
-                //         }));
-                //     }
-                // });
-                // const test2 = await Promise.all(uploadRequestArray);
-                // console.log(test2);
-                // const test1 = await this.vkBotApi.upload.messagePhoto({source: {values: [foundCardArray[0].image_uris.normal, foundCardArray[1].image_uris.normal]}});
-                // console.log(test1);
-                // const foundCard = await getCardByName(splittedCardNames[0]);
-                // // console.log(foundCard);
-                // const id =  await msg.sendPhoto(foundCard.image_uris.normal);
-                // msg.send({
-                //     keyboard: Keyboard.keyboard([Keyboard.textButton({
-                //         label: 'Узнать цену',
-                //         payload: {command: 'test1'}
-                //     }), Keyboard.textButton({
-                //         label: 'Посмотреть все издания',
-                //     })], {oneTime: true}),
-                //     peer_id: msg.peerId,
-                // });
+                const cardImageObjects: Array<ImageCache> = [];
+                for (let card of foundCardArray) {
+                    if (card.card_faces) {
+                        for (let cardFace of card.card_faces) {
+                            const cardPhotoObjectFromCache = await ImageHelper.getItem({cardId: cardFace.illustration_id});
+                            if (cardPhotoObjectFromCache) {
+                                cardImageObjects.push(cardPhotoObjectFromCache);
+                            } else {
+                                const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: cardFace.image_uris.normal}});
+                                if (cardPhotoObject) {
+                                    const photoObjectToCache: ImageCache = {
+                                        cardId: cardFace.illustration_id,
+                                        cardObject: card,
+                                        photoObject: cardPhotoObject
+                                    };
+                                    cardImageObjects.push(photoObjectToCache);
+                                    ImageHelper.createItem(photoObjectToCache);
+                                }
+                            }
+                        }
+                    } else {
+                        const cardPhotoObjectFromCache = await ImageHelper.getItem({cardId: card.illustration_id});
+                        if (cardPhotoObjectFromCache) {
+                            cardImageObjects.push(cardPhotoObjectFromCache);
+                        } else {
+                            const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: card.image_uris.normal}});
+                            if (cardPhotoObject) {
+                                const photoObjectToCache: ImageCache = {
+                                    cardId: card.illustration_id,
+                                    cardObject: card,
+                                    photoObject: cardPhotoObject
+                                };
+                                cardImageObjects.push(photoObjectToCache);
+                                ImageHelper.createItem(photoObjectToCache);
+                            }
+                        }
+                    }
+
+                }
+                let attachment = '';
+                cardImageObjects.forEach(cardImage => {
+                    attachment = `${attachment}photo${cardImage.photoObject.ownerId}_${cardImage.photoObject.id},`
+                });
+
+                msg.send('', {attachment});
             } catch (e) {
                 console.log(e);
                 //nothing
