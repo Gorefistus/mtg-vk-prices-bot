@@ -1,7 +1,8 @@
-import { CommandInterface } from "command.d.ts";
-import VK, { MessageContext } from "vk-io";
-import { REGEX_CONSTANTS, PEER_TYPES } from "../utils/constants";
+import {CommandInterface} from "command.d.ts";
+import VK, {MessageContext} from "vk-io";
+import {PEER_TYPES, REGEX_CONSTANTS} from "../utils/constants";
 import AdministrationHelper from "../utils/database/administration-helper";
+import {ERRORS} from "../utils/strings";
 
 
 export default class AdministrationCommand implements CommandInterface {
@@ -39,7 +40,7 @@ export default class AdministrationCommand implements CommandInterface {
 
     async processCommand(msg: MessageContext): Promise<any> {
         if (!this.isCommandAvailable(msg)) {
-            this.processError('НЕТ_ДОСТУПА_PLACEHOLDER', msg);
+            this.processError(msg, ERRORS.REQUEST_TOO_SHORT);
         }
         let adminObject = await AdministrationHelper.getItem({groupId: msg.peerId});
         if (!adminObject) {
@@ -48,12 +49,14 @@ export default class AdministrationCommand implements CommandInterface {
         console.log(adminObject.bannedUsers[msg.senderId]);
         const user = adminObject.bannedUsers[msg.senderId];
         if (user && user.allDisabled) {
-            this.processError('You are globally banned', msg);
+            this.processError(msg, ERRORS.BAN_MESSAGE_PLACEHOLDER);
         }
     }
 
-    processError(errorMsg: string, msg: MessageContext): void {
+
+    processError(msg: MessageContext, errorMsg = ERRORS.GENERAL_ERROR): void {
         msg.reply(errorMsg);
     }
+
 
 }

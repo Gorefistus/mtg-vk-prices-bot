@@ -37,3 +37,19 @@ export enum LANGS_SCRY {
     LANG_RUS_SCRY = 'ru',
     LANG_ENG_SCRY = 'en',
 }
+
+export enum API_LINKS {
+    STAR_CITY_PRICE = 'http://www.starcitygames.com/results?name=',
+    TOPDECK_PRICE = 'https://topdeck.ru/apps/toptrade/api-v1/singles/search?q=',
+    TOPDECK_AUCTIONS = 'https://topdeck.ru/apps/toptrade/api-v1/auctions',
+    TOPDECK_AUCTIONS_FINISHED_ = 'https://topdeck.ru/apps/toptrade/auctions/finished',
+    TOPDECK_AUCTIONS_FINISHED_SEARCH = 'https://topdeck.ru/apps/toptrade/api-v1/auctions/search?q=',
+    MTGGOLDFISH_PRICE = 'https://www.mtggoldfish.com/price/',
+    SCRY_API = 'https://api.scryfall.com/cards/search?q=',
+    WIKI_MTG = 'https://mtg.gamepedia.com/api.php',
+}
+
+
+export enum TIME_CONSTANTS {
+    AUCTIONS ='Do MMM YYYY',
+}

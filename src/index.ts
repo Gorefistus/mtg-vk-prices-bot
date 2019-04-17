@@ -5,6 +5,7 @@ import NotFoundCommand from './bot-commands/not-found';
 import creds from '../creds.json';
 import {PEER_TYPES} from './utils/constants';
 import AdministrationCommand from "./bot-commands/administration";
+import AuctionsCommand from "./bot-commands/auctions";
 
 // const VkBot = require('node-vk-bot-api');
 // const path = require('path');
@@ -31,7 +32,10 @@ const checkRegex = (msg: MessageContext, commands: Array<CardCommand>) => {
 
 const startBot = (vkBotApi: VK) => {
 
-    const commandArray: Array<CardCommand> = [new CardCommand(vkBotApi), new AdministrationCommand(vkBotApi), new NotFoundCommand(vkBotApi)];
+    const commandArray: Array<CardCommand> = [new CardCommand(vkBotApi),
+        new AdministrationCommand(vkBotApi), new AuctionsCommand(vkBotApi),
+        new NotFoundCommand(vkBotApi), // this command should always trigger last
+       ];
 
     vkBotApi.updates.on('join_group_member',context => {
         // console.log(context);

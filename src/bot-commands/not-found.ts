@@ -30,8 +30,11 @@ export default class NotFoundCommand implements CommandInterface {
         return undefined;
     }
 
-    processError(errorMsg: string, msg: MessageContext): void {
+
+    processError(msg: MessageContext, errorMsg?: string): void {
     }
+
+
 
     isCommandAvailable(): boolean {
         return true;

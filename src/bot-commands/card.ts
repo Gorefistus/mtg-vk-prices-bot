@@ -29,7 +29,6 @@ export default class CardCommand implements CommandInterface {
             this.regexGroup = regexGroup;
         } else {
             this.regexGroup = new RegExp(`(${REGEX_CONSTANTS.GROUP_PREFIX} |${REGEX_CONSTANTS.PREFIX})(${this.shortName}|${this.fullName}) (.*)`, REGEX_CONSTANTS.REGEX_FLAGS);
-            console.log(this.regexGroup);
         }
     }
 
@@ -48,7 +47,7 @@ export default class CardCommand implements CommandInterface {
 
         const cardNames = msg.text.match(this.regexGroup)[3];
         if (cardNames.trim().length === 0) {
-            return this.processError(ERRORS.CARD_NO_CARD, msg);
+            return this.processError(msg, ERRORS.CARD_NO_CARD);
         }
         const splittedCardNames = cardNames.split(';');
         if (splittedCardNames.length > 0) {
@@ -118,15 +117,16 @@ export default class CardCommand implements CommandInterface {
 
                 msg.send('', {attachment});
             } catch (e) {
-                console.log(e);
-                //nothing
+                console.log(e, `\n${this.fullName}`);
+                this.processError(msg);
             }
         }
 
     }
 
 
-    public processError(errorMsg: string, msg: MessageContext): void {
+    processError(msg: MessageContext, errorMsg = ERRORS.GENERAL_ERROR): void {
+        msg.reply(errorMsg);
     }
 
     isCommandAvailable(msg: MessageContext): boolean {

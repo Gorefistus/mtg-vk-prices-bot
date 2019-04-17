@@ -1,4 +1,4 @@
-import VK, { MessageContext } from 'vk-io';
+import VK, {MessageContext} from 'vk-io';
 
 export interface CommandInterface {
     vkBotApi: VK;
@@ -15,7 +15,7 @@ export interface CommandInterface {
 
     processCommand(msg: MessageContext): Promise<any>;
 
-    processError(errorMsg: string, msg: MessageContext): void;
+    processError(msg: MessageContext, errorMsg?: string): void;
 
     isCommandAvailable(msg?: MessageContext): boolean;
 
