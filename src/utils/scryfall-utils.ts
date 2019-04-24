@@ -117,7 +117,8 @@ export function getCardByName(cardName: string, setCode?: string, multilang = fa
                     .on('error', (reason) => {
                         reject(reason);
                     }).on('done', () => {
-                        //TODO we are done search has failed
+                    //TODO we are done search has failed
+                    reject(undefined);
                 });
             });
         }

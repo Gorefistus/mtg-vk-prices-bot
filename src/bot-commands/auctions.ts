@@ -1,7 +1,7 @@
 import VK, { MessageContext } from "vk-io";
 import axios from 'axios';
 
-import { API_LINKS, REGEX_CONSTANTS, TIME_CONSTANTS } from "../utils/constants";
+import {API_LINKS, PEER_TYPES, REGEX_CONSTANTS, TIME_CONSTANTS} from "../utils/constants";
 import { AUCTIONS, ERRORS } from "../utils/strings";
 import { TopdeckAuction, TopdeckEndedAuction } from "topdeck-auction";
 import * as moment from "moment";
@@ -37,7 +37,7 @@ export default class AuctionsCommand extends BasicCommand {
     async processCommand(msg: MessageContext): Promise<any> {
 
         try {
-            const auctionsSearchQuery = msg.text.match(this.regexGroup)[3];
+            const auctionsSearchQuery = msg.text.match(PEER_TYPES.GROUP === msg.peerType ? this.regexGroup : this.regex)[3];
             if (auctionsSearchQuery && auctionsSearchQuery.trim().length < 3) {
                 return this.processError(msg, ERRORS.REQUEST_TOO_SHORT);
             }

@@ -1,6 +1,8 @@
 export enum ERRORS {
     CARD_NO_CARD = 'Вы не ввели название карты',
 
+    CARD_NOT_FOUND = 'Одна или несколько карт не были найдены',
+
     BAN_MESSAGE_PLACEHOLDER = 'You are globally banned',
 
     REQUEST_TOO_SHORT = 'Ваш запрос слишком короткий, минимум символов 3',

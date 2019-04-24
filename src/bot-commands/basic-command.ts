@@ -1,6 +1,7 @@
 import { CommandInterface } from 'command';
 import VK, { MessageContext } from 'vk-io';
 import { REGEX_CONSTANTS } from '../utils/constants';
+import {ERRORS} from "../utils/strings";
 
 
 export default class BasicCommand implements CommandInterface {
@@ -40,7 +41,7 @@ export default class BasicCommand implements CommandInterface {
         return undefined;
     }
 
-    processError(msg: MessageContext, errorMsg?: string): void {
+    processError(msg: MessageContext, errorMsg = ERRORS.GENERAL_ERROR): void {
         msg.reply(errorMsg);
     }
 

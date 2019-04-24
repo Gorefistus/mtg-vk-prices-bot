@@ -1,7 +1,7 @@
 import VK, { MessageContext } from 'vk-io';
 import { Card } from 'scryfall-sdk';
 
-import { REGEX_CONSTANTS } from '../utils/constants';
+import {PEER_TYPES, REGEX_CONSTANTS} from '../utils/constants';
 import { ERRORS } from '../utils/strings';
 import { getCardByName } from "../utils/scryfall-utils";
 import ImageHelper from "../utils/database/image-helper";
@@ -42,7 +42,7 @@ export default class CardCommand extends BasicCommand {
          */
 
 
-        const cardNames = msg.text.match(this.regexGroup)[3];
+        const cardNames = msg.text.match(PEER_TYPES.GROUP === msg.peerType ? this.regexGroup : this.regex)[3];
         if (cardNames.trim().length === 0) {
             return this.processError(msg, ERRORS.CARD_NO_CARD);
         }
@@ -114,8 +114,10 @@ export default class CardCommand extends BasicCommand {
 
                 msg.send('', {attachment});
             } catch (e) {
-                console.log(e, `\n${this.fullName}`);
-                this.processError(msg);
+                if (!e) {
+                    return this.processError(msg, ERRORS.CARD_NOT_FOUND)
+                }
+                return this.processError(msg);
             }
         }
 
