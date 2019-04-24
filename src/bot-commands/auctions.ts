@@ -1,14 +1,14 @@
-import VK, {MessageContext} from "vk-io";
+import VK, { MessageContext } from "vk-io";
 import axios from 'axios';
 
-import {REGEX_CONSTANTS, API_LINKS, TIME_CONSTANTS} from "../utils/constants";
-import {AUCTIONS, ERRORS} from "../utils/strings";
-import {CommandInterface} from "command";
-import {TopdeckAuction, TopdeckEndedAuction} from "topdeck-auction";
+import { API_LINKS, REGEX_CONSTANTS, TIME_CONSTANTS } from "../utils/constants";
+import { AUCTIONS, ERRORS } from "../utils/strings";
+import { TopdeckAuction, TopdeckEndedAuction } from "topdeck-auction";
 import * as moment from "moment";
+import BasicCommand from './basic-command';
 
 
-export default class AuctionsCommand implements CommandInterface {
+export default class AuctionsCommand extends BasicCommand {
     fullName: string; //auctions
     regex: RegExp;
     regexGroup: RegExp;
@@ -17,6 +17,7 @@ export default class AuctionsCommand implements CommandInterface {
 
 
     constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, regex, regexGroup);
         this.vkBotApi = vkApi;
         this.fullName = 'auctions';
         this.shortName = 'ac';
@@ -33,30 +34,22 @@ export default class AuctionsCommand implements CommandInterface {
         }
     }
 
-    checkRegex(stringToCheck: string, isGroup?: boolean): boolean {
-        return isGroup ? this.regexGroup.test(stringToCheck) : this.regex.test(stringToCheck);
-    }
-
-    isCommandAvailable(msg?: MessageContext): boolean {
-        return false;
-    }
-
     async processCommand(msg: MessageContext): Promise<any> {
 
         try {
             const auctionsSearchQuery = msg.text.match(this.regexGroup)[3];
             if (auctionsSearchQuery && auctionsSearchQuery.trim().length < 3) {
-                return this.processError(msg, ERRORS.REQUEST_TOO_SHORT)
+                return this.processError(msg, ERRORS.REQUEST_TOO_SHORT);
             }
 
 
-            //TOPDECK CURRENT AUCTIONS SEARCH START----------------------------
+            // TOPDECK CURRENT AUCTIONS SEARCH START----------------------------
 
             const topdeckCurrentAuctionsPricesResponse = await axios.get(API_LINKS.TOPDECK_AUCTIONS, {responseType: 'json'});
             if (topdeckCurrentAuctionsPricesResponse.status < 200 && topdeckCurrentAuctionsPricesResponse.status > 300) {
                 return this.processError(msg, ERRORS.TOPDECK_REQUEST_TIMEOUT);
             }
-            //we need to reverse array with prices because response in reverse order
+            // we need to reverse array with prices because response in reverse order
             const topdeckCurrentAuctionsPrices: Array<TopdeckAuction> = topdeckCurrentAuctionsPricesResponse.data.reverse();
             const filteredResults: Array<TopdeckAuction> = [];
             if (auctionsSearchQuery) {
@@ -65,7 +58,7 @@ export default class AuctionsCommand implements CommandInterface {
                         filteredResults.push(auctionEntry);
                     }
                     if (filteredResults.length > 4) {
-                        break
+                        break;
                     }
                 }
             } else {
@@ -76,16 +69,16 @@ export default class AuctionsCommand implements CommandInterface {
             });
 
 
-            //TOPDECK ENDED AUCTIONS SEARCH START----------------------------
+            // TOPDECK ENDED AUCTIONS SEARCH START----------------------------
 
-            //It's unnecessary to search recently ended auctions without params
+            // It's unnecessary to search recently ended auctions without params
             if (auctionsSearchQuery) {
                 const topdeckEndedAuctionsPricesResponse = await axios.get(`${API_LINKS.TOPDECK_AUCTIONS_FINISHED_SEARCH}${encodeURIComponent(auctionsSearchQuery.trim())}`,
                     {responseType: 'json'});
                 if (topdeckEndedAuctionsPricesResponse.status < 200 && topdeckEndedAuctionsPricesResponse.status > 300) {
                     return this.processError(msg, ERRORS.TOPDECK_REQUEST_TIMEOUT);
                 }
-                //ended auctions already sorted for us, so we don't need to sort them again
+                // ended auctions already sorted for us, so we don't need to sort them again
                 const topdeckEndedAuctionsPrices: Array<TopdeckEndedAuction> = topdeckEndedAuctionsPricesResponse.data.auctions;
                 const endedAuctionsResult = [];
                 let stringToReturn = `\n\n ${AUCTIONS.ENDED_MATCH_CRITERIA}: `;
@@ -109,10 +102,6 @@ export default class AuctionsCommand implements CommandInterface {
         }
 
         return undefined;
-    }
-
-    processError(msg: MessageContext, errorMsg = ERRORS.GENERAL_ERROR): void {
-        msg.reply(errorMsg);
     }
 
 }

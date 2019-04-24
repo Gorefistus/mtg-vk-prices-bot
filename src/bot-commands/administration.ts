@@ -1,11 +1,11 @@
-import {CommandInterface} from "command.d.ts";
-import VK, {MessageContext} from "vk-io";
-import {PEER_TYPES, REGEX_CONSTANTS} from "../utils/constants";
+import VK, { MessageContext } from "vk-io";
+import { PEER_TYPES, REGEX_CONSTANTS } from "../utils/constants";
 import AdministrationHelper from "../utils/database/administration-helper";
-import {ERRORS} from "../utils/strings";
+import { ERRORS } from "../utils/strings";
+import BasicCommand from './basic-command';
 
 
-export default class AdministrationCommand implements CommandInterface {
+export default class AdministrationCommand extends BasicCommand {
     fullName: string; // administration
     shortName: string; // ad
     regex: RegExp;
@@ -14,6 +14,7 @@ export default class AdministrationCommand implements CommandInterface {
 
 
     constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, regex, regexGroup);
         this.vkBotApi = vkApi;
         this.fullName = 'administration';
         this.shortName = 'ad';
@@ -29,10 +30,6 @@ export default class AdministrationCommand implements CommandInterface {
         }
     }
 
-
-    checkRegex(stringToCheck: string, isGroup?: boolean): boolean {
-        return isGroup ? this.regexGroup.test(stringToCheck) : this.regex.test(stringToCheck);
-    }
 
     isCommandAvailable(msg: MessageContext): boolean {
         return PEER_TYPES.GROUP === msg.peerType;
@@ -52,11 +49,5 @@ export default class AdministrationCommand implements CommandInterface {
             this.processError(msg, ERRORS.BAN_MESSAGE_PLACEHOLDER);
         }
     }
-
-
-    processError(msg: MessageContext, errorMsg = ERRORS.GENERAL_ERROR): void {
-        msg.reply(errorMsg);
-    }
-
 
 }

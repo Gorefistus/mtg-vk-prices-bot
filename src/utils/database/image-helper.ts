@@ -30,7 +30,7 @@ class ImageHelper implements DbEntityInterface {
     }
 
     async getItem(item: FilterQuery<ImageCacheSearch>): Promise<ImageCache> {
-        let imageFromCache = await DBHelper.getItemFromCollection(item, this.dbName);
+        const imageFromCache = await DBHelper.getItemFromCollection(item, this.dbName);
         if (imageFromCache && imageFromCache.trade && this.validateCacheEntry(imageFromCache.cacheDate)) {
             return <ImageCache>imageFromCache;
         }

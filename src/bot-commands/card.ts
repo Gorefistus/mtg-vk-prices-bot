@@ -1,15 +1,15 @@
-import VK, {MessageContext} from 'vk-io';
-import {Card} from 'scryfall-sdk';
+import VK, { MessageContext } from 'vk-io';
+import { Card } from 'scryfall-sdk';
 
-import {REGEX_CONSTANTS} from '../utils/constants';
-import {ERRORS} from '../utils/strings';
-import {CommandInterface} from 'command.d.ts';
-import {getCardByName} from "../utils/scryfall-utils";
+import { REGEX_CONSTANTS } from '../utils/constants';
+import { ERRORS } from '../utils/strings';
+import { getCardByName } from "../utils/scryfall-utils";
 import ImageHelper from "../utils/database/image-helper";
-import {ImageCache} from "image-cache";
+import { ImageCache } from "image-cache";
+import BasicCommand from './basic-command';
 
 
-export default class CardCommand implements CommandInterface {
+export default class CardCommand extends BasicCommand {
     fullName: string; // 'card';
     shortName: string; // 'c';
     public vkBotApi: VK;
@@ -17,6 +17,7 @@ export default class CardCommand implements CommandInterface {
     public regexGroup: RegExp;
 
     constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, regex, regexGroup);
         this.vkBotApi = vkApi;
         this.fullName = 'card';
         this.shortName = 'c';
@@ -30,10 +31,6 @@ export default class CardCommand implements CommandInterface {
         } else {
             this.regexGroup = new RegExp(`(${REGEX_CONSTANTS.GROUP_PREFIX} |${REGEX_CONSTANTS.PREFIX})(${this.shortName}|${this.fullName}) (.*)`, REGEX_CONSTANTS.REGEX_FLAGS);
         }
-    }
-
-    public checkRegex(stringToCheck: string, isGroup = false): boolean {
-        return isGroup ? this.regexGroup.test(stringToCheck) : this.regex.test(stringToCheck);
     }
 
     public async processCommand(msg: MessageContext): Promise<any> {
@@ -72,9 +69,9 @@ export default class CardCommand implements CommandInterface {
 
 
                 const cardImageObjects: Array<ImageCache> = [];
-                for (let card of foundCardArray) {
+                for (const card of foundCardArray) {
                     if (card.card_faces) {
-                        for (let cardFace of card.card_faces) {
+                        for (const cardFace of card.card_faces) {
                             const cardPhotoObjectFromCache = await ImageHelper.getItem({cardId: cardFace.illustration_id});
                             if (cardPhotoObjectFromCache) {
                                 cardImageObjects.push(cardPhotoObjectFromCache);
@@ -112,7 +109,7 @@ export default class CardCommand implements CommandInterface {
                 }
                 let attachment = '';
                 cardImageObjects.forEach(cardImage => {
-                    attachment = `${attachment}photo${cardImage.photoObject.ownerId}_${cardImage.photoObject.id},`
+                    attachment = `${attachment}photo${cardImage.photoObject.ownerId}_${cardImage.photoObject.id},`;
                 });
 
                 msg.send('', {attachment});
@@ -124,12 +121,4 @@ export default class CardCommand implements CommandInterface {
 
     }
 
-
-    processError(msg: MessageContext, errorMsg = ERRORS.GENERAL_ERROR): void {
-        msg.reply(errorMsg);
-    }
-
-    isCommandAvailable(msg: MessageContext): boolean {
-        return false;
-    }
 }

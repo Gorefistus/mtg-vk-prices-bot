@@ -1,15 +1,16 @@
-import {CommandInterface} from "command.d.ts";
-import VK, {MessageContext} from "vk-io";
+import VK, { MessageContext } from "vk-io";
+import BasicCommand from './basic-command';
 
 
-export default class NotFoundCommand implements CommandInterface {
+export default class NotFoundCommand extends BasicCommand {
     fullName: string;
     shortName: string;
     regexGroup: RegExp;
     regex: RegExp;
     vkBotApi: VK;
 
-    constructor(vkApi: VK, regex?: RegExp) {
+    constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, regex, regexGroup);
         this.vkBotApi = vkApi;
         if (regex) {
             this.regex = regex;
@@ -29,11 +30,6 @@ export default class NotFoundCommand implements CommandInterface {
         }
         return undefined;
     }
-
-
-    processError(msg: MessageContext, errorMsg?: string): void {
-    }
-
 
 
     isCommandAvailable(): boolean {

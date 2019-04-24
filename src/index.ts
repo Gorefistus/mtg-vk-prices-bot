@@ -1,11 +1,12 @@
-import VK, {MessageContext} from 'vk-io';
+import VK, { MessageContext } from 'vk-io';
 
 import CardCommand from './bot-commands/card';
 import NotFoundCommand from './bot-commands/not-found';
 import creds from '../creds.json';
-import {PEER_TYPES} from './utils/constants';
+import { PEER_TYPES } from './utils/constants';
 import AdministrationCommand from "./bot-commands/administration";
 import AuctionsCommand from "./bot-commands/auctions";
+import PriceCommand from './bot-commands/price';
 
 // const VkBot = require('node-vk-bot-api');
 // const path = require('path');
@@ -34,8 +35,9 @@ const startBot = (vkBotApi: VK) => {
 
     const commandArray: Array<CardCommand> = [new CardCommand(vkBotApi),
         new AdministrationCommand(vkBotApi), new AuctionsCommand(vkBotApi),
+        new PriceCommand(vkBotApi),
         new NotFoundCommand(vkBotApi), // this command should always trigger last
-       ];
+    ];
 
     vkBotApi.updates.on('join_group_member',context => {
         // console.log(context);
