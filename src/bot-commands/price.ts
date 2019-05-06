@@ -1,9 +1,12 @@
 import VK, {MessageContext} from 'vk-io';
+import {Card} from "scryfall-sdk";
+
 import BasicCommand from './basic-command';
 import {PEER_TYPES, REGEX_CONSTANTS} from '../utils/constants';
-import {Card} from "scryfall-sdk";
 import {getCardByName} from "../utils/scryfall-utils";
 import {ERRORS} from "../utils/strings";
+import PriceHelper from '../utils/database/price-helper';
+import ImageHelper from '../utils/database/image-helper';
 
 
 export default class PriceCommand extends BasicCommand {
@@ -40,6 +43,12 @@ export default class PriceCommand extends BasicCommand {
             } else {
                 foundCard = await getCardByName(cardName);
             }
+            const priceFromCache = await PriceHelper.getItem({cardId:foundCard.id});
+            if(priceFromCache){
+                const priceImageFromCache = await ImageHelper.getItem({cardId: foundCard.id});
+
+            }
+            console.log(foundCard);
         } catch (e) {
             console.log(e);
             if (!e) {

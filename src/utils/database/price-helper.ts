@@ -1,21 +1,35 @@
-import { DbEntityInterface } from 'db-entity';
-import { FilterQuery, UpdateQuery } from 'mongodb';
-import { PriceCache, PriceCacheSearch } from 'price-cache';
-import { DB_CONSTANTS } from '../constants';
+import {DbEntityInterface} from 'db-entity';
+import {FilterQuery, UpdateQuery} from 'mongodb';
+import {PriceCache, PriceCacheSearch} from 'price-cache';
+import {DB_CONSTANTS, DB_NAMES} from '../constants';
+import DBHelper from "./db-helper";
 
 
 class PriceHelper implements DbEntityInterface {
     dbName: string;
 
-    createItem(item: FilterQuery<PriceCache>): Promise<any> {
-        return undefined;
+    constructor() {
+        this.dbName = DB_NAMES.PRICES;
     }
 
-    deleteItem(item: FilterQuery<PriceCacheSearch>): Promise<boolean> {
-        return undefined;
+    async createItem(item: FilterQuery<PriceCache>): Promise<PriceCache> {
+        if (!item.cacheDate) {
+            item.cacheDate = Date.now();
+        }
+        DBHelper.addItemDocumentToCollection(item, this.dbName);
+        return <PriceCache>item;
     }
 
-    getItem(item: FilterQuery<PriceCacheSearch>): Promise<any> {
+    async deleteItem(item: FilterQuery<PriceCacheSearch>): Promise<boolean> {
+        return await DBHelper.removeFromCollection(item, this.dbName);
+    }
+
+    async getItem(item: FilterQuery<PriceCacheSearch>): Promise<PriceCache> {
+        const priceFromCache = await DBHelper.getItemFromCollection(item, this.dbName);
+        if (priceFromCache && this.validateCacheEntry(priceFromCache.cacheDate)) {
+            return <PriceCache>priceFromCache;
+        }
+        this.deleteItem(item);
         return undefined;
     }
 

@@ -3,6 +3,7 @@ export interface PriceCache {
     cardName: string,
     cardSet: string,
     cardId: string;
+    foil?: boolean;
     SCGPrice: SCGPrice;
     TopDeckPrice: TopDeckPrice;
 }
@@ -10,6 +11,7 @@ export interface PriceCache {
 
 export interface PriceCacheSearch {
     cardId: string;
+    foil?: boolean;
 }
 
 

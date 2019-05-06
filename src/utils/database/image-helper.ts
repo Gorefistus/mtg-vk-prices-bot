@@ -29,8 +29,8 @@ class ImageHelper implements DbEntityInterface {
         return undefined;
     }
 
-    deleteItem(item: FilterQuery<ImageCacheSearch>): Promise<boolean> {
-        return undefined;
+    async deleteItem(item: FilterQuery<ImageCacheSearch>): Promise<boolean> {
+        return await DBHelper.removeFromCollection(item, this.dbName);
     }
 
     async getItem(item: FilterQuery<ImageCacheSearch>): Promise<ImageCache> {
@@ -38,7 +38,8 @@ class ImageHelper implements DbEntityInterface {
         if (imageFromCache && imageFromCache.trade && this.validateCacheEntry(imageFromCache.cacheDate)) {
             return <ImageCache>imageFromCache;
         }
-        return <ImageCache>imageFromCache;
+        this.deleteItem(item);
+        return undefined;
     }
 
     updateItem(item: UpdateQuery<ImageCacheSearch>): Promise<boolean> {

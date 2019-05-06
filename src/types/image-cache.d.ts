@@ -1,4 +1,4 @@
-import { PhotoAttachment } from "vk-io";
+import {PhotoAttachment} from "vk-io";
 
 export interface ImageCache {
     photoObject: PhotoAttachment;
