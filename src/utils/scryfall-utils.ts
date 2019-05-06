@@ -1,9 +1,9 @@
 import * as Scry from "scryfall-sdk";
-import { Card } from "scryfall-sdk";
+import {Card} from "scryfall-sdk";
 import franc from "franc";
 
 
-import { LANGS, LANGS_SCRY } from "./constants";
+import {LANGS, LANGS_SCRY} from "./constants";
 
 
 // export function getCardByName(cardName: string, setCode?: string): Promise<Card> {

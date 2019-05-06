@@ -16,6 +16,12 @@ export enum ERRORS {
     GENERAL_ERROR = 'Произошла ошибка в обработке вашего запроса, попробуйте повторить запрос позднее'
 }
 
+export enum LOGS {
+    STARCITY_PRICE_REQUEST_ERROR = 'StarCityRequest price request has failed \n',
+    GOLDGISH_IMAGE_DELETED = 'Goldfish image has been deleted',
+}
+
+
 
 export enum AUCTIONS {
     CURRENT_MATCH_CRITERIA = 'ТЕКУЩИЕ аукционы подходящие под критерии поиска: ',

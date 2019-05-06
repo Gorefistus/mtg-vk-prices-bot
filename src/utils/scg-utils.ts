@@ -1,6 +1,8 @@
+import {Card} from "scryfall-sdk";
+import cheerio from 'cheerio';
+
 import ScgDict from './scg-set-dictionary';
 import {SCGPrice} from "price-cache";
-import {Card} from "scryfall-sdk";
 
 
 export function getStartCityPrices(htmlString: string, cardObject: Card, isFoil = false): SCGPrice {
