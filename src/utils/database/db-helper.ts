@@ -28,7 +28,6 @@ class DbHelper {
             await this.db.collection(collectionName)
                 .insertOne(item);
         } catch (e) {
-            console.log(item);
             console.log(e, '_________________________');
         }
     }

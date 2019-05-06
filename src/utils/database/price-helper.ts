@@ -1,5 +1,5 @@
 import { DbEntityInterface } from 'db-entity';
-import { FilterQuery, UpdateQuery } from '@types/mongodb';
+import { FilterQuery, UpdateQuery } from 'mongodb';
 import { PriceCache, PriceCacheSearch } from 'price-cache';
 import { DB_CONSTANTS } from '../constants';
 

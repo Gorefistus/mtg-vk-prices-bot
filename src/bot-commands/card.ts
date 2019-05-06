@@ -1,11 +1,11 @@
 import VK, { MessageContext } from 'vk-io';
 import { Card } from 'scryfall-sdk';
 
-import {PEER_TYPES, REGEX_CONSTANTS} from '../utils/constants';
+import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { ERRORS } from '../utils/strings';
-import { getCardByName } from "../utils/scryfall-utils";
-import ImageHelper from "../utils/database/image-helper";
-import { ImageCache } from "image-cache";
+import { getCardByName } from '../utils/scryfall-utils';
+import ImageHelper from '../utils/database/image-helper';
+import { ImageCache } from 'image-cache';
 import BasicCommand from './basic-command';
 
 
@@ -47,27 +47,29 @@ export default class CardCommand extends BasicCommand {
             return this.processError(msg, ERRORS.CARD_NO_CARD);
         }
         const splittedCardNames = cardNames.split(';');
-        if (splittedCardNames.length > 0) {
-            // console.log(splittedCardNames[0]);
-        }
 
         if (splittedCardNames.length > 0) {
+            const foundCardArray: Array<Card> = [];
+            const notFoundCardArray: Array<string> = [];
+
             try {
-                const foundCardArray: Array<Card> = [];
                 for (const cardName of splittedCardNames) {
                     if (cardName.trim().length > 0) {
                         const cardSetSplit = cardName.match(/(.*)\[(.{3,4})\]/i);
                         let foundCard: Card;
-                        if (cardSetSplit !== null) {
-                            foundCard = await getCardByName(cardSetSplit[1], cardSetSplit[2]);
-                        } else {
-                            foundCard = await getCardByName(cardName);
+                        try {
+                            if (cardSetSplit !== null) {
+                                foundCard = await getCardByName(cardSetSplit[1], cardSetSplit[2]);
+                            } else {
+                                foundCard = await getCardByName(cardName);
+                            }
+                            foundCardArray.push(foundCard);
+                        } catch (e) {
+                            // TODO: could there be other errors like network one?
+                            notFoundCardArray.push(cardSetSplit !== null ? `${cardSetSplit[1]}[${cardSetSplit[2]}]` : cardName);
                         }
-                        foundCardArray.push(foundCard);
                     }
                 }
-
-
                 const cardImageObjects: Array<ImageCache> = [];
                 for (const card of foundCardArray) {
                     if (card.card_faces) {
@@ -114,10 +116,11 @@ export default class CardCommand extends BasicCommand {
 
                 msg.send('', {attachment});
             } catch (e) {
-                if (!e) {
-                    return this.processError(msg, ERRORS.CARD_NOT_FOUND)
-                }
                 return this.processError(msg);
+            } finally {
+                if (notFoundCardArray.length > 0) {
+                    msg.send(`${ERRORS.CARDS_NOT_FOUND} ${notFoundCardArray.join(', ')} `);
+                }
             }
         }
 
