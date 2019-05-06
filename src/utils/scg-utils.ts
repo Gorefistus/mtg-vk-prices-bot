@@ -10,7 +10,7 @@ export function getStartCityPrices(htmlString: string, cardObject: Card, isFoil 
         return undefined;
     }
     const htmlPage = cheerio.load(htmlString);
-    let SCGCard: SCGPrice = undefined;
+    let SCGCard: SCGPrice = {};
     let scgCardIndex = -1;
     htmlPage('.search_results_2')
         .each(function (i) {

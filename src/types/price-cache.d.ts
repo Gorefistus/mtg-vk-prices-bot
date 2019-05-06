@@ -16,10 +16,10 @@ export interface PriceCacheSearch {
 
 
 export interface SCGPrice {
-    value: string;
-    stock: string;
-    name: string;
-    set: string;
+    value?: string;
+    stock?: string;
+    name?: string;
+    set?: string;
 }
 
 export interface TopDeckPrice {

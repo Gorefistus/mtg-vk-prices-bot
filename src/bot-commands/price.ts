@@ -58,13 +58,12 @@ export default class PriceCommand extends BasicCommand {
                 const priceImageFromCache = await ImageHelper.getItem({cardId: foundCard.id, trade: true});
                 // TODO MAKE BOT POST A PRICE
             } else {
-                const image = await getGoldfishPriceGraph(foundCardName, foundCard);
+                // const image = await getGoldfishPriceGraph(foundCardName, foundCard);
 
                 //// SCG PRICES SCRAPING START
                 try {
-                    const starCityPage = <string>(await axios.get(`${API_LINKS.STAR_CITY_PRICE}${encodeURIComponent(cardName)}&auto=Y`)).data;
-                    const scgPrice = getStartCityPrices(starCityPage, foundCard);
-                    console.log(scgPrice);
+                    const starCityPage = await axios.get(`${API_LINKS.STAR_CITY_PRICE}${encodeURIComponent(foundCardName)}&auto=Y&numpage=150`);
+                    const scgPrice = getStartCityPrices(starCityPage.data.toString(), foundCard);
 
                 }catch (e) {
                     console.error(LOGS.STARCITY_PRICE_REQUEST_ERROR, e);
