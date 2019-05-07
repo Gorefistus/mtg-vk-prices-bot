@@ -19,7 +19,6 @@ class ImageHelper implements DbEntityInterface {
             // broken fields for mongo serialization, also useless for our app
             delete item.photoObject.$filled;
             delete item.photoObject.vk;
-            console.log(item.photoObject.vk);
             if (!item.cacheDate) {
                 item.cacheDate = Date.now();
             }
@@ -36,6 +35,8 @@ class ImageHelper implements DbEntityInterface {
     async getItem(item: FilterQuery<ImageCacheSearch>): Promise<ImageCache> {
         const imageFromCache = await DBHelper.getItemFromCollection(item, this.dbName);
         if (imageFromCache && imageFromCache.trade && this.validateCacheEntry(imageFromCache.cacheDate)) {
+            return <ImageCache>imageFromCache;
+        } else if (imageFromCache && (imageFromCache.art || !imageFromCache.trade)) {
             return <ImageCache>imageFromCache;
         }
         this.deleteItem(item);

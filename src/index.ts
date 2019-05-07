@@ -7,6 +7,7 @@ import { PEER_TYPES } from './utils/constants';
 import AdministrationCommand from './bot-commands/administration';
 import AuctionsCommand from './bot-commands/auctions';
 import PriceCommand from './bot-commands/price';
+import ArtCommand from "./bot-commands/art";
 
 // const VkBot = require('node-vk-bot-api');
 // const path = require('path');
@@ -33,8 +34,11 @@ const checkRegex = (msg: MessageContext, commands: Array<CardCommand>) => {
 
 const startBot = (vkBotApi: VK) => {
 
-    const commandArray: Array<CardCommand> = [new CardCommand(vkBotApi),
-        new AdministrationCommand(vkBotApi), new AuctionsCommand(vkBotApi),
+    const commandArray: Array<CardCommand> = [
+        new ArtCommand(vkBotApi),
+        new CardCommand(vkBotApi),
+        new AdministrationCommand(vkBotApi),
+        new AuctionsCommand(vkBotApi),
         new PriceCommand(vkBotApi),
         new NotFoundCommand(vkBotApi), // this command should always trigger last
     ];
