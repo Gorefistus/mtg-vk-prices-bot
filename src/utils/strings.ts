@@ -26,7 +26,28 @@ export enum LOGS {
 }
 
 export enum INFO {
+    ART = 'Иллюстрация:',
+    ARTS = 'Иллюстрации:',
+
     PRICES_TOPDECK = 'TopDeck (неизвестное издание)',
+}
+
+export enum LEGALITY {
+    LEGAL = 'Легальна ✅',
+    NOT_LEGAL = 'Нелегеальна 🚫',
+    BANNED = 'Забанена ⛔',
+    RESTRICTED = 'Порестрикчена ❗',
+}
+
+export enum FORMATS {
+    STANDARD = 'Standard',
+    MODERN = 'Modern',
+    LEGACY = 'Legacy',
+    PAUPER = 'Pauper',
+    COMMANDER = 'Commander',
+    VINTAGE = 'Vintage',
+    PENNY = 'Penny Dreadful',
+    MTGO_COMMANDER = 'MTGO 1v1 Commander',
 }
 
 

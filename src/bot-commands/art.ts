@@ -1,7 +1,7 @@
 import BasicCommand from "./basic-command";
 import VK, {MessageContext} from "vk-io";
 import {PEER_TYPES, REGEX_CONSTANTS} from "../utils/constants";
-import {ERRORS} from "../utils/strings";
+import {ERRORS, INFO} from "../utils/strings";
 import {Card} from "scryfall-sdk";
 import {getCardByName} from "../utils/scryfall-utils";
 import {ImageCache} from "image-cache";
@@ -122,9 +122,9 @@ export default class ArtCommand extends BasicCommand {
                 });
                 let artistString = '';
                 if (foundCardArray.length > 1) {
-                    artistString = 'Иллюстрации:'
+                    artistString = INFO.ARTS;
                 } else if (foundCardArray.length > 0) {
-                    artistString = 'Иллюстрация:'
+                    artistString = INFO.ART;
                 }
 
                 foundCardArray.forEach(card => {

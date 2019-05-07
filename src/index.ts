@@ -8,6 +8,7 @@ import AdministrationCommand from './bot-commands/administration';
 import AuctionsCommand from './bot-commands/auctions';
 import PriceCommand from './bot-commands/price';
 import ArtCommand from "./bot-commands/art";
+import LegalityCommand from "./bot-commands/legality";
 
 // const VkBot = require('node-vk-bot-api');
 // const path = require('path');
@@ -40,6 +41,7 @@ const startBot = (vkBotApi: VK) => {
         new AdministrationCommand(vkBotApi),
         new AuctionsCommand(vkBotApi),
         new PriceCommand(vkBotApi),
+        new LegalityCommand(vkBotApi),
         new NotFoundCommand(vkBotApi), // this command should always trigger last
     ];
 

@@ -39,6 +39,13 @@ export enum LANGS_SCRY {
     LANG_ENG_SCRY = 'en',
 }
 
+export enum LEGALITY {
+    LEGAL = 'legal',
+    NOT_LEGAL = 'not_legal',
+    BANNED = 'banned',
+    RESTRICTED = 'restricted',
+}
+
 export enum API_LINKS {
     STAR_CITY_PRICE = 'http://www.starcitygames.com/results?name=',
     TOPDECK_PRICE = 'https://topdeck.ru/apps/toptrade/api-v1/singles/search?q=',

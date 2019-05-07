@@ -15,3 +15,4 @@ export function removeAllSymbols(str: string, arrSymbolsToRemove: Array<string>)
     }
     return finalStr;
 }
+
