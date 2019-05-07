@@ -1,17 +1,19 @@
-import VK, {MessageContext} from 'vk-io';
-import {Card} from "scryfall-sdk";
+import VK, { MessageContext } from 'vk-io';
+import { Card } from 'scryfall-sdk';
 import axios from 'axios';
-
-
+import request from 'request-promise-native';
 
 import BasicCommand from './basic-command';
-import {PEER_TYPES, REGEX_CONSTANTS, API_LINKS} from '../utils/constants';
-import {getCardByName} from "../utils/scryfall-utils";
-import {getGoldfishPriceGraph} from '../utils/goldfish-utils';
-import {ERRORS, LOGS} from "../utils/strings";
+import { API_LINKS, PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
+import { getCardByName } from '../utils/scryfall-utils';
+import { ERRORS, INFO, LOGS } from '../utils/strings';
 import PriceHelper from '../utils/database/price-helper';
 import ImageHelper from '../utils/database/image-helper';
-import {getStartCityPrices} from "../utils/scg-utils";
+import { getStartCityPrices } from '../utils/scg-utils';
+import { TopDeckPrice } from 'topdeck-price';
+import { SCGPrice, TopDeckPriceCache } from 'price-cache';
+import { ImageCache } from 'image-cache';
+import { getGoldfishPriceGraph } from '../utils/goldfish-utils';
 
 
 export default class PriceCommand extends BasicCommand {
@@ -44,7 +46,7 @@ export default class PriceCommand extends BasicCommand {
         let foundCard: Card = undefined;
         try {
             if (cardSetSplit !== null) {
-                foundCard = await getCardByName(cardSetSplit[1], cardSetSplit[2])
+                foundCard = await getCardByName(cardSetSplit[1], cardSetSplit[2]);
             } else {
                 foundCard = await getCardByName(cardName);
             }
@@ -53,30 +55,95 @@ export default class PriceCommand extends BasicCommand {
                 // we only need first half of the name if card is a split card, so we split
                 foundCardName = foundCard.name.split('//')[0].trim();
             }
-            const priceFromCache = await PriceHelper.getItem({cardId:foundCard.id});
-            if(priceFromCache){
-                const priceImageFromCache = await ImageHelper.getItem({cardId: foundCard.id, trade: true});
-                // TODO MAKE BOT POST A PRICE
+            const priceFromCache = await PriceHelper.getItem({cardId: foundCard.id});
+            let priceImageFromCache;
+            if (priceFromCache) {
+                priceImageFromCache = await ImageHelper.getItem({cardId: foundCard.illustration_id, trade: true});
+                if (!priceImageFromCache) {
+                    priceImageFromCache = await getGoldfishPriceGraph(this.vkBotApi, foundCardName, foundCard);
+                }
+
+                this.sendPriceMessage(foundCard, msg, priceFromCache.scgPrice, priceFromCache.topdeckPrice, priceImageFromCache);
             } else {
-                // const image = await getGoldfishPriceGraph(foundCardName, foundCard);
+                const rawPriceObject = <{ scg: SCGPrice, topdeck: TopDeckPriceCache }>{};
+                const image = await getGoldfishPriceGraph(this.vkBotApi, foundCardName, foundCard);
 
                 //// SCG PRICES SCRAPING START
                 try {
                     const starCityPage = await axios.get(`${API_LINKS.STAR_CITY_PRICE}${encodeURIComponent(foundCardName)}&auto=Y&numpage=150`);
                     const scgPrice = getStartCityPrices(starCityPage.data.toString(), foundCard);
-
-                }catch (e) {
+                    rawPriceObject.scg = scgPrice;
+                } catch (e) {
                     console.error(LOGS.STARCITY_PRICE_REQUEST_ERROR, e);
                 }
 
+                //// TOPDECK PRICES SCRAPING START
+                try {
+                    // request lib instead of axios because axios doesn't support CORS bypassing
+                    const topDeckPrices = <Array<TopDeckPrice>>(await request({
+                        method: 'GET',
+                        uri: `${API_LINKS.TOPDECK_PRICE}${encodeURIComponent(foundCardName)}`,
+                        // @ts-ignore
+                        ecdhCurve: 'auto',
+                        json: true,
+                    }));
+                    const filterByNameAndPrice = topDeckPrices.filter(price => {
+                        if (rawPriceObject.scg) {
+                            const scgPriceInNumber = parseFloat(rawPriceObject.scg.normal.value.split('$')[1]);
+                            return price.name.toLowerCase() === foundCardName.toLowerCase() && price.cost > scgPriceInNumber * 25;
+                        }
+                        return price.name.toLowerCase() === foundCardName.toLowerCase();
+                    });
+                    if (filterByNameAndPrice.length > 0) {
+                        rawPriceObject.topdeck = {value: filterByNameAndPrice[0].cost};
+                    } else {
+                        const filterByName = topDeckPrices.filter(price => price.name.toLowerCase() === foundCardName.toLowerCase());
+                        if (filterByName.length > 0) {
+                            rawPriceObject.topdeck = {value: filterByNameAndPrice[0].cost};
+                        }
+                    }
+                } catch (e) {
+                    console.error(LOGS.TOPDECK_PRICE_REQUEST_ERROR, e);
+                }
+                if (rawPriceObject.topdeck && rawPriceObject.scg) {
+                    PriceHelper.createItem({
+                        cardName: foundCard.name,
+                        cardSet: foundCard.set_name,
+                        cardId: foundCard.id,
+                        scgPrice: rawPriceObject.scg,
+                        topdeckPrice: rawPriceObject.topdeck
+                    });
+                }
+                this.sendPriceMessage(foundCard, msg, rawPriceObject.scg, rawPriceObject.topdeck, image);
             }
         } catch (e) {
             console.log(e);
             if (!e) {
-                return this.processError(msg, ERRORS.CARD_NOT_FOUND)
+                return this.processError(msg, ERRORS.CARD_NOT_FOUND);
             }
             return this.processError(msg);
         }
+    }
+
+
+    sendPriceMessage(card: Card, msg: MessageContext, scgPrice?: SCGPrice, topDeckPriceCache?: TopDeckPriceCache, image?: ImageCache) {
+        let priceString = `Цены на ${card.printed_name ? card.printed_name : card.name} [${card.set_name}]:\n`;
+        // TCG
+        priceString = `${priceString} TCG: ${card.prices.usd ? `$${card.prices.usd}` : ERRORS.PRICE_NO_INFO}\n`;
+        // TCG FOIL
+        priceString = card.prices.usd_foil ? `${priceString} TCG FOIL: $${card.prices.usd_foil} \n` : priceString;
+        // MTGO
+        priceString = `${priceString} MTGO: ${card.prices.tix ? `${card.prices.tix} tix` : ERRORS.PRICE_NO_INFO}\n`;
+        // StarCity
+        priceString = `${priceString} ${scgPrice && scgPrice.normal ? `SCG (наличие: ${scgPrice.normal.stock === ERRORS.PRICE_SCG_OUT_OF_STOCK_ENG ? ERRORS.PRICE_SCG_OUT_OF_STOCK_RUS : scgPrice.normal.stock}) :${scgPrice.normal.set !== card.set_name ? ` [${scgPrice.normal.set}]` : ''} ${scgPrice.normal.value}` : `SCG: ${ERRORS.PRICE_NO_INFO}`} \n`;
+        // StarCity Foil
+        priceString = scgPrice && scgPrice.foil ? `${priceString} SCG FOIL (наличие: ${scgPrice.foil.stock === ERRORS.PRICE_SCG_OUT_OF_STOCK_ENG ? ERRORS.PRICE_SCG_OUT_OF_STOCK_RUS : scgPrice.foil.stock}) :${scgPrice.foil.set !== card.set_name ? ` [${scgPrice.foil.set}]` : ''} ${scgPrice.foil.value} \n` : priceString;
+        // TopDeck
+        priceString = `${priceString} ${topDeckPriceCache ? `${INFO.PRICES_TOPDECK}: ${topDeckPriceCache.value} RUB` : `TopDeck: ${ERRORS.PRICE_NO_INFO}`}\n`;
+
+        const attachment = image ? `photo${image.photoObject.ownerId}_${image.photoObject.id}` : undefined;
+
+        msg.send(priceString, {attachment});
     }
 
 }

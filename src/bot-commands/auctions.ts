@@ -62,6 +62,7 @@ export default class AuctionsCommand extends BasicCommand {
                     }
                 }
             } else {
+                // @ts-ignore
                 filteredResults.push(topdeckCurrentAuctionsPrices.slice(0, 5));
             }
             const currentAuctionsResult = filteredResults.map(auction => {

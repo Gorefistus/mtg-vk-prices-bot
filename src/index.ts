@@ -4,8 +4,8 @@ import CardCommand from './bot-commands/card';
 import NotFoundCommand from './bot-commands/not-found';
 import creds from '../creds.json';
 import { PEER_TYPES } from './utils/constants';
-import AdministrationCommand from "./bot-commands/administration";
-import AuctionsCommand from "./bot-commands/auctions";
+import AdministrationCommand from './bot-commands/administration';
+import AuctionsCommand from './bot-commands/auctions';
 import PriceCommand from './bot-commands/price';
 
 // const VkBot = require('node-vk-bot-api');

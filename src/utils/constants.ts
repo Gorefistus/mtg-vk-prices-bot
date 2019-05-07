@@ -18,8 +18,8 @@ export enum DB_CONSTANTS {
 
 export enum DB_NAMES {
     "ADMINISTRATION" = 'db_admin',
-    "IMAGES" = 'images',
-    "PRICES" = 'prices'
+    "IMAGES" = 'images_test',
+    "PRICES" = 'prices_test'
 }
 
 

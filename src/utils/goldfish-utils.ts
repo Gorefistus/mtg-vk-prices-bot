@@ -5,12 +5,12 @@ import phantom from "phantom";
 
 import GoldfishDict from "./goldfish-set-dictionary";
 import * as Utils from "./utils";
-import {API_LINKS} from "./constants";
-import {LOGS} from './strings'
+import { API_LINKS } from "./constants";
+import { LOGS } from './strings';
 import ImageHelper from './database/image-helper';
-import {Card} from "scryfall-sdk";
-import {ImageCache} from "image-cache";
-
+import { Card } from "scryfall-sdk";
+import { ImageCache } from "image-cache";
+import VK from 'vk-io';
 
 
 export function checkAgainstGoldfishDict(setName: string, isFoil = false): string {
@@ -30,7 +30,9 @@ export function checkAgainstGoldfishDict(setName: string, isFoil = false): strin
  * @param cardObject
  */
 
-export async function getGoldfishPriceGraph(preparedCardName: string, cardObject: Card): Promise<ImageCache> {
+export async function getGoldfishPriceGraph(vkApi: VK, preparedCardName: string, cardObject: Card): Promise<ImageCache> {
+    const imageName = `${cardObject.set_name}${preparedCardName}${Date.now()}.png`;
+
     try {
         const instance = await phantom.create([], {
             logLevel: 'error',
@@ -50,16 +52,22 @@ export async function getGoldfishPriceGraph(preparedCardName: string, cardObject
             width: clipRect.width,
             height: clipRect.height,
         });
-        const imageName = `${cardObject.set_name}${preparedCardName}${Date.now()}.png`;
         page.render(imageName);
         await instance.exit();
-        const photoObject = await this.vkBotApi.upload.messagePhoto({source: {value: path.resolve(imageName)}});
-        const cacheObject = await ImageHelper.createItem({cardId: cardObject.illustration_id, cardObject, photoObject});
-        fs.unlink(imageName, () => {
-            console.log(LOGS.GOLDGISH_IMAGE_DELETED);
+        const photoObject = await vkApi.upload.messagePhoto({source: {value: path.resolve(imageName)}});
+        const cacheObject = await ImageHelper.createItem({
+            cardId: cardObject.illustration_id,
+            cardObject,
+            photoObject,
+            trade: true
         });
+        fs.unlinkSync(imageName);
+        console.log(LOGS.GOLDGISH_IMAGE_DELETED);
         return cacheObject;
     } catch (e) {
+        console.log(e);
+        fs.unlinkSync(imageName);
+        console.error(LOGS.GOLDGISH_IMAGE_DELETED);
         return undefined;
     }
 }

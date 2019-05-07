@@ -1,17 +1,27 @@
-import {Card} from "scryfall-sdk";
+import { Card } from "scryfall-sdk";
 import cheerio from 'cheerio';
 
 import ScgDict from './scg-set-dictionary';
-import {SCGPrice} from "price-cache";
+import { SCGPrice, ScgPriceObj } from "price-cache";
 
 
-export function getStartCityPrices(htmlString: string, cardObject: Card, isFoil = false): SCGPrice {
+export function getStartCityPrices(htmlString: string, cardObject: Card): SCGPrice {
     if (!cardObject) {
         return undefined;
     }
+    const scgCard = <SCGPrice>{};
+    scgCard.normal = parsePrices(htmlString, cardObject);
+    scgCard.foil = parsePrices(htmlString, cardObject, true);
+
+    return scgCard.normal ? scgCard : undefined;
+}
+
+function parsePrices(htmlString: string, cardObject: Card, isFoil = false): ScgPriceObj {
+    let valueToReturn = <ScgPriceObj>{};
     const htmlPage = cheerio.load(htmlString);
-    let SCGCard: SCGPrice = {};
+
     let scgCardIndex = -1;
+
     htmlPage('.search_results_2')
         .each(function (i) {
             if (checkAgainstSCGDict(htmlPage(this)
@@ -19,14 +29,14 @@ export function getStartCityPrices(htmlString: string, cardObject: Card, isFoil 
                 .trim(), isFoil)
                 .toLowerCase() === `${cardObject.set_name}${isFoil ? ' (Foil)' : ''}`.toLowerCase()) {
                 scgCardIndex = i;
-                SCGCard.set = cardObject.set_name;
+                valueToReturn.set = cardObject.set_name;
             }
         });
     if (scgCardIndex >= 0) {
-        SCGCard.value = htmlPage('.search_results_9')
+        valueToReturn.value = htmlPage('.search_results_9')
             .eq(scgCardIndex)
             .text();
-        SCGCard.stock = htmlPage('.search_results_8')
+        valueToReturn.stock = htmlPage('.search_results_8')
             .eq(scgCardIndex)
             .text();
     } else if (isFoil) {
@@ -41,38 +51,37 @@ export function getStartCityPrices(htmlString: string, cardObject: Card, isFoil 
                 }
             });
         if (scgCardIndex >= 0) {
-            SCGCard.value = htmlPage('.search_results_9')
+            valueToReturn.value = htmlPage('.search_results_9')
                 .eq(scgCardIndex)
                 .text();
-            SCGCard.set = htmlPage('.search_results_2')
+            valueToReturn.set = htmlPage('.search_results_2')
                 .eq(scgCardIndex)
                 .text();
-            SCGCard.stock = htmlPage('.search_results_8')
+            valueToReturn.stock = htmlPage('.search_results_8')
                 .eq(scgCardIndex)
                 .text();
         } else {
-            SCGCard = undefined;
-
+            valueToReturn = undefined;
         }
     } else {
         try {
-            SCGCard.set = htmlPage('.search_results_2')
+            valueToReturn.set = htmlPage('.search_results_2')
                 .first()
                 .text()
                 .trim();
-            SCGCard.value = htmlPage('.search_results_9')
+            valueToReturn.value = htmlPage('.search_results_9')
                 .first()
                 .text()
                 .trim();
-            SCGCard.stock = htmlPage('.search_results_8')
+            valueToReturn.stock = htmlPage('.search_results_8')
                 .eq(scgCardIndex)
                 .text();
-            SCGCard.name = cardObject.name;
+            valueToReturn.name = cardObject.name;
         } catch (e) {
-            SCGCard = undefined;
+            valueToReturn = undefined;
         }
     }
-    return SCGCard;
+    return valueToReturn;
 }
 
 

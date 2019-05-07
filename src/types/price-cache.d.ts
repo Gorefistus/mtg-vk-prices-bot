@@ -1,11 +1,10 @@
 export interface PriceCache {
     cacheDate?: number;
-    cardName: string,
-    cardSet: string,
+    cardName: string;
+    cardSet: string;
     cardId: string;
-    foil?: boolean;
-    SCGPrice: SCGPrice;
-    TopDeckPrice: TopDeckPrice;
+    scgPrice: SCGPrice;
+    topdeckPrice: TopDeckPriceCache;
 }
 
 
@@ -16,12 +15,17 @@ export interface PriceCacheSearch {
 
 
 export interface SCGPrice {
-    value?: string;
-    stock?: string;
-    name?: string;
-    set?: string;
+    normal: ScgPriceObj;
+    foil: ScgPriceObj;
 }
 
-export interface TopDeckPrice {
+export interface ScgPriceObj {
     value: string;
+    stock: string;
+    name: string;
+    set: string;
+}
+
+export interface TopDeckPriceCache {
+    value: number;
 }
