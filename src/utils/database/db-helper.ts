@@ -56,7 +56,7 @@ class DbHelper {
     async updateItemInCollection(searchParams: FilterQuery<any>, updatedFields: UpdateQuery<any>, collectionName: string): Promise<boolean> {
         try {
             await this.db.collection(collectionName)
-                .findOneAndUpdate(searchParams, {$set: updatedFields});
+                .findOneAndUpdate(searchParams, updatedFields);
             return true;
         } catch (e) {
             console.log(e);

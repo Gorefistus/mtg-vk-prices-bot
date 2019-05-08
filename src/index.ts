@@ -14,6 +14,8 @@ import AdvancedSearchCommand from './bot-commands/advanced-search';
 import PrintingsCommand from './bot-commands/printings';
 import WikiCommand from './bot-commands/wiki';
 import PrintingLanguagesCommand from "./bot-commands/printing-languages";
+import WatchAuctionsCommand from "./bot-commands/watch-auctions";
+import { TopDeckAuctionWorker } from './workers/topdeck-auction-worker';
 
 // const VkBot = require('node-vk-bot-api');
 // const path = require('path');
@@ -51,6 +53,7 @@ const startBot = (vkBotApi: VK) => {
         new PriceCommand(vkBotApi),
         new OracleCommand(vkBotApi),
         new LegalityCommand(vkBotApi),
+        new WatchAuctionsCommand(vkBotApi),
         new WikiCommand(vkBotApi),
         new NotFoundCommand(vkBotApi), // this command should always trigger last
     ];
@@ -66,7 +69,13 @@ const startBot = (vkBotApi: VK) => {
 
     vkBotApi.updates.startPolling().catch(reason => console.log(reason));
 
+    launchWorkers(vkBotApi);
+
     console.log('Bot Has Started');
 };
+
+function launchWorkers(vkApi: VK) {
+    TopDeckAuctionWorker(vkApi);
+}
 
 startBot(vkApi);

@@ -1,7 +1,8 @@
-import {DbEntityInterface} from "../../types/db-entity";
-import {FilterQuery, UpdateQuery} from "mongodb";
-import {DB_CONSTANTS, DB_NAMES} from "../constants";
-import {ImageCache, ImageCacheSearch} from "../../types/image-cache";
+import { FilterQuery, UpdateQuery } from "mongodb";
+
+import { DbEntityInterface } from "../../types/db-entity";
+import { DB_CONSTANTS, DB_NAMES } from "../constants";
+import { ImageCache, ImageCacheSearch } from "../../types/image-cache";
 import DBHelper from "./db-helper";
 
 
@@ -43,7 +44,7 @@ class ImageHelper implements DbEntityInterface {
         return undefined;
     }
 
-    updateItem(item: UpdateQuery<ImageCacheSearch>): Promise<boolean> {
+    updateItem(item: FilterQuery<any>, fields: UpdateQuery<any>): Promise<boolean> {
         return undefined;
     }
 

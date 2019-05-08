@@ -33,7 +33,7 @@ class PriceHelper implements DbEntityInterface {
         return undefined;
     }
 
-    updateItem(item: UpdateQuery<PriceCacheSearch>): Promise<boolean> {
+    updateItem(item: FilterQuery<any>, fields: UpdateQuery<any>): Promise<boolean> {
         return undefined;
     }
 

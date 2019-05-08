@@ -29,7 +29,7 @@ class AdministrationHelper implements DbEntityInterface {
         return <GroupSettings>groupSettings;
     }
 
-    async updateItem(item: UpdateQuery<any>): Promise<boolean> {
+    async updateItem(item: FilterQuery<any>, fields: UpdateQuery<any>): Promise<boolean> {
         return undefined;
     }
 
