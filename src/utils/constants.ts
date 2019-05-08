@@ -13,7 +13,8 @@ export enum PEER_TYPES {
 
 
 export enum DB_CONSTANTS {
-    "CACHE_EXPIRE_DURATION" = 1000 * 60 * 60 * 24// One day in milliseconds;
+    "CACHE_EXPIRE_DURATION" = 1000 * 60 * 60 * 24, // One day in milliseconds;
+    "RESULTS_PER_PAGE" = 15,
 }
 
 export enum DB_NAMES {

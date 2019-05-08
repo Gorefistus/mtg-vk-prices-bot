@@ -11,6 +11,7 @@ import ArtCommand from './bot-commands/art';
 import LegalityCommand from './bot-commands/legality';
 import OracleCommand from './bot-commands/oracle';
 import AdvancedSearchCommand from './bot-commands/advanced-search';
+import PrintingsCommand from './bot-commands/printings';
 
 // const VkBot = require('node-vk-bot-api');
 // const path = require('path');
@@ -40,9 +41,10 @@ const startBot = (vkBotApi: VK) => {
     const commandArray: Array<CardCommand> = [
         new ArtCommand(vkBotApi),
         new AdministrationCommand(vkBotApi),
-        new AuctionsCommand(vkBotApi),
         new AdvancedSearchCommand(vkBotApi),
+        new AuctionsCommand(vkBotApi),
         new CardCommand(vkBotApi),
+        new PrintingsCommand(vkBotApi),
         new PriceCommand(vkBotApi),
         new OracleCommand(vkBotApi),
         new LegalityCommand(vkBotApi),
