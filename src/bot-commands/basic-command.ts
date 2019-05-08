@@ -37,7 +37,7 @@ export default class BasicCommand implements CommandInterface {
         return false;
     }
 
-    processCommand(msg: MessageContext): Promise<any> {
+    async processCommand(msg: MessageContext): Promise<any> {
         return undefined;
     }
 

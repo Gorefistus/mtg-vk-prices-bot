@@ -41,6 +41,15 @@ export default class PriceCommand extends BasicCommand {
 
 
     async processCommand(msg: MessageContext) {
+
+        /**
+         *
+         * Administration managing should be here
+         *
+         */
+
+
+
         const cardName = msg.text.match(PEER_TYPES.GROUP === msg.peerType ? this.regexGroup : this.regex)[3];
         const cardSetSplit = cardName.match(/(.*)\[(.{3,4})\]/i);
         let foundCard: Card = undefined;
@@ -117,10 +126,10 @@ export default class PriceCommand extends BasicCommand {
                 this.sendPriceMessage(foundCard, msg, rawPriceObject.scg, rawPriceObject.topdeck, image);
             }
         } catch (e) {
-            console.log(e);
             if (!e) {
                 return this.processError(msg, ERRORS.CARD_NOT_FOUND);
             }
+            console.log(e);
             return this.processError(msg);
         }
     }
