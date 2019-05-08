@@ -7,9 +7,10 @@ import { PEER_TYPES } from './utils/constants';
 import AdministrationCommand from './bot-commands/administration';
 import AuctionsCommand from './bot-commands/auctions';
 import PriceCommand from './bot-commands/price';
-import ArtCommand from "./bot-commands/art";
-import LegalityCommand from "./bot-commands/legality";
+import ArtCommand from './bot-commands/art';
+import LegalityCommand from './bot-commands/legality';
 import OracleCommand from './bot-commands/oracle';
+import AdvancedSearchCommand from './bot-commands/advanced-search';
 
 // const VkBot = require('node-vk-bot-api');
 // const path = require('path');
@@ -19,7 +20,7 @@ import OracleCommand from './bot-commands/oracle';
 
 const vkApi = new VK({
     token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
-    pollingGroupId: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || undefined, //place your group ID here
+    pollingGroupId: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || undefined, // place your group ID here
 
 });
 
@@ -38,16 +39,17 @@ const startBot = (vkBotApi: VK) => {
 
     const commandArray: Array<CardCommand> = [
         new ArtCommand(vkBotApi),
-        new CardCommand(vkBotApi),
         new AdministrationCommand(vkBotApi),
         new AuctionsCommand(vkBotApi),
+        new AdvancedSearchCommand(vkBotApi),
+        new CardCommand(vkBotApi),
         new PriceCommand(vkBotApi),
         new OracleCommand(vkBotApi),
         new LegalityCommand(vkBotApi),
         new NotFoundCommand(vkBotApi), // this command should always trigger last
     ];
 
-    vkBotApi.updates.on('join_group_member',context => {
+    vkBotApi.updates.on('join_group_member', context => {
         // console.log(context);
     });
 

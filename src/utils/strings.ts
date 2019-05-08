@@ -2,6 +2,7 @@ export enum ERRORS {
     CARD_NO_CARD = 'Вы не ввели название карты',
     CARD_NOT_FOUND = 'Одна или несколько карт не были найдены',
     CARDS_NOT_FOUND = 'Эти карты не были найдены:',
+    CARDS_SEARCH_NOT_FOUND = 'По вашему запросу не найдено ни одной карты',
 
     PRICE_NO_INFO = 'Нет информации',
     PRICE_SCG_OUT_OF_STOCK_ENG =  'Out of Stock',
@@ -26,10 +27,14 @@ export enum LOGS {
 }
 
 export enum INFO {
+    PAGE = 'Страница',
+
     ART = 'Иллюстрация:',
     ARTS = 'Иллюстрации:',
 
     PRICES_TOPDECK = 'TopDeck (неизвестное издание)',
+
+    CARDS_SEARCH_MATCH_CRITERIA = 'Найденные карты по вашему запросу'
 }
 
 export enum LEGALITY {
