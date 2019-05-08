@@ -18,6 +18,7 @@ export enum ERRORS {
 
     SCRYFALL_REQUEST_TIMEOUT = 'Ошибка в запросе на ScryFall.com, попробуйте повторить запрос позднее',
 
+    WIKI_NOT_FOUND = 'На Wiki не было найдено страниц по вашему запросу',
 
     GENERAL_ERROR = 'Произошла ошибка в обработке вашего запроса, попробуйте повторить запрос позднее'
 }
@@ -36,6 +37,8 @@ export enum INFO {
     ARTS = 'Иллюстрации:',
 
     PRICES_TOPDECK = 'TopDeck (неизвестное издание)',
+
+     WIKI_PAGE_LINK = 'Wiki ссылка:',
 
     CARDS_SEARCH_MATCH_CRITERIA = 'Найденные карты по вашему запросу'
 }

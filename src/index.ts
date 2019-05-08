@@ -12,6 +12,7 @@ import LegalityCommand from './bot-commands/legality';
 import OracleCommand from './bot-commands/oracle';
 import AdvancedSearchCommand from './bot-commands/advanced-search';
 import PrintingsCommand from './bot-commands/printings';
+import WikiCommand from './bot-commands/wiki';
 
 // const VkBot = require('node-vk-bot-api');
 // const path = require('path');
@@ -48,6 +49,7 @@ const startBot = (vkBotApi: VK) => {
         new PriceCommand(vkBotApi),
         new OracleCommand(vkBotApi),
         new LegalityCommand(vkBotApi),
+        new WikiCommand(vkBotApi),
         new NotFoundCommand(vkBotApi), // this command should always trigger last
     ];
 
