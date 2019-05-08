@@ -4,7 +4,7 @@ import VK, { MessageContext } from 'vk-io';
 
 import BasicCommand from './basic-command';
 import { API_LINKS, PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
-import { ERRORS, INFO } from '../utils/strings';
+import { ERRORS, GENERAL } from '../utils/strings';
 
 export default class WikiCommand extends BasicCommand {
     fullName: string; // wiki
@@ -38,7 +38,7 @@ export default class WikiCommand extends BasicCommand {
             if (searchResults && searchResults.results && searchResults.results.length > 0) {
                 const wikiLink = await wiki({apiUrl: API_LINKS.WIKI_MTG, origin: null}).page(searchResults.results[0]);
                 // @ts-ignore
-                msg.send(`${INFO.WIKI_PAGE_LINK}\n${wikiLink.raw.canonicalurl ? wikiLink.raw.canonicalurl : wikiLink.raw.fullurl}`);
+                msg.send(`${GENERAL.WIKI_PAGE_LINK}\n${wikiLink.raw.canonicalurl ? wikiLink.raw.canonicalurl : wikiLink.raw.fullurl}`);
             } else {
                 return this.processError(msg, ERRORS.WIKI_NOT_FOUND);
             }

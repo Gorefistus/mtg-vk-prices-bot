@@ -13,6 +13,7 @@ import OracleCommand from './bot-commands/oracle';
 import AdvancedSearchCommand from './bot-commands/advanced-search';
 import PrintingsCommand from './bot-commands/printings';
 import WikiCommand from './bot-commands/wiki';
+import PrintingLanguagesCommand from "./bot-commands/printing-languages";
 
 // const VkBot = require('node-vk-bot-api');
 // const path = require('path');
@@ -45,6 +46,7 @@ const startBot = (vkBotApi: VK) => {
         new AdvancedSearchCommand(vkBotApi),
         new AuctionsCommand(vkBotApi),
         new CardCommand(vkBotApi),
+        new PrintingLanguagesCommand(vkBotApi),
         new PrintingsCommand(vkBotApi),
         new PriceCommand(vkBotApi),
         new OracleCommand(vkBotApi),

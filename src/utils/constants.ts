@@ -33,6 +33,21 @@ export enum COMMAND_IDS {
 export enum LANGS {
     LANG_RUS = 'rus',
     LANG_ENG = 'eng',
+    LANG_ESP = 'es',
+    LANG_FR = 'fr',
+    LANG_DE = 'de',
+    LANG_IT = 'it',
+    LANG_PT = 'pt',
+    LANG_JA = 'ja',
+    LANG_KO = 'ko',
+    LANG_ZHT = 'zht',
+    LANG_ZHS = 'zhs',
+    LANG_HE = 'he',
+    LANG_LA = 'la',
+    LANG_GRC = 'grc',
+    LANG_AR = 'ar',
+    LANG_SA = 'sa',
+    LANG_PX = 'px',
 }
 
 export enum LANGS_SCRY {

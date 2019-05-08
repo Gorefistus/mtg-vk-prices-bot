@@ -1,19 +1,19 @@
-import VK, { MessageContext } from 'vk-io';
-import { Card } from 'scryfall-sdk';
+import VK, {MessageContext} from 'vk-io';
+import {Card} from 'scryfall-sdk';
 import axios from 'axios';
 import request from 'request-promise-native';
 
 import BasicCommand from './basic-command';
-import { API_LINKS, PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
-import { getCardByName } from '../utils/scryfall-utils';
-import { ERRORS, INFO, LOGS } from '../utils/strings';
+import {API_LINKS, PEER_TYPES, REGEX_CONSTANTS} from '../utils/constants';
+import {getCardByName} from '../utils/scryfall-utils';
+import {ERRORS, GENERAL, LOGS} from '../utils/strings';
 import PriceHelper from '../utils/database/price-helper';
 import ImageHelper from '../utils/database/image-helper';
-import { getStartCityPrices } from '../utils/scg-utils';
-import { TopDeckPrice } from 'topdeck-price';
-import { SCGPrice, TopDeckPriceCache } from 'price-cache';
-import { ImageCache } from 'image-cache';
-import { getGoldfishPriceGraph } from '../utils/goldfish-utils';
+import {getStartCityPrices} from '../utils/scg-utils';
+import {TopDeckPrice} from 'topdeck-price';
+import {SCGPrice, TopDeckPriceCache} from 'price-cache';
+import {ImageCache} from 'image-cache';
+import {getGoldfishPriceGraph} from '../utils/goldfish-utils';
 
 
 export default class PriceCommand extends BasicCommand {
@@ -136,7 +136,7 @@ export default class PriceCommand extends BasicCommand {
 
 
     sendPriceMessage(card: Card, msg: MessageContext, scgPrice?: SCGPrice, topDeckPriceCache?: TopDeckPriceCache, image?: ImageCache) {
-        let priceString = `Цены на ${card.printed_name ? card.printed_name : card.name} [${card.set_name}]:\n`;
+        let priceString = `${GENERAL.PRICE_FOR} ${card.printed_name ? card.printed_name : card.name} [${card.set_name}]:\n`;
         // TCG
         priceString = `${priceString} TCG: ${card.prices.usd ? `$${card.prices.usd}` : ERRORS.PRICE_NO_INFO}\n`;
         // TCG FOIL
@@ -144,11 +144,11 @@ export default class PriceCommand extends BasicCommand {
         // MTGO
         priceString = `${priceString} MTGO: ${card.prices.tix ? `${card.prices.tix} tix` : ERRORS.PRICE_NO_INFO}\n`;
         // StarCity
-        priceString = `${priceString} ${scgPrice && scgPrice.normal ? `SCG (наличие: ${scgPrice.normal.stock === ERRORS.PRICE_SCG_OUT_OF_STOCK_ENG ? ERRORS.PRICE_SCG_OUT_OF_STOCK_RUS : scgPrice.normal.stock}) :${scgPrice.normal.set !== card.set_name ? ` [${scgPrice.normal.set}]` : ''} ${scgPrice.normal.value}` : `SCG: ${ERRORS.PRICE_NO_INFO}`} \n`;
+        priceString = `${priceString} ${scgPrice && scgPrice.normal ? `SCG (${GENERAL.STOCK}: ${scgPrice.normal.stock === ERRORS.PRICE_SCG_OUT_OF_STOCK_ENG ? ERRORS.PRICE_SCG_OUT_OF_STOCK_RUS : scgPrice.normal.stock}) :${scgPrice.normal.set !== card.set_name ? ` [${scgPrice.normal.set}]` : ''} ${scgPrice.normal.value}` : `SCG: ${ERRORS.PRICE_NO_INFO}`} \n`;
         // StarCity Foil
-        priceString = scgPrice && scgPrice.foil ? `${priceString} SCG FOIL (наличие: ${scgPrice.foil.stock === ERRORS.PRICE_SCG_OUT_OF_STOCK_ENG ? ERRORS.PRICE_SCG_OUT_OF_STOCK_RUS : scgPrice.foil.stock}) :${scgPrice.foil.set !== card.set_name ? ` [${scgPrice.foil.set}]` : ''} ${scgPrice.foil.value} \n` : priceString;
+        priceString = scgPrice && scgPrice.foil ? `${priceString} SCG FOIL (${GENERAL.STOCK}: ${scgPrice.foil.stock === ERRORS.PRICE_SCG_OUT_OF_STOCK_ENG ? ERRORS.PRICE_SCG_OUT_OF_STOCK_RUS : scgPrice.foil.stock}) :${scgPrice.foil.set !== card.set_name ? ` [${scgPrice.foil.set}]` : ''} ${scgPrice.foil.value} \n` : priceString;
         // TopDeck
-        priceString = `${priceString} ${topDeckPriceCache ? `${INFO.PRICES_TOPDECK}: ${topDeckPriceCache.value} RUB` : `TopDeck: ${ERRORS.PRICE_NO_INFO}`}\n`;
+        priceString = `${priceString} ${topDeckPriceCache ? `${GENERAL.PRICES_TOPDECK}: ${topDeckPriceCache.value} RUB` : `TopDeck: ${ERRORS.PRICE_NO_INFO}`}\n`;
 
         const attachment = image ? `photo${image.photoObject.ownerId}_${image.photoObject.id}` : undefined;
 

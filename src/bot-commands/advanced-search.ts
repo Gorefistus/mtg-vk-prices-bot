@@ -5,7 +5,7 @@ import VK, { MessageContext } from 'vk-io';
 
 import BasicCommand from './basic-command';
 import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
-import { ERRORS, INFO } from '../utils/strings';
+import { ERRORS, GENERAL } from '../utils/strings';
 
 
 export default class AdvancedSearchCommand extends BasicCommand {
@@ -59,7 +59,7 @@ export default class AdvancedSearchCommand extends BasicCommand {
     }
 
     prepareResultsString(cards: Array<Card>, pages: number, page?: number): string {
-        let resultString = `${INFO.CARDS_SEARCH_MATCH_CRITERIA}  (${INFO.PAGE}: ${page && page > 0 && page <= pages ? page : '1'}/${pages}):\n`;
+        let resultString = `${GENERAL.CARDS_SEARCH_MATCH_CRITERIA}  (${GENERAL.PAGE}: ${page && page > 0 && page <= pages ? page : '1'}/${pages}):\n`;
         cards.forEach(card => {
             resultString = `${resultString} ${card.name} \n`;
         });

@@ -1,11 +1,11 @@
 import axios from 'axios';
-import VK, { MessageContext } from 'vk-io';
+import VK, {MessageContext} from 'vk-io';
 
 import BasicCommand from './basic-command';
-import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
-import { ERRORS } from '../utils/strings';
-import { getCardByName } from '../utils/scryfall-utils';
-import { Card } from 'scryfall-sdk';
+import {PEER_TYPES, REGEX_CONSTANTS} from '../utils/constants';
+import {ERRORS, GENERAL} from '../utils/strings';
+import {getCardByName} from '../utils/scryfall-utils';
+import {Card} from 'scryfall-sdk';
 
 
 export default class PrintingsCommand extends BasicCommand {
@@ -70,7 +70,7 @@ export default class PrintingsCommand extends BasicCommand {
     }
 
     prepareResultsString(cards: Array<Card>, length: number, pages: number, page?: number): string {
-        let resultString = `${cards.length} изданий ${cards[0].name} (Всего: ${length}) (Страница ${page && page > 0 && page <= pages ? page : '1'}/${pages}):\n`;
+        let resultString = `${cards.length} ${GENERAL.PRINTINGS} ${cards[0].name} (${GENERAL.TOTAL}: ${length}) (${GENERAL.PAGE} ${page && page > 0 && page <= pages ? page : '1'}/${pages}):\n`;
         cards.forEach(card => {
             resultString = `${resultString} ${card.set_name} [${card.set.toUpperCase()}] \n`;
         });

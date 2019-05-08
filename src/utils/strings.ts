@@ -5,7 +5,7 @@ export enum ERRORS {
     CARDS_SEARCH_NOT_FOUND = 'По вашему запросу не найдено ни одной карты',
 
     PRICE_NO_INFO = 'Нет информации',
-    PRICE_SCG_OUT_OF_STOCK_ENG =  'Out of Stock',
+    PRICE_SCG_OUT_OF_STOCK_ENG = 'Out of Stock',
     PRICE_SCG_OUT_OF_STOCK_RUS = 'Нет в наличии',
 
     BAN_MESSAGE_PLACEHOLDER = 'You are globally banned',
@@ -20,6 +20,8 @@ export enum ERRORS {
 
     WIKI_NOT_FOUND = 'На Wiki не было найдено страниц по вашему запросу',
 
+    NO_PRINTINGS = 'Было найдено 0 изданий этой карты по этому сету',
+
     GENERAL_ERROR = 'Произошла ошибка в обработке вашего запроса, попробуйте повторить запрос позднее'
 }
 
@@ -30,18 +32,53 @@ export enum LOGS {
     GOLDGISH_IMAGE_DELETED = 'Goldfish image has been deleted',
 }
 
-export enum INFO {
+export enum GENERAL {
     PAGE = 'Страница',
+
+    TOTAL = 'Всего',
+
+    PRINTINGS = 'изданий',
+
+    PRICE_FOR = 'Цена на',
+
+    STOCK = 'наличие',
 
     ART = 'Иллюстрация:',
     ARTS = 'Иллюстрации:',
 
+    CARD_NAME = 'Имя карты',
+
     PRICES_TOPDECK = 'TopDeck (неизвестное издание)',
 
-     WIKI_PAGE_LINK = 'Wiki ссылка:',
+    WIKI_PAGE_LINK = 'Wiki ссылка:',
 
-    CARDS_SEARCH_MATCH_CRITERIA = 'Найденные карты по вашему запросу'
+    CARDS_SEARCH_MATCH_CRITERIA = 'Найденные карты по вашему запросу',
+
+    PRINTED_LANGUAGES = 'Напечатанные языки',
+
+    LANGUAGE = 'Язык',
 }
+
+export enum LANGUAGES {
+    LANG_RUS = 'Русский',
+    LANG_ENG = 'Английский',
+    LANG_ESP = 'Испанский',
+    LANG_FR = 'Французский',
+    LANG_DE = 'Немецкий',
+    LANG_IT = 'Итальянский',
+    LANG_PT = 'Португальский',
+    LANG_JA = 'Японский',
+    LANG_KO = 'Корейский',
+    LANG_ZHT = 'Китайский',
+    LANG_ZHS = 'Китайский упрощенный',
+    LANG_HE = 'Иврит',
+    LANG_LA = 'Латынь',
+    LANG_GRC = 'Древнегреческий',
+    LANG_AR = 'Арабский',
+    LANG_SA = 'Санскрит',
+    LANG_PX = 'Фирексийский',
+}
+
 
 export enum LEGALITY {
     LEGAL = 'Легальна ✅',
