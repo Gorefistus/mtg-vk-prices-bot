@@ -103,7 +103,7 @@ export default class CardCommand extends BasicCommand {
                         if (cardPhotoObjectFromCache) {
                             cardImageObjects.push(cardPhotoObjectFromCache);
                         } else {
-                            const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value:card.image_uris.normal.slice(0, card.image_uris.normal.lastIndexOf('jpg') + 3)}});
+                            const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: card.image_uris.normal.slice(0, card.image_uris.normal.lastIndexOf('jpg') + 3)}});
                             if (cardPhotoObject) {
                                 const photoObjectToCache: ImageCache = {
                                     cardId: card.illustration_id,
