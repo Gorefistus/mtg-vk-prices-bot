@@ -158,12 +158,10 @@ export default class PriceCommand extends BasicCommand {
         const keyboard = cardName ? getRecommendation(cardName, this.shortName, PEER_TYPES.GROUP !== msg.peerType) : undefined;
 
         if (keyboard) {
-            msg.send('', {attachment, keyboard: keyboard});
+            msg.send(priceString, {attachment, keyboard: keyboard});
         } else {
-            msg.send('', {attachment});
+            msg.send(priceString, {attachment});
         }
-
-        msg.send(priceString, {attachment});
     }
 
 }
