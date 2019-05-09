@@ -1,4 +1,4 @@
-import VK, { MessageContext } from "vk-io";
+import VK, { MessageContext } from 'vk-io';
 import BasicCommand from './basic-command';
 
 

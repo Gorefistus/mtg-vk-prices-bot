@@ -1,9 +1,9 @@
-import * as Scry from "scryfall-sdk";
-import {Card} from "scryfall-sdk";
-import franc from "franc";
+import * as Scry from 'scryfall-sdk';
+import { Card } from 'scryfall-sdk';
+import franc from 'franc';
 
 
-import {LANGS, LANGS_SCRY} from "./constants";
+import { LANGS, LANGS_SCRY } from './constants';
 
 
 // export function getCardByName(cardName: string, setCode?: string): Promise<Card> {
@@ -102,7 +102,7 @@ export function getCardByName(cardName: string, setCode?: string, multilang = fa
                         .on('error', (reason) => {
                             reject(reason);
                         });
-                }).on("done", () => {
+                }).on('done', () => {
                 Scry.Cards.search(`${cardName} lang:${multilang ? 'any' : searchCard.language}`)
                     .on('data', (card) => {
                         if (!card.card_faces && !card.image_uris) {
@@ -118,7 +118,7 @@ export function getCardByName(cardName: string, setCode?: string, multilang = fa
                     .on('error', (reason) => {
                         reject(reason);
                     }).on('done', () => {
-                    //TODO we are done search has failed
+                    // TODO we are done search has failed
                     reject(undefined);
                 });
             });

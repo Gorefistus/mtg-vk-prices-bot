@@ -1,9 +1,9 @@
-import { FilterQuery, UpdateQuery } from "mongodb";
+import { FilterQuery, UpdateQuery } from 'mongodb';
 
-import { DbEntityInterface } from "../../types/db-entity";
-import { DB_CONSTANTS, DB_NAMES } from "../constants";
-import { ImageCache, ImageCacheSearch } from "../../types/image-cache";
-import DBHelper from "./db-helper";
+import { DbEntityInterface } from '../../types/db-entity';
+import { DB_CONSTANTS, DB_NAMES } from '../constants';
+import { ImageCache, ImageCacheSearch } from '../../types/image-cache';
+import DBHelper from './db-helper';
 
 
 class ImageHelper implements DbEntityInterface {

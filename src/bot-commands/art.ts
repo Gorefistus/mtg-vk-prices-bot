@@ -1,11 +1,11 @@
-import BasicCommand from "./basic-command";
-import VK, {MessageContext} from "vk-io";
-import {PEER_TYPES, REGEX_CONSTANTS} from "../utils/constants";
-import {ERRORS, GENERAL} from "../utils/strings";
-import {Card} from "scryfall-sdk";
-import {getCardByName} from "../utils/scryfall-utils";
-import {ImageCache} from "image-cache";
-import ImageHelper from "../utils/database/image-helper";
+import BasicCommand from './basic-command';
+import VK, { MessageContext } from 'vk-io';
+import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
+import { ERRORS, GENERAL } from '../utils/strings';
+import { Card } from 'scryfall-sdk';
+import { getCardByName } from '../utils/scryfall-utils';
+import { ImageCache } from 'image-cache';
+import ImageHelper from '../utils/database/image-helper';
 
 export default class ArtCommand extends BasicCommand {
     fullName: string; // 'art';
@@ -128,7 +128,7 @@ export default class ArtCommand extends BasicCommand {
                 }
 
                 foundCardArray.forEach(card => {
-                    artistString = `${artistString} ${card.artist};`
+                    artistString = `${artistString} ${card.artist};`;
                 });
                 msg.send(artistString, {attachment});
             } catch (e) {

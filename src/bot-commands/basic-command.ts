@@ -1,7 +1,7 @@
 import { CommandInterface } from 'command';
 import VK, { MessageContext } from 'vk-io';
 import { REGEX_CONSTANTS } from '../utils/constants';
-import {ERRORS} from "../utils/strings";
+import { ERRORS } from '../utils/strings';
 
 
 export default class BasicCommand implements CommandInterface {

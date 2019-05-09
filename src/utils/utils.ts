@@ -1,5 +1,5 @@
-import {LANGS, LANGS_SCRY} from './constants';
-import {LANGUAGES} from './strings';
+import { LANGS, LANGS_SCRY } from './constants';
+import { LANGUAGES } from './strings';
 
 export function escapeRegExp(str: string): string {
     return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');

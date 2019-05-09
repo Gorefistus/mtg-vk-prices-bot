@@ -1,8 +1,8 @@
-import {DbEntityInterface} from 'db-entity';
-import {FilterQuery, UpdateQuery} from 'mongodb';
-import {PriceCache, PriceCacheSearch} from 'price-cache';
-import {DB_CONSTANTS, DB_NAMES} from '../constants';
-import DBHelper from "./db-helper";
+import { DbEntityInterface } from 'db-entity';
+import { FilterQuery, UpdateQuery } from 'mongodb';
+import { PriceCache, PriceCacheSearch } from 'price-cache';
+import { DB_CONSTANTS, DB_NAMES } from '../constants';
+import DBHelper from './db-helper';
 
 
 class PriceHelper implements DbEntityInterface {

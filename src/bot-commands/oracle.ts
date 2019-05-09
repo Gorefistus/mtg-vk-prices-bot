@@ -83,4 +83,4 @@ export default class OracleCommand extends BasicCommand {
 
     }
 }
-;
+

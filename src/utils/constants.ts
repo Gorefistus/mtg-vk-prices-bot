@@ -1,41 +1,41 @@
 export enum REGEX_CONSTANTS {
-    "GROUP_PREFIX" = '\\[club168593903|@mtgbot\\]',
-    "PREFIX" = '!n',
-    "POSTFIX" = 'n',
-    "REGEX_FLAGS" = 'im',
+    'GROUP_PREFIX' = '\\[club168593903|@mtgbot\\]',
+    'PREFIX' = '!n',
+    'POSTFIX' = 'n',
+    'REGEX_FLAGS' = 'im',
 }
 
 
 export enum PEER_TYPES {
-    "GROUP" = 'chat',
-    "PRIVATE" = 'user',
+    'GROUP' = 'chat',
+    'PRIVATE' = 'user',
 }
 
 
 export enum DB_CONSTANTS {
-    "CACHE_EXPIRE_DURATION" = 1000 * 60 * 60 * 24, // One day in milliseconds;
-    "AUC_EXPIRE_DATE" = 60 * 30, //30 minutes in seconds
-    "AUC_REFRESH_RATE" = 1000 * 90,// 90 seconds in milliseconds;
-    "RESULTS_PER_PAGE" = 15,
+    'CACHE_EXPIRE_DURATION' = 1000 * 60 * 60 * 24, // One day in milliseconds;
+    'AUC_EXPIRE_DATE' = 60 * 30, // 30 minutes in seconds
+    'AUC_REFRESH_RATE' = 1000 * 90, // 90 seconds in milliseconds;
+    'RESULTS_PER_PAGE' = 15,
 }
 
 export enum DB_NAMES {
-    "ADMINISTRATION" = 'db_admin',
-    "IMAGES" = 'images_test',
-    "PRICES" = 'prices_test',
-    "AUCTIONS" = 'auctions_test',
+    'ADMINISTRATION' = 'db_admin',
+    'IMAGES' = 'images_test',
+    'PRICES' = 'prices_test',
+    'AUCTIONS' = 'auctions_test',
 }
 
 
 export enum COMMAND_IDS {
-    "c" = 'с',
-    "p" = 'p',
-    "o" = 'o',
-    "l" = 'l',
-    "pr" = 'pr',
+    'c' = 'с',
+    'p' = 'p',
+    'o' = 'o',
+    'l' = 'l',
+    'pr' = 'pr',
 }
 
-export const ColorIndexes = ['primary','negative','positive','default'];
+export const ColorIndexes = ['primary', 'negative', 'positive', 'default'];
 
 
 export enum LANGS {

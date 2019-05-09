@@ -1,12 +1,12 @@
-import VK, {MessageContext} from "vk-io";
-import {Card} from "scryfall-sdk";
+import VK, { MessageContext } from 'vk-io';
+import { Card } from 'scryfall-sdk';
 import axios from 'axios';
 
-import BasicCommand from "./basic-command";
-import {API_LINKS, PEER_TYPES, REGEX_CONSTANTS} from "../utils/constants";
-import {getCardByName} from "../utils/scryfall-utils";
-import {ERRORS, GENERAL} from "../utils/strings";
-import {getLanguageByLangCode} from "../utils/utils";
+import BasicCommand from './basic-command';
+import { API_LINKS, PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
+import { getCardByName } from '../utils/scryfall-utils';
+import { ERRORS, GENERAL } from '../utils/strings';
+import { getLanguageByLangCode } from '../utils/utils';
 
 export default class PrintingLanguagesCommand extends BasicCommand {
 
@@ -43,7 +43,7 @@ export default class PrintingLanguagesCommand extends BasicCommand {
             } else {
                 foundCard = await getCardByName(cardName);
             }
-            const response = await axios.get(`${API_LINKS.SCRY_API}!"${foundCard.name}"s:${foundCard.set}&include_multilingual=true&unique=prints`, {data: "json"});
+            const response = await axios.get(`${API_LINKS.SCRY_API}!"${foundCard.name}"s:${foundCard.set}&include_multilingual=true&unique=prints`, {data: 'json'});
             if (response.status < 200 && response.status > 300) {
                 return this.processError(msg, ERRORS.SCRYFALL_REQUEST_TIMEOUT);
             }

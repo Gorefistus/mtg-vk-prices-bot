@@ -4,7 +4,7 @@ import { FilterQuery, UpdateQuery } from 'mongodb';
 import { DbEntityInterface } from 'db-entity';
 import { DB_NAMES } from '../constants';
 import { AuctionWatcher, AuctionWatcherSearch } from 'auction-watcher';
-import DBHelper from "./db-helper";
+import DBHelper from './db-helper';
 
 
 class AuctionsHelper implements DbEntityInterface {

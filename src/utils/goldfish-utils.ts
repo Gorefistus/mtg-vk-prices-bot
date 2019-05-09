@@ -1,15 +1,15 @@
-import * as path from "path";
+import * as path from 'path';
 import fs from 'fs';
-import phantom from "phantom";
+import phantom from 'phantom';
 
 
-import GoldfishDict from "./goldfish-set-dictionary";
-import * as Utils from "./utils";
-import { API_LINKS } from "./constants";
+import GoldfishDict from './goldfish-set-dictionary';
+import * as Utils from './utils';
+import { API_LINKS } from './constants';
 import { LOGS } from './strings';
 import ImageHelper from './database/image-helper';
-import { Card } from "scryfall-sdk";
-import { ImageCache } from "image-cache";
+import { Card } from 'scryfall-sdk';
+import { ImageCache } from 'image-cache';
 import VK from 'vk-io';
 
 

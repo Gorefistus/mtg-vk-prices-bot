@@ -1,4 +1,4 @@
-import {Db, FilterQuery, UpdateQuery} from "mongodb";
+import { Db, FilterQuery, UpdateQuery } from 'mongodb';
 
 const creds = require('../../../creds');
 

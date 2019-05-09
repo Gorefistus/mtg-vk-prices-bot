@@ -1,4 +1,7 @@
 import VK, { MessageContext } from 'vk-io';
+import express from 'express';
+import * as path from 'path';
+import http from 'http';
 
 import CardCommand from './bot-commands/card';
 import NotFoundCommand from './bot-commands/not-found';
@@ -13,14 +16,25 @@ import OracleCommand from './bot-commands/oracle';
 import AdvancedSearchCommand from './bot-commands/advanced-search';
 import PrintingsCommand from './bot-commands/printings';
 import WikiCommand from './bot-commands/wiki';
-import PrintingLanguagesCommand from "./bot-commands/printing-languages";
-import WatchAuctionsCommand from "./bot-commands/watch-auctions";
+import PrintingLanguagesCommand from './bot-commands/printing-languages';
+import WatchAuctionsCommand from './bot-commands/watch-auctions';
 import { TopDeckAuctionWorker } from './workers/topdeck-auction-worker';
+// @ts-ignore
+import stats from 'bot-metrica';
 
-// const VkBot = require('node-vk-bot-api');
-// const path = require('path');
-// const express = require('express');
-// const http = require('http');
+// THIS IS JUST NEEDED SO HEROKU WON"T STOP OUR APPLICATION
+const app = express();
+app.use(express.static(path.resolve(__dirname + '/static')));
+app.listen(process.env.PORT || 5000);
+
+app.get('/', (req, res) => {
+    res.sendFile('index.html');
+});
+
+setInterval(() => {
+    console.log('PINGED YOURSELF');
+    http.get('http://mtgvkbotprices.herokuapp.com/');
+}, 300000);
 
 
 const vkApi = new VK({
@@ -30,10 +44,13 @@ const vkApi = new VK({
 });
 
 
-const checkRegex = (msg: MessageContext, commands: Array<CardCommand>) => {
+const checkRegex = (msg: MessageContext, commands: Array<CardCommand>, yaStats: any) => {
     for (const command of commands) {
         const commandString = msg.messagePayload ? msg.messagePayload.command : msg.text;
         if (command.checkRegex(commandString, PEER_TYPES.GROUP === msg.peerType)) {
+            msg.setActivity();
+            yaStats.track(msg.senderId, {msg: commandString}, command.shortName);
+
             command.processCommand(msg);
             break;
         }
@@ -42,6 +59,8 @@ const checkRegex = (msg: MessageContext, commands: Array<CardCommand>) => {
 
 
 const startBot = (vkBotApi: VK) => {
+
+    const yaStats = stats(process.env.YA_TOKEN || creds.yandexToken || 'place your ya metrika token here');
 
     const commandArray: Array<CardCommand> = [
         new ArtCommand(vkBotApi),
@@ -59,13 +78,8 @@ const startBot = (vkBotApi: VK) => {
         new NotFoundCommand(vkBotApi), // this command should always trigger last
     ];
 
-    vkBotApi.updates.on('join_group_member', context => {
-        // console.log(context);
-    });
-
-
     vkBotApi.updates.hear(/.*/i, async (context: MessageContext) => {
-        checkRegex(context, commandArray);
+        checkRegex(context, commandArray, yaStats);
     });
 
     vkBotApi.updates.startPolling().catch(reason => console.log(reason));

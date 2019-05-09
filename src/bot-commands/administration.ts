@@ -1,7 +1,7 @@
-import VK, { MessageContext } from "vk-io";
-import { PEER_TYPES, REGEX_CONSTANTS } from "../utils/constants";
-import AdministrationHelper from "../utils/database/administration-helper";
-import { ERRORS } from "../utils/strings";
+import VK, { MessageContext } from 'vk-io';
+import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
+import AdministrationHelper from '../utils/database/administration-helper';
+import { ERRORS } from '../utils/strings';
 import BasicCommand from './basic-command';
 
 

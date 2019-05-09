@@ -3,7 +3,7 @@ import VK from 'vk-io';
 import { TopdeckAuction } from 'topdeck-auction';
 import axios from 'axios';
 import { API_LINKS, DB_CONSTANTS, TIME_CONSTANTS } from '../utils/constants';
-import * as moment from "moment";
+import * as moment from 'moment';
 import { AUCTIONS } from '../utils/strings';
 
 
@@ -65,7 +65,7 @@ export function TopDeckAuctionWorker(vkApi: VK) {
                         vkApi.api.messages.send({user_id: auctionUser.userId, message: notificationString});
 
                     } catch (e) {
-                        //probably some VK privacy problems
+                        // probably some VK privacy problems
                         console.log('VK PRIVACY PROBLEMS');
                     }
                     AuctionsHelper.updateItem({userId: auctionUser.userId}, {

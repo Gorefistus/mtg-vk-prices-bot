@@ -1,9 +1,9 @@
-import {FilterQuery, UpdateQuery} from "mongodb";
+import { FilterQuery, UpdateQuery } from 'mongodb';
 
-import {DbEntityInterface} from "db-entity.d.ts";
-import {DB_NAMES} from "../constants";
-import {GroupSettings, GroupSettingsEntry} from "../../types/group-settings";
-import DBHelper from "./db-helper";
+import { DbEntityInterface } from 'db-entity.d.ts';
+import { DB_NAMES } from '../constants';
+import { GroupSettings, GroupSettingsEntry } from '../../types/group-settings';
+import DBHelper from './db-helper';
 
 
 class AdministrationHelper implements DbEntityInterface {

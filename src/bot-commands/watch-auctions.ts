@@ -1,7 +1,7 @@
-import BasicCommand from "./basic-command";
-import VK, { MessageContext } from "vk-io";
-import { PEER_TYPES, REGEX_CONSTANTS } from "../utils/constants";
-import { AUCTIONS, ERRORS } from "../utils/strings";
+import BasicCommand from './basic-command';
+import VK, { MessageContext } from 'vk-io';
+import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
+import { AUCTIONS, ERRORS } from '../utils/strings';
 import AuctionsHelper from '../utils/database/auctions-helper';
 
 
@@ -40,7 +40,7 @@ export default class WatchAuctionsCommand extends BasicCommand {
 
 
         try {
-            let user = await AuctionsHelper.getItem({userId: msg.senderId});
+            const user = await AuctionsHelper.getItem({userId: msg.senderId});
 
             if (auctionQuery.startsWith('-l')) {
                 if (user && user.watchlist.length > 0) {

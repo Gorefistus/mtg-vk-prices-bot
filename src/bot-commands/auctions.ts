@@ -1,18 +1,18 @@
-import VK, { MessageContext } from "vk-io";
+import VK, { MessageContext } from 'vk-io';
 import axios from 'axios';
 
-import {API_LINKS, PEER_TYPES, REGEX_CONSTANTS, TIME_CONSTANTS} from "../utils/constants";
-import { AUCTIONS, ERRORS } from "../utils/strings";
-import { TopdeckAuction, TopdeckEndedAuction } from "topdeck-auction";
-import * as moment from "moment";
+import { API_LINKS, PEER_TYPES, REGEX_CONSTANTS, TIME_CONSTANTS } from '../utils/constants';
+import { AUCTIONS, ERRORS } from '../utils/strings';
+import { TopdeckAuction, TopdeckEndedAuction } from 'topdeck-auction';
+import * as moment from 'moment';
 import BasicCommand from './basic-command';
 
 
 export default class AuctionsCommand extends BasicCommand {
-    fullName: string; //auctions
+    fullName: string; // auctions
     regex: RegExp;
     regexGroup: RegExp;
-    shortName: string; //ac
+    shortName: string; // ac
     vkBotApi: VK;
 
 
