@@ -39,7 +39,9 @@ setInterval(() => {
 
 
 const vkApi = new VK({
+    // @ts-ignore
     token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
+    // @ts-ignore
     pollingGroupId: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || undefined, // place your group ID here
 
 });
@@ -65,6 +67,7 @@ const checkRegex = (msg: MessageContext, commands: Array<CardCommand>, yaStats: 
 
 const startBot = (vkBotApi: VK) => {
 
+    // @ts-ignore
     const yaStats = stats(process.env.YA_TOKEN || creds.yandexToken || 'place your ya metrika token here');
 
     const commandArray: Array<CardCommand> = [
