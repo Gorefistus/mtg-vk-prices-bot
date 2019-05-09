@@ -37,7 +37,7 @@ class ImageHelper implements DbEntityInterface {
         const imageFromCache = await DBHelper.getItemFromCollection(item, this.dbName);
         if (imageFromCache && imageFromCache.trade && imageFromCache.trade === item.trade && this.validateCacheEntry(imageFromCache.cacheDate)) {
             return <ImageCache>imageFromCache;
-        } else if (imageFromCache && (imageFromCache.art && imageFromCache.art === item.art || !imageFromCache.trade)) {
+        } else if (imageFromCache && (imageFromCache.art && imageFromCache.art === item.art)) {
             return <ImageCache>imageFromCache;
         } else if (imageFromCache && !imageFromCache.art && !imageFromCache.trade && !item.art && !item.trade) {
             return <ImageCache>imageFromCache;
