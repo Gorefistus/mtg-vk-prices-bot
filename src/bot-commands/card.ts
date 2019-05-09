@@ -93,9 +93,7 @@ export default class CardCommand extends BasicCommand {
                     if (card.card_faces) {
                         for (const cardFace of card.card_faces) {
                             const cardPhotoObjectFromCache = await ImageHelper.getItem({
-                                cardId: cardFace.illustration_id,
-                                art: false,
-                                trade: false
+                                cardId: cardFace.illustration_id
                             });
                             if (cardPhotoObjectFromCache) {
                                 cardImageObjects.push(cardPhotoObjectFromCache);
@@ -111,9 +109,7 @@ export default class CardCommand extends BasicCommand {
                                     const photoObjectToCache: ImageCache = {
                                         cardId: cardFace.illustration_id,
                                         cardObject: card,
-                                        photoObject: cardPhotoObject,
-                                        art: false,
-                                        trade: false,
+                                        photoObject: cardPhotoObject
                                     };
                                     cardImageObjects.push(photoObjectToCache);
                                     ImageHelper.createItem(photoObjectToCache);
