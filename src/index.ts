@@ -43,6 +43,8 @@ const vkApi = new VK({
     token: process.env.VK_TOKEN || creds.vkToken || 'place your token here',
     // @ts-ignore
     pollingGroupId: Number.parseInt(process.env.VK_ID, 10) || creds.groupId || undefined, // place your group ID here
+    apiTimeout: 30000,
+    uploadTimeout: 50000,
 
 });
 
