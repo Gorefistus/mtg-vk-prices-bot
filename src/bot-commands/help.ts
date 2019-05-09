@@ -19,7 +19,6 @@ export default class HelpCommand extends BasicCommand {
         } else {
             this.regex = new RegExp(`^(${REGEX_CONSTANTS.GROUP_PREFIX} |${REGEX_CONSTANTS.PREFIX})(${this.fullName})`, REGEX_CONSTANTS.REGEX_FLAGS);
         }
-        console.log(this.regex);
     }
 
     checkRegex(stringToCheck: string): boolean {
