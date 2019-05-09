@@ -21,6 +21,7 @@ import WatchAuctionsCommand from './bot-commands/watch-auctions';
 import { TopDeckAuctionWorker } from './workers/topdeck-auction-worker';
 // @ts-ignore
 import stats from 'bot-metrica';
+import HelpCommand from './bot-commands/help';
 
 // THIS IS JUST NEEDED SO HEROKU WON"T STOP OUR APPLICATION
 const app = express();
@@ -44,7 +45,11 @@ const vkApi = new VK({
 });
 
 
-const checkRegex = (msg: MessageContext, commands: Array<CardCommand>, yaStats: any) => {
+const checkRegex = (msg: MessageContext, commands: Array<CardCommand>, yaStats: any): void => {
+    if (msg.senderId < 0) {
+        // do not check message from groups (including yourself)
+        return;
+    }
     for (const command of commands) {
         const commandString = msg.messagePayload ? msg.messagePayload.command : msg.text;
         if (command.checkRegex(commandString, PEER_TYPES.GROUP === msg.peerType)) {
@@ -75,6 +80,7 @@ const startBot = (vkBotApi: VK) => {
         new LegalityCommand(vkBotApi),
         new WatchAuctionsCommand(vkBotApi),
         new WikiCommand(vkBotApi),
+        new HelpCommand(vkBotApi),
         new NotFoundCommand(vkBotApi), // this command should always trigger last
     ];
 

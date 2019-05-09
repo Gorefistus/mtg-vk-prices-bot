@@ -1,5 +1,7 @@
 import VK, { MessageContext } from 'vk-io';
 import BasicCommand from './basic-command';
+import { PEER_TYPES } from '../utils/constants';
+import { ERRORS } from '../utils/strings';
 
 
 export default class NotFoundCommand extends BasicCommand {
@@ -23,12 +25,10 @@ export default class NotFoundCommand extends BasicCommand {
         return this.regex.test(stringToCheck);
     }
 
-    processCommand(msg: MessageContext): Promise<any> {
-        if (msg.peerType === 'chat') {
-            // console.log(msg);
-            return;
+    async processCommand(msg: MessageContext): Promise<any> {
+        if (PEER_TYPES.GROUP !== msg.peerType) {
+            return this.processError(msg, ERRORS.COMMAND_NOT_FOUND);
         }
-        return undefined;
     }
 
 

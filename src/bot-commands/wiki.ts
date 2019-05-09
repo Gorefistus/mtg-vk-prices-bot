@@ -20,12 +20,12 @@ export default class WikiCommand extends BasicCommand {
         if (regex) {
             this.regex = regex;
         } else {
-            this.regex = /start/i;
+            this.regex = new RegExp(`^(${REGEX_CONSTANTS.GROUP_PREFIX} |${REGEX_CONSTANTS.PREFIX}?)(${this.shortName}|${this.fullName}) (.*)?`, REGEX_CONSTANTS.REGEX_FLAGS);
         }
         if (regexGroup) {
             this.regexGroup = regexGroup;
         } else {
-            this.regexGroup = new RegExp(`(${REGEX_CONSTANTS.GROUP_PREFIX} |${REGEX_CONSTANTS.PREFIX})(${this.shortName}|${this.fullName})( .*)?`, REGEX_CONSTANTS.REGEX_FLAGS);
+            this.regexGroup = new RegExp(`(${REGEX_CONSTANTS.GROUP_PREFIX} |${REGEX_CONSTANTS.PREFIX})(${this.shortName}|${this.fullName}) (.*)?`, REGEX_CONSTANTS.REGEX_FLAGS);
         }
     }
 
@@ -34,9 +34,9 @@ export default class WikiCommand extends BasicCommand {
         const searchQuery = msg.text.match(PEER_TYPES.GROUP === msg.peerType ? this.regexGroup : this.regex)[3];
 
         try {
-            const searchResults = await wiki({apiUrl: API_LINKS.WIKI_MTG, origin: null}).search(searchQuery);
+            const searchResults = await wiki({apiUrl: API_LINKS.WIKI_MTG, origin: undefined}).search(searchQuery);
             if (searchResults && searchResults.results && searchResults.results.length > 0) {
-                const wikiLink = await wiki({apiUrl: API_LINKS.WIKI_MTG, origin: null}).page(searchResults.results[0]);
+                const wikiLink = await wiki({apiUrl: API_LINKS.WIKI_MTG, origin: undefined}).page(searchResults.results[0]);
                 // @ts-ignore
                 msg.send(`${GENERAL.WIKI_PAGE_LINK}\n${wikiLink.raw.canonicalurl ? wikiLink.raw.canonicalurl : wikiLink.raw.fullurl}`);
             } else {

@@ -20,19 +20,18 @@ export default class WatchAuctionsCommand extends BasicCommand {
         if (regex) {
             this.regex = regex;
         } else {
-            this.regex = /start/i;
+            this.regex = new RegExp(`^(${REGEX_CONSTANTS.GROUP_PREFIX} |${REGEX_CONSTANTS.PREFIX}?)(${this.shortName}|${this.fullName}) (.*)?`, REGEX_CONSTANTS.REGEX_FLAGS);
         }
         if (regexGroup) {
             this.regexGroup = regexGroup;
         } else {
-            this.regexGroup = new RegExp(`(${REGEX_CONSTANTS.GROUP_PREFIX} |${REGEX_CONSTANTS.PREFIX})(${this.shortName}|${this.fullName})( .*)?`, REGEX_CONSTANTS.REGEX_FLAGS);
+            this.regexGroup = new RegExp(`(${REGEX_CONSTANTS.GROUP_PREFIX} |${REGEX_CONSTANTS.PREFIX})(${this.shortName}|${this.fullName}) (.*)?`, REGEX_CONSTANTS.REGEX_FLAGS);
         }
     }
 
 
     async processCommand(msg: MessageContext): Promise<any> {
-        // TODO I'm TESTING THIS IN REVERSE ORDER, GROUPS SHOULD BE BANNED
-        if (PEER_TYPES.GROUP !== msg.peerType) {
+        if (PEER_TYPES.GROUP === msg.peerType) {
             return this.processError(msg, ERRORS.AUCTIONS_WATCH_GROUP);
         }
 

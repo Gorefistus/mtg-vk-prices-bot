@@ -1,6 +1,6 @@
 export enum REGEX_CONSTANTS {
     'GROUP_PREFIX' = '\\[club168593903|@mtgbot\\]',
-    'PREFIX' = '!n',
+    'PREFIX' = '!',
     'POSTFIX' = 'n',
     'REGEX_FLAGS' = 'im',
 }

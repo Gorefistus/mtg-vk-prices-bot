@@ -9,9 +9,9 @@
   },
   "scripts": {
     "start": "node dist/src/index.js",
-    "dev": "concurrently -k \"npm run watch-ts\" \"npm run watch-node\" \"cpx src/static/* dist/*\"",
+    "dev": " cpx src/static/* dist/src/static && concurrently -k \"npm run watch-ts\" \"npm run watch-node\"",
     "watch-node": "node node_modules/nodemon/bin/nodemon.js dist/src/index.js",
-    "build": "npm run build-ts && npm run tslint --fix && cpx src/static/* dist/static ",
+    "build": "npm run build-ts && npm run tslint --fix && cpx src/static/* dist/src/static ",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
