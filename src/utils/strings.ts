@@ -14,6 +14,10 @@ export enum ERRORS {
 
     AUCTIONS_WATCH_GROUP = 'Данная команда недоступна для групповых чатов',
     AUCTIONS_NOT_FOUND = 'По вашему запросу не было найдено ни одного текущего или завершившегося аукциона',
+    AUCTIONS_TOO_MUCH = 'Нельзя отслеживать больше 5 аукцинных запросов одновременно, удалите старый, чтобы добавить новый',
+    AUCTIONS_DELETION_WRONG_INDEX = 'Вы ввели неверный индекс элемента',
+    AUCTIONS_QUERY_TOO_SHORT = 'В вашем запросе на отслеживание должно быть не менее 4 символов',
+    AUCTIONS_QUERY_ALREADY_PRESENT = 'Вы уже отслеживаете данный запрос',
 
     TOPDECK_REQUEST_TIMEOUT = 'Ошибка в запросе на TopDeck.ru, попробуйте повторить запрос позднее',
 
@@ -103,5 +107,20 @@ export enum FORMATS {
 export enum AUCTIONS {
     CURRENT_MATCH_CRITERIA = 'ТЕКУЩИЕ аукционы подходящие под критерии поиска: ',
     ENDED_MATCH_CRITERIA = 'ЗАВЕРШЕННЫЕ аукционы подходящие под критерии поиска: ',
+    NEW_AUCTIONS_MATCH_CRITERIA = '✅ Новые аукционы по вашим запросам ✅',
+    NEARLY_AUCTIONS_CRITERIA = '❗ Эти аукционы скоро заканчиваются ❗',
+
+    WATCHED_AUCTIONS_EMPTY = 'У вас нет отслеживаемых аукционных запросов.',
+
+    LOT = 'Лот:',
+    CURRENT_BID = 'Текущая ставка:',
+    WINNING_BID = 'Финальная ставка:',
+    DATE_ESTIMATED = 'Дата окончания:',
+
+    QUERY = 'Ваш запрос',
+    QUERY_TRACKED = 'Ваши отслеживаемые запросы:',
+    TRACKED = 'теперь отслеживается!',
+    NOT_TRACKED = 'больше не отслеживается',
+
 
 }

@@ -66,7 +66,7 @@ export default class AuctionsCommand extends BasicCommand {
                 filteredResults.push(topdeckCurrentAuctionsPrices.slice(0, 5));
             }
             const currentAuctionsResult = filteredResults.map(auction => {
-                return ` \n Лот: ${auction.lot} | Текущая ставка: ${auction.current_bid} | Дата окончания: ${moment.unix(Number.parseInt(auction.date_estimated, 10)).format(TIME_CONSTANTS.AUCTIONS)}`;
+                return ` \n ${AUCTIONS.LOT} ${auction.lot} | ${AUCTIONS.CURRENT_BID} ${auction.current_bid} | ${AUCTIONS.DATE_ESTIMATED} ${moment.unix(Number.parseInt(auction.date_estimated, 10)).format(TIME_CONSTANTS.AUCTIONS)}`;
             });
 
 
@@ -82,18 +82,17 @@ export default class AuctionsCommand extends BasicCommand {
                 // ended auctions already sorted for us, so we don't need to sort them again
                 const topdeckEndedAuctionsPrices: Array<TopdeckEndedAuction> = topdeckEndedAuctionsPricesResponse.data.auctions;
                 const endedAuctionsResult = [];
-                let stringToReturn = `\n\n ${AUCTIONS.ENDED_MATCH_CRITERIA}: `;
                 let i = 0;
                 for (const endedAuction of topdeckEndedAuctionsPrices) {
                     i++;
-                    endedAuctionsResult.push(`\n Лот: ${endedAuction.lot} |  Финальная ставка: ${endedAuction.winning_bid} | Дата окончания: ${moment.unix(Number.parseInt(endedAuction.date_ended, 10)).format(TIME_CONSTANTS.AUCTIONS)} `);
+                    endedAuctionsResult.push(`\n ${AUCTIONS.LOT} ${endedAuction.lot} |  ${AUCTIONS.WINNING_BID} ${endedAuction.winning_bid} | ${AUCTIONS.DATE_ESTIMATED} ${moment.unix(Number.parseInt(endedAuction.date_ended, 10)).format(TIME_CONSTANTS.AUCTIONS)} `);
                     if (i > 4)
                         break;
                 }
                 if (currentAuctionsResult.length === 0 && endedAuctionsResult.length === 0) {
                     return msg.send(ERRORS.AUCTIONS_NOT_FOUND);
                 }
-                msg.send(`\n\nТЕКУЩИЕ аукционы подходящие под критерии поиска: :${currentAuctionsResult.join()}\n\nЗАВЕРШЕННЫЕ аукционы подходящие под критерии поиска: :${endedAuctionsResult.join()}`);
+                msg.send(`\n\n${AUCTIONS.CURRENT_MATCH_CRITERIA}${currentAuctionsResult.join()}\n\n${AUCTIONS.ENDED_MATCH_CRITERIA}${endedAuctionsResult.join()}`);
             }
 
         } catch (e) {

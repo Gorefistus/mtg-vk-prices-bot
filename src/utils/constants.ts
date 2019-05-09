@@ -14,6 +14,8 @@ export enum PEER_TYPES {
 
 export enum DB_CONSTANTS {
     "CACHE_EXPIRE_DURATION" = 1000 * 60 * 60 * 24, // One day in milliseconds;
+    "AUC_EXPIRE_DATE" = 60 * 30, //30 minutes in seconds
+    "AUC_REFRESH_RATE" = 1000 * 90,// 90 seconds in milliseconds;
     "RESULTS_PER_PAGE" = 15,
 }
 
@@ -67,6 +69,7 @@ export enum API_LINKS {
     STAR_CITY_PRICE = 'http://www.starcitygames.com/results?name=',
     TOPDECK_PRICE = 'https://topdeck.ru/apps/toptrade/api-v1/singles/search?q=',
     TOPDECK_AUCTIONS = 'https://topdeck.ru/apps/toptrade/api-v1/auctions',
+    TOPDECK_AUCTIONS_SITE = ' https://topdeck.ru/apps/toptrade/auctions/',
     TOPDECK_AUCTIONS_FINISHED_ = 'https://topdeck.ru/apps/toptrade/auctions/finished',
     TOPDECK_AUCTIONS_FINISHED_SEARCH = 'https://topdeck.ru/apps/toptrade/api-v1/auctions/search?q=',
     MTGGOLDFISH_PRICE = 'https://www.mtggoldfish.com/price/',
@@ -76,5 +79,5 @@ export enum API_LINKS {
 
 
 export enum TIME_CONSTANTS {
-    AUCTIONS ='Do MMM YYYY',
+    AUCTIONS = 'Do MMM YYYY',
 }
