@@ -13,6 +13,7 @@ export default class NotFoundCommand extends BasicCommand {
 
     constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
         super(vkApi, regex, regexGroup);
+        this.shortName = 'uc';
         this.vkBotApi = vkApi;
         if (regex) {
             this.regex = regex;
