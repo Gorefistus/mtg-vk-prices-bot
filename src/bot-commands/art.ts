@@ -7,8 +7,8 @@ import { getCardByName } from '../utils/scryfall-utils';
 import { ImageCache } from 'image-cache';
 import ImageHelper from '../utils/database/image-helper';
 import axios from 'axios';
-import fs from "fs";
-import * as path from "path";
+import fs from 'fs';
+import * as path from 'path';
 
 export default class ArtCommand extends BasicCommand {
     fullName: string; // 'art';
@@ -99,7 +99,7 @@ export default class ArtCommand extends BasicCommand {
                                 const imageName = `${cardFace.illustration_id}.jpg`;
                                 await downloadFunction(sourceUrl, imageName);
 
-                                const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value:path.resolve(imageName)}});
+                                const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: path.resolve(imageName)}});
                                 if (cardPhotoObject) {
                                     const photoObjectToCache: ImageCache = {
                                         cardId: cardFace.illustration_id,
