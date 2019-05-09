@@ -14,7 +14,7 @@ export function getRecommendation(request: string, type: string, isPrivate = fal
         keyboardRow.push(Keyboard.textButton({
             // @ts-ignore
             label: KEYBOARD[command],
-            payload: {command: `!n${command} ${request}`},
+            payload: {command: `!${command} ${request}`},
             color: ColorIndexes[index]
         }));
     });

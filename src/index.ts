@@ -60,9 +60,8 @@ const checkRegex = (msg: MessageContext, commands: Array<CardCommand>, yaStats: 
             if (command.shortName !== 'BC') {
                 msg.setActivity();
                 yaStats.track(msg.senderId, {msg: commandString}, command.shortName);
+                command.processCommand(msg);
             }
-
-            command.processCommand(msg);
             break;
         }
     }
