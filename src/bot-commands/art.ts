@@ -6,6 +6,9 @@ import { Card } from 'scryfall-sdk';
 import { getCardByName } from '../utils/scryfall-utils';
 import { ImageCache } from 'image-cache';
 import ImageHelper from '../utils/database/image-helper';
+import axios from 'axios';
+import fs from "fs";
+import * as path from "path";
 
 export default class ArtCommand extends BasicCommand {
     fullName: string; // 'art';
@@ -39,6 +42,18 @@ export default class ArtCommand extends BasicCommand {
          * Administration managing should be here
          *
          */
+
+
+        const downloadFunction = async function (sourceURl: string, fileName: string): Promise<any> {
+            const image = await axios.get(sourceURl, {responseType: 'stream'});
+            return new Promise<any>(((resolve, reject) => {
+                const ws = fs.createWriteStream(`${fileName}`);
+                image.data.pipe(ws);
+                ws.on('error', (err) => {
+                    reject(err);
+                }).on('finish', resolve);
+            }));
+        };
 
         const cardNames = msg.text.match(PEER_TYPES.GROUP === msg.peerType ? this.regexGroup : this.regex)[3];
         if (cardNames.trim().length === 0) {
@@ -80,7 +95,11 @@ export default class ArtCommand extends BasicCommand {
                             if (cardPhotoObjectFromCache) {
                                 cardImageObjects.push(cardPhotoObjectFromCache);
                             } else {
-                                const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: cardFace.image_uris.art_crop}});
+                                const sourceUrl = cardFace.image_uris.normal;
+                                const imageName = `${cardFace.illustration_id}.jpg`;
+                                await downloadFunction(sourceUrl, imageName);
+
+                                const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value:path.resolve(imageName)}});
                                 if (cardPhotoObject) {
                                     const photoObjectToCache: ImageCache = {
                                         cardId: cardFace.illustration_id,
@@ -101,7 +120,10 @@ export default class ArtCommand extends BasicCommand {
                         if (cardPhotoObjectFromCache) {
                             cardImageObjects.push(cardPhotoObjectFromCache);
                         } else {
-                            const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: card.image_uris.art_crop}});
+                            const sourceUrl = card.image_uris.normal;
+                            const imageName = `${card.illustration_id}.jpg`;
+                            await downloadFunction(sourceUrl, imageName);
+                            const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: path.resolve(imageName)}});
                             if (cardPhotoObject) {
                                 const photoObjectToCache: ImageCache = {
                                     cardId: card.illustration_id,
