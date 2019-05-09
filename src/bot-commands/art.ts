@@ -95,7 +95,7 @@ export default class ArtCommand extends BasicCommand {
                             if (cardPhotoObjectFromCache) {
                                 cardImageObjects.push(cardPhotoObjectFromCache);
                             } else {
-                                const sourceUrl = cardFace.image_uris.normal;
+                                const sourceUrl = cardFace.image_uris.art_crop;
                                 const imageName = `${cardFace.illustration_id}.jpg`;
                                 await downloadFunction(sourceUrl, imageName);
 
@@ -120,7 +120,7 @@ export default class ArtCommand extends BasicCommand {
                         if (cardPhotoObjectFromCache) {
                             cardImageObjects.push(cardPhotoObjectFromCache);
                         } else {
-                            const sourceUrl = card.image_uris.normal;
+                            const sourceUrl = card.image_uris.art_crop;
                             const imageName = `${card.illustration_id}.jpg`;
                             await downloadFunction(sourceUrl, imageName);
                             const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: path.resolve(imageName)}});
