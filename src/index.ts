@@ -57,11 +57,12 @@ const checkRegex = (msg: MessageContext, commands: Array<CardCommand>, yaStats: 
     for (const command of commands) {
         const commandString = msg.messagePayload ? msg.messagePayload.command : msg.text;
         if (command.checkRegex(commandString, PEER_TYPES.GROUP === msg.peerType)) {
-            if (command.shortName !== 'BC') {
+            if (command.shortName !== 'BC' && command.shortName !== 'uc') {
                 msg.setActivity();
                 yaStats.track(msg.senderId, {msg: commandString}, command.shortName);
-                command.processCommand(msg);
             }
+            command.processCommand(msg);
+
             break;
         }
     }
