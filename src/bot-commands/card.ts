@@ -76,16 +76,22 @@ export default class CardCommand extends BasicCommand {
                 for (const card of foundCardArray) {
                     if (card.card_faces) {
                         for (const cardFace of card.card_faces) {
-                            const cardPhotoObjectFromCache = await ImageHelper.getItem({cardId: cardFace.illustration_id});
+                            const cardPhotoObjectFromCache = await ImageHelper.getItem({
+                                cardId: cardFace.illustration_id,
+                                art: false,
+                                trade: false
+                            });
                             if (cardPhotoObjectFromCache) {
                                 cardImageObjects.push(cardPhotoObjectFromCache);
                             } else {
-                                const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: cardFace.image_uris.normal}});
+                                const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: cardFace.image_uris.small}});
                                 if (cardPhotoObject) {
                                     const photoObjectToCache: ImageCache = {
                                         cardId: cardFace.illustration_id,
                                         cardObject: card,
-                                        photoObject: cardPhotoObject
+                                        photoObject: cardPhotoObject,
+                                        art: false,
+                                        trade: false,
                                     };
                                     cardImageObjects.push(photoObjectToCache);
                                     ImageHelper.createItem(photoObjectToCache);
@@ -97,12 +103,14 @@ export default class CardCommand extends BasicCommand {
                         if (cardPhotoObjectFromCache) {
                             cardImageObjects.push(cardPhotoObjectFromCache);
                         } else {
-                            const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: card.image_uris.normal}});
+                            const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: card.image_uris.small}});
                             if (cardPhotoObject) {
                                 const photoObjectToCache: ImageCache = {
                                     cardId: card.illustration_id,
                                     cardObject: card,
-                                    photoObject: cardPhotoObject
+                                    photoObject: cardPhotoObject,
+                                    art: false,
+                                    trade: false,
                                 };
                                 cardImageObjects.push(photoObjectToCache);
                                 ImageHelper.createItem(photoObjectToCache);
