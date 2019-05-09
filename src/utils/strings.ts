@@ -103,6 +103,14 @@ export enum FORMATS {
     MTGO_COMMANDER = 'MTGO 1v1 Commander',
 }
 
+export enum KEYBOARD {
+    c = 'Посмотреть изображение карты',
+    o = 'Посмотреть oracle карты',
+    p = 'Посмотреть цену карты',
+    pr = 'Посмотреть издания карты',
+    l = 'Посмотреть легальность карты',
+}
+
 
 export enum AUCTIONS {
     CURRENT_MATCH_CRITERIA = 'ТЕКУЩИЕ аукционы подходящие под критерии поиска: ',

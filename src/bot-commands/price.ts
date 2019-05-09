@@ -1,19 +1,20 @@
-import VK, {MessageContext} from 'vk-io';
-import {Card} from 'scryfall-sdk';
+import VK, { MessageContext } from 'vk-io';
+import { Card } from 'scryfall-sdk';
 import axios from 'axios';
 import request from 'request-promise-native';
 
 import BasicCommand from './basic-command';
-import {API_LINKS, PEER_TYPES, REGEX_CONSTANTS} from '../utils/constants';
-import {getCardByName} from '../utils/scryfall-utils';
-import {ERRORS, GENERAL, LOGS} from '../utils/strings';
+import { API_LINKS, PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
+import { getCardByName } from '../utils/scryfall-utils';
+import { ERRORS, GENERAL, LOGS } from '../utils/strings';
 import PriceHelper from '../utils/database/price-helper';
 import ImageHelper from '../utils/database/image-helper';
-import {getStartCityPrices} from '../utils/scg-utils';
-import {TopDeckPrice} from 'topdeck-price';
-import {SCGPrice, TopDeckPriceCache} from 'price-cache';
-import {ImageCache} from 'image-cache';
-import {getGoldfishPriceGraph} from '../utils/goldfish-utils';
+import { getStartCityPrices } from '../utils/scg-utils';
+import { TopDeckPrice } from 'topdeck-price';
+import { SCGPrice, TopDeckPriceCache } from 'price-cache';
+import { ImageCache } from 'image-cache';
+import { getGoldfishPriceGraph } from '../utils/goldfish-utils';
+import { getRecommendation } from '../utils/recommendation';
 
 
 export default class PriceCommand extends BasicCommand {
@@ -49,8 +50,10 @@ export default class PriceCommand extends BasicCommand {
          */
 
 
+        const commandString = msg.messagePayload ? msg.messagePayload.command : msg.text;
 
-        const cardName = msg.text.match(PEER_TYPES.GROUP === msg.peerType ? this.regexGroup : this.regex)[3];
+
+        const cardName = commandString.match(PEER_TYPES.GROUP === msg.peerType ? this.regexGroup : this.regex)[3];
         const cardSetSplit = cardName.match(/(.*)\[(.{3,4})\]/i);
         let foundCard: Card = undefined;
         try {
@@ -72,7 +75,7 @@ export default class PriceCommand extends BasicCommand {
                     priceImageFromCache = await getGoldfishPriceGraph(this.vkBotApi, foundCardName, foundCard);
                 }
 
-                this.sendPriceMessage(foundCard, msg, priceFromCache.scgPrice, priceFromCache.topdeckPrice, priceImageFromCache);
+                this.sendPriceMessage(foundCard, msg, cardName, priceFromCache.scgPrice, priceFromCache.topdeckPrice, priceImageFromCache);
             } else {
                 const rawPriceObject = <{ scg: SCGPrice, topdeck: TopDeckPriceCache }>{};
                 const image = await getGoldfishPriceGraph(this.vkBotApi, foundCardName, foundCard);
@@ -123,7 +126,7 @@ export default class PriceCommand extends BasicCommand {
                         topdeckPrice: rawPriceObject.topdeck
                     });
                 }
-                this.sendPriceMessage(foundCard, msg, rawPriceObject.scg, rawPriceObject.topdeck, image);
+                this.sendPriceMessage(foundCard, msg, cardName, rawPriceObject.scg, rawPriceObject.topdeck, image);
             }
         } catch (e) {
             if (!e) {
@@ -135,7 +138,7 @@ export default class PriceCommand extends BasicCommand {
     }
 
 
-    sendPriceMessage(card: Card, msg: MessageContext, scgPrice?: SCGPrice, topDeckPriceCache?: TopDeckPriceCache, image?: ImageCache) {
+    sendPriceMessage(card: Card, msg: MessageContext, cardName: string, scgPrice?: SCGPrice, topDeckPriceCache?: TopDeckPriceCache, image?: ImageCache) {
         let priceString = `${GENERAL.PRICE_FOR} ${card.printed_name ? card.printed_name : card.name} [${card.set_name}]:\n`;
         // TCG
         priceString = `${priceString} TCG: ${card.prices.usd ? `$${card.prices.usd}` : ERRORS.PRICE_NO_INFO}\n`;
@@ -151,6 +154,14 @@ export default class PriceCommand extends BasicCommand {
         priceString = `${priceString} ${topDeckPriceCache ? `${GENERAL.PRICES_TOPDECK}: ${topDeckPriceCache.value} RUB` : `TopDeck: ${ERRORS.PRICE_NO_INFO}`}\n`;
 
         const attachment = image ? `photo${image.photoObject.ownerId}_${image.photoObject.id}` : undefined;
+
+        const keyboard = cardName ? getRecommendation(cardName, this.shortName, PEER_TYPES.GROUP !== msg.peerType) : undefined;
+
+        if (keyboard) {
+            msg.send('', {attachment, keyboard: keyboard});
+        } else {
+            msg.send('', {attachment});
+        }
 
         msg.send(priceString, {attachment});
     }

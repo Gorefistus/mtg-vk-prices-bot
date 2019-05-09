@@ -28,9 +28,14 @@ export enum DB_NAMES {
 
 
 export enum COMMAND_IDS {
-    "CARD" = 'CARD_COMMAND_ID',
-    "ADMINISTRATION" = 'ADMINSTRATION_COMMAND_ID',
+    "c" = 'с',
+    "p" = 'p',
+    "o" = 'o',
+    "l" = 'l',
+    "pr" = 'pr',
 }
+
+export const ColorIndexes = ['primary','negative','positive','default'];
 
 
 export enum LANGS {

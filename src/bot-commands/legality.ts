@@ -1,9 +1,9 @@
 import BasicCommand from "./basic-command";
-import VK, {MessageContext} from "vk-io";
-import {LEGALITY, PEER_TYPES, REGEX_CONSTANTS} from "../utils/constants";
+import VK, { MessageContext } from "vk-io";
+import { LEGALITY, PEER_TYPES, REGEX_CONSTANTS } from "../utils/constants";
 import * as STRINGS from '../utils/strings';
-import {ERRORS} from "../utils/strings";
-import {getCardByName} from "../utils/scryfall-utils";
+import { ERRORS } from "../utils/strings";
+import { getCardByName } from "../utils/scryfall-utils";
 
 
 export default class LegalityCommand extends BasicCommand {
@@ -33,7 +33,16 @@ export default class LegalityCommand extends BasicCommand {
 
 
     async processCommand(msg: MessageContext): Promise<any> {
-        const cardName = msg.text.match(PEER_TYPES.GROUP === msg.peerType ? this.regexGroup : this.regex)[3];
+        /**
+         *
+         * Administration managing should be here
+         *
+         */
+
+        const commandString = msg.messagePayload ? msg.messagePayload.command : msg.text;
+
+
+        const cardName = commandString.match(PEER_TYPES.GROUP === msg.peerType ? this.regexGroup : this.regex)[3];
         try {
             const foundCard = await getCardByName(cardName);
             let legalityString = `Легальность карты ${foundCard.printed_name ? foundCard.printed_name : foundCard.name} в форматах:\n`;

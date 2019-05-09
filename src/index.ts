@@ -32,7 +32,8 @@ const vkApi = new VK({
 
 const checkRegex = (msg: MessageContext, commands: Array<CardCommand>) => {
     for (const command of commands) {
-        if (command.checkRegex(msg.text, PEER_TYPES.GROUP === msg.peerType)) {
+        const commandString = msg.messagePayload ? msg.messagePayload.command : msg.text;
+        if (command.checkRegex(commandString, PEER_TYPES.GROUP === msg.peerType)) {
             command.processCommand(msg);
             break;
         }

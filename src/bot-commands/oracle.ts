@@ -3,6 +3,7 @@ import VK, { MessageContext } from 'vk-io';
 import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { getCardByName } from '../utils/scryfall-utils';
 import { ERRORS } from '../utils/strings';
+import { getRecommendation } from '../utils/recommendation';
 
 
 export default class OracleCommand extends BasicCommand {
@@ -35,7 +36,10 @@ export default class OracleCommand extends BasicCommand {
          * Administration managing should be here
          *
          */
-        const cardName = msg.text.match(PEER_TYPES.GROUP === msg.peerType ? this.regexGroup : this.regex)[3];
+
+        const commandString = msg.messagePayload ? msg.messagePayload.command : msg.text;
+
+        const cardName = commandString.match(PEER_TYPES.GROUP === msg.peerType ? this.regexGroup : this.regex)[3];
         try {
             const foundCard = await getCardByName(cardName);
 
@@ -61,8 +65,14 @@ export default class OracleCommand extends BasicCommand {
                     ${foundCard.power ? `🗡: ${foundCard.power}` : ''} ${foundCard.toughness ? `🛡: ${foundCard.toughness}` : ''}
                     `;
             }
+            const keyboard = cardName ? getRecommendation(cardName, this.shortName, PEER_TYPES.GROUP !== msg.peerType) : undefined;
 
-            msg.send(oracleText);
+            if (keyboard) {
+                msg.send(oracleText, {keyboard: keyboard});
+            } else {
+                msg.send(oracleText);
+
+            }
         } catch (e) {
             if (!e) {
                 return this.processError(msg, ERRORS.CARD_NOT_FOUND);

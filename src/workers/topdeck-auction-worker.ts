@@ -31,7 +31,7 @@ export function TopDeckAuctionWorker(vkApi: VK) {
                                     soonToExpireAucsArray.push(auc);
                                     indexesToDelete.push(expiredAucIndex);
                                 }
-                            }else if (!auctionUser.foundAuctions.find((prevFoundAuc) => (
+                            } else if (!auctionUser.foundAuctions.find((prevFoundAuc) => (
                                 prevFoundAuc.id === watchlistIndex && prevFoundAuc.aucId === auc.id
                             ))) {
                                 auctionUser.foundAuctions.push({aucId: auc.id, id: watchlistIndex});
@@ -61,7 +61,13 @@ export function TopDeckAuctionWorker(vkApi: VK) {
                 }
 
                 if (newFoundAucsArray.length > 0 || soonToExpireAucsArray.length > 0) {
-                    vkApi.api.messages.send({user_id: auctionUser.userId, message: notificationString});
+                    try {
+                        vkApi.api.messages.send({user_id: auctionUser.userId, message: notificationString});
+
+                    } catch (e) {
+                        //probably some VK privacy problems
+                        console.log('VK PRIVACY PROBLEMS');
+                    }
                     AuctionsHelper.updateItem({userId: auctionUser.userId}, {
                         $set: {
                             cacheDate: Date.now(),

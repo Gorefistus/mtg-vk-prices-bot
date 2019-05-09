@@ -7,6 +7,7 @@ import { getCardByName } from '../utils/scryfall-utils';
 import ImageHelper from '../utils/database/image-helper';
 import { ImageCache } from 'image-cache';
 import BasicCommand from './basic-command';
+import { getRecommendation } from '../utils/recommendation';
 
 
 export default class CardCommand extends BasicCommand {
@@ -41,8 +42,9 @@ export default class CardCommand extends BasicCommand {
          *
          */
 
+        const commandString = msg.messagePayload ? msg.messagePayload.command : msg.text;
 
-        const cardNames = msg.text.match(PEER_TYPES.GROUP === msg.peerType ? this.regexGroup : this.regex)[3];
+        const cardNames = commandString.match(PEER_TYPES.GROUP === msg.peerType ? this.regexGroup : this.regex)[3];
         if (cardNames.trim().length === 0) {
             return this.processError(msg, ERRORS.CARD_NO_CARD);
         }
@@ -114,7 +116,13 @@ export default class CardCommand extends BasicCommand {
                     attachment = `${attachment}photo${cardImage.photoObject.ownerId}_${cardImage.photoObject.id},`;
                 });
 
-                msg.send('', {attachment});
+                const keyboard = splittedCardNames.length === 1 ? getRecommendation(splittedCardNames[0], this.shortName, PEER_TYPES.GROUP !== msg.peerType) : undefined;
+
+                if (keyboard) {
+                    msg.send('', {attachment, keyboard: keyboard});
+                } else {
+                    msg.send('', {attachment});
+                }
             } catch (e) {
                 return this.processError(msg);
             } finally {
