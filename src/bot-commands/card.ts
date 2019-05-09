@@ -124,6 +124,7 @@ export default class CardCommand extends BasicCommand {
                     msg.send('', {attachment});
                 }
             } catch (e) {
+                console.log(e);
                 return this.processError(msg);
             } finally {
                 if (notFoundCardArray.length > 0) {
