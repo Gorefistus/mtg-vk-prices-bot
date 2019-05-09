@@ -10,7 +10,7 @@ export function getRecommendation(request: string, type: string, isPrivate = fal
     const keyboardRow = <Array<TextButton>>[];
 
 
-    Object.keys(COMMAND_IDS).filter(command => command != type).forEach((command, index) => {
+    Object.keys(COMMAND_IDS).filter(command => command !== type).forEach((command, index) => {
         keyboardRow.push(Keyboard.textButton({
             // @ts-ignore
             label: KEYBOARD[command],
