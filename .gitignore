@@ -64,4 +64,3 @@ typings/
 
 #credentials file for testing
 dist/
-/creds.json
