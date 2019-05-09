@@ -1,5 +1,9 @@
 import VK, { MessageContext } from 'vk-io';
 import { Card } from 'scryfall-sdk';
+import axios from 'axios';
+import fs from 'fs';
+import * as path from 'path';
+
 
 import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { ERRORS } from '../utils/strings';
@@ -34,6 +38,7 @@ export default class CardCommand extends BasicCommand {
         }
     }
 
+
     public async processCommand(msg: MessageContext): Promise<any> {
 
         /**
@@ -41,6 +46,17 @@ export default class CardCommand extends BasicCommand {
          * Administration managing should be here
          *
          */
+
+        const downloadFunction = async function (sourceURl: string, fileName: string): Promise<any> {
+            const image = await axios.get(sourceURl, {responseType: 'stream'});
+            return new Promise<any>(((resolve, reject) => {
+                const ws = fs.createWriteStream(`${fileName}`);
+                image.data.pipe(ws);
+                ws.on('error', (err) => {
+                    reject(err);
+                }).on('finish', resolve);
+            }));
+        };
 
         const commandString = msg.messagePayload ? msg.messagePayload.command : msg.text;
 
@@ -84,7 +100,13 @@ export default class CardCommand extends BasicCommand {
                             if (cardPhotoObjectFromCache) {
                                 cardImageObjects.push(cardPhotoObjectFromCache);
                             } else {
-                                const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: cardFace.image_uris.normal.slice(0, cardFace.image_uris.normal.lastIndexOf('jpg') + 3)}});
+                                const sourceUrl = cardFace.image_uris.normal;
+                                const imageName = `${cardFace.illustration_id}.jpg`;
+                                await downloadFunction(sourceUrl, imageName);
+
+                                const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: path.resolve(imageName)}});
+                                fs.unlinkSync(imageName);
+
                                 if (cardPhotoObject) {
                                     const photoObjectToCache: ImageCache = {
                                         cardId: cardFace.illustration_id,
@@ -103,7 +125,13 @@ export default class CardCommand extends BasicCommand {
                         if (cardPhotoObjectFromCache) {
                             cardImageObjects.push(cardPhotoObjectFromCache);
                         } else {
-                            const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: card.image_uris.normal.slice(0, card.image_uris.normal.lastIndexOf('jpg') + 3)}});
+                            const sourceUrl = card.image_uris.normal;
+                            const imageName = `${card.illustration_id}.jpg`;
+                            await downloadFunction(sourceUrl, imageName);
+
+                            const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: path.resolve(imageName)}});
+                            fs.unlinkSync(imageName);
+
                             if (cardPhotoObject) {
                                 const photoObjectToCache: ImageCache = {
                                     cardId: card.illustration_id,
