@@ -90,7 +90,7 @@ export default class CardCommand extends BasicCommand {
                 }
                 const cardImageObjects: Array<ImageCache> = [];
                 for (const card of foundCardArray) {
-                    if (card.card_faces) {
+                    if (card.card_faces && !card.image_uris) {
                         for (const cardFace of card.card_faces) {
                             const cardPhotoObjectFromCache = await ImageHelper.getItem({
                                 cardId: cardFace.illustration_id
