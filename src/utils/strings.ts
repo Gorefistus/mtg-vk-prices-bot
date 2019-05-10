@@ -89,7 +89,7 @@ export enum LANGUAGES {
 
 export enum LEGALITY {
     LEGAL = 'Легальна ✅',
-    NOT_LEGAL = 'Нелегеальна 🚫',
+    NOT_LEGAL = 'Нелегальна 🚫',
     BANNED = 'Забанена ⛔',
     RESTRICTED = 'Порестрикчена ❗',
 }
