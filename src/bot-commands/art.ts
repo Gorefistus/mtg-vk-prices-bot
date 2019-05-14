@@ -89,7 +89,7 @@ export default class ArtCommand extends BasicCommand {
                     if (card.card_faces  && !card.image_uris) {
                         for (const cardFace of card.card_faces) {
                             const cardPhotoObjectFromCache = await ImageHelper.getItem({
-                                cardId: cardFace.illustration_id,
+                                cardId: card.id + cardFace.illustration_id,
                                 art: true
                             });
                             if (cardPhotoObjectFromCache) {
@@ -102,7 +102,7 @@ export default class ArtCommand extends BasicCommand {
                                 const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: path.resolve(imageName)}});
                                 if (cardPhotoObject) {
                                     const photoObjectToCache: ImageCache = {
-                                        cardId: cardFace.illustration_id,
+                                        cardId: card.id + cardFace.illustration_id,
                                         cardObject: card,
                                         photoObject: cardPhotoObject,
                                         art: true,
@@ -114,7 +114,7 @@ export default class ArtCommand extends BasicCommand {
                         }
                     } else {
                         const cardPhotoObjectFromCache = await ImageHelper.getItem({
-                            cardId: card.illustration_id,
+                            cardId: card.id + card.illustration_id,
                             art: true
                         });
                         if (cardPhotoObjectFromCache) {
@@ -126,7 +126,7 @@ export default class ArtCommand extends BasicCommand {
                             const cardPhotoObject = await this.vkBotApi.upload.messagePhoto({source: {value: path.resolve(imageName)}});
                             if (cardPhotoObject) {
                                 const photoObjectToCache: ImageCache = {
-                                    cardId: card.illustration_id,
+                                    cardId: card.id + card.illustration_id,
                                     cardObject: card,
                                     photoObject: cardPhotoObject,
                                     art: true,

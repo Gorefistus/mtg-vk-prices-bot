@@ -93,7 +93,7 @@ export default class CardCommand extends BasicCommand {
                     if (card.card_faces && !card.image_uris) {
                         for (const cardFace of card.card_faces) {
                             const cardPhotoObjectFromCache = await ImageHelper.getItem({
-                                cardId: cardFace.illustration_id
+                                cardId: card.id + cardFace.illustration_id
                             });
                             if (cardPhotoObjectFromCache) {
                                 cardImageObjects.push(cardPhotoObjectFromCache);
@@ -107,7 +107,7 @@ export default class CardCommand extends BasicCommand {
 
                                 if (cardPhotoObject) {
                                     const photoObjectToCache: ImageCache = {
-                                        cardId: cardFace.illustration_id,
+                                        cardId: card.id + cardFace.illustration_id,
                                         cardObject: card,
                                         photoObject: cardPhotoObject
                                     };
@@ -117,7 +117,7 @@ export default class CardCommand extends BasicCommand {
                             }
                         }
                     } else {
-                        const cardPhotoObjectFromCache = await ImageHelper.getItem({cardId: card.illustration_id});
+                        const cardPhotoObjectFromCache = await ImageHelper.getItem({cardId: card.id + card.illustration_id});
                         if (cardPhotoObjectFromCache) {
                             cardImageObjects.push(cardPhotoObjectFromCache);
                         } else {
@@ -130,7 +130,7 @@ export default class CardCommand extends BasicCommand {
 
                             if (cardPhotoObject) {
                                 const photoObjectToCache: ImageCache = {
-                                    cardId: card.illustration_id,
+                                    cardId: card.id + card.illustration_id,
                                     cardObject: card,
                                     photoObject: cardPhotoObject,
                                     art: false,
