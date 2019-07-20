@@ -46,23 +46,23 @@ export default class OracleCommand extends BasicCommand {
             let oracleText = '';
             if (foundCard.card_faces && foundCard.card_faces.length > 0) {
                 foundCard.card_faces.forEach(card_face => {
-                    oracleText = `${oracleText}
-                    ${card_face.name} oracle text:
-                    Mana cost: ${card_face.mana_cost.length > 0 ? card_face.mana_cost : `None`} (CMC = ${foundCard.cmc})
-                    ${card_face.type_line}\n
-                    ${card_face.oracle_text}
-                    ${card_face.loyalty ? `Starting loyalty: ${card_face.loyalty}` : ''}\n
-                    ${card_face.power ? `🗡: ${card_face.power}` : ''} ${card_face.toughness ? `🛡: ${card_face.toughness}` : ''}
+oracleText = `${oracleText}
+${card_face.name} oracle text:
+Mana cost: ${card_face.mana_cost.length > 0 ? card_face.mana_cost : `None`} (CMC = ${foundCard.cmc})
+${card_face.type_line}\n
+${card_face.oracle_text}
+${card_face.loyalty ? `Starting loyalty: ${card_face.loyalty}` : ''}\n
+${card_face.power ? `🗡: ${card_face.power}` : ''} ${card_face.toughness ? `🛡: ${card_face.toughness}` : ''}
                     `;
                 });
             } else {
                 oracleText = `${oracleText}
-                    ${foundCard.name} oracle text:
-                    Mana cost: ${foundCard.mana_cost.length > 0 ? foundCard.mana_cost : `None`} (CMC = ${foundCard.cmc})
-                    ${foundCard.type_line}\n
-                    ${foundCard.oracle_text}
-                    ${foundCard.loyalty ? `Starting loyalty: ${foundCard.loyalty}` : ''}\n
-                    ${foundCard.power ? `🗡: ${foundCard.power}` : ''} ${foundCard.toughness ? `🛡: ${foundCard.toughness}` : ''}
+${foundCard.name} oracle text:
+Mana cost: ${foundCard.mana_cost.length > 0 ? foundCard.mana_cost : `None`} (CMC = ${foundCard.cmc})
+${foundCard.type_line}\n
+${foundCard.oracle_text}
+${foundCard.loyalty ? `Starting loyalty: ${foundCard.loyalty}` : ''}\n
+${foundCard.power ? `🗡: ${foundCard.power}` : ''} ${foundCard.toughness ? `🛡: ${foundCard.toughness}` : ''}
                     `;
             }
             const keyboard = cardName ? getRecommendation(cardName, this.shortName, PEER_TYPES.GROUP !== msg.peerType) : undefined;
