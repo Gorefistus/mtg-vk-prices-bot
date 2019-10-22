@@ -51,7 +51,6 @@ export default class LegalityCommand extends BasicCommand {
 ${STRINGS.FORMATS.STANDARD}: ${this.getLegality(foundCard.legalities.standard)}
 ${STRINGS.FORMATS.MODERN}: ${this.getLegality(foundCard.legalities.modern)}
 ${STRINGS.FORMATS.LEGACY}: ${this.getLegality(foundCard.legalities.legacy)}
-// @ts-ignore
 ${STRINGS.FORMATS.PIONEER}: ${this.getLegality(foundCard.legalities.pioneer)}
 ${STRINGS.FORMATS.PAUPER}: ${this.getLegality(foundCard.legalities.pauper)}
 ${STRINGS.FORMATS.PENNY}: ${this.getLegality(foundCard.legalities.penny)}
