@@ -43,7 +43,7 @@
     "phantom": "^6.2.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
-    "scryfall-sdk": "^1.5.0",
+    "scryfall-sdk": "^1.5.1",
     "vk-io": "^4.0.0-rc.17",
     "wikijs": "^4.13.0"
   },

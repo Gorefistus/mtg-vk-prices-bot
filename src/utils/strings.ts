@@ -101,6 +101,7 @@ export enum FORMATS {
     PAUPER = 'Pauper',
     COMMANDER = 'Commander',
     VINTAGE = 'Vintage',
+    PIONEER = 'Pioneer',
     PENNY = 'Penny Dreadful',
     MTGO_COMMANDER = 'MTGO 1v1 Commander',
 }
