@@ -71,7 +71,7 @@ export enum LEGALITY {
 }
 
 export enum API_LINKS {
-    STAR_CITY_PRICE = 'http://www.starcitygames.com/results?name=',
+    STAR_CITY_PRICE = 'http://www.starcitygames.com/search.php?search_query=',
     TOPDECK_PRICE = 'https://topdeck.ru/apps/toptrade/api-v1/singles/search?q=',
     TOPDECK_AUCTIONS = 'https://topdeck.ru/apps/toptrade/api-v1/auctions',
     TOPDECK_AUCTIONS_SITE = ' https://topdeck.ru/apps/toptrade/auctions/',
