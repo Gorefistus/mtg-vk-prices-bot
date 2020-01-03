@@ -6,7 +6,7 @@ import { SCGPrice, ScgPriceObj } from 'price-cache';
 
 const foilIndicator = 'enf';
 const normalIndicator = 'enn';
-const nm  = 'near mint';
+const nm = 'near mint';
 
 
 export async function getStartCityPrices(htmlString: string, cardObject: Card): Promise<SCGPrice> {
@@ -38,11 +38,11 @@ async function parsePrices(htmlString: string, cardObject: Card, isFoil = false)
         if (foundIds.length === 0) {
             return undefined;
         }
-        let idToUse = foundIds[0];
+        const idToUse = foundIds[0];
         const priceObjectRequest = await axios.get(`https://newstarcityconnector.herokuapp.com/eyApi/products/${idToUse}/variants`);
         // @ts-ignore
-        const priceObject = priceObjectRequest.data.response.data.find((scgPrice)=>{
-            return  scgPrice.option_values[0].label.toLowerCase() === nm ;
+        const priceObject = priceObjectRequest.data.response.data.find((scgPrice) => {
+            return scgPrice.option_values[0].label.toLowerCase() === nm;
         });
         valueToReturn.value = `$${priceObject.price}`;
         valueToReturn.stock = priceObject.inventory_level;
