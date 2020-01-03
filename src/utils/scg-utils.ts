@@ -2,8 +2,11 @@ import { Card } from 'scryfall-sdk';
 import cheerio from 'cheerio';
 import axios from 'axios';
 
-import ScgDict from './scg-set-dictionary';
 import { SCGPrice, ScgPriceObj } from 'price-cache';
+
+const foilIndicator = 'enf';
+const normalIndicator = 'enn';
+const nm  = 'near mint';
 
 
 export async function getStartCityPrices(htmlString: string, cardObject: Card): Promise<SCGPrice> {
@@ -24,7 +27,7 @@ async function parsePrices(htmlString: string, cardObject: Card, isFoil = false)
     const foundIds: Array<number> = [];
     htmlPage(`tr[data-id]`).each(function (index, element) {
         const dataName = element.attribs['data-name'].toLowerCase();
-        if (dataName.includes(cardObject.name.toLowerCase()) && dataName.includes(cardObject.set.toLowerCase()) && dataName.includes(cardObject.collector_number.toString())) {
+        if ((dataName.includes(cardObject.name.toLowerCase()) && dataName.includes(cardObject.set.toLowerCase()) && dataName.includes(cardObject.collector_number.toString())) && isFoil ? dataName.includes(foilIndicator) : dataName.includes(normalIndicator)) {
             const elemId = Number(element.attribs['data-id']);
             if (!Number.isNaN(elemId)) {
                 foundIds.push(elemId);
@@ -36,15 +39,12 @@ async function parsePrices(htmlString: string, cardObject: Card, isFoil = false)
             return undefined;
         }
         let idToUse = foundIds[0];
-        if (isFoil) {
-            if (foundIds.length < 2) {
-                return undefined;
-            }
-            idToUse = foundIds[1];
-        }
         const priceObjectRequest = await axios.get(`https://newstarcityconnector.herokuapp.com/eyApi/products/${idToUse}/variants`);
-        const priceObject = priceObjectRequest.data.response.data[0];
-        valueToReturn.value = priceObject.price;
+        // @ts-ignore
+        const priceObject = priceObjectRequest.data.response.data.find((scgPrice)=>{
+            return  scgPrice.option_values[0].label.toLowerCase() === nm ;
+        });
+        valueToReturn.value = `$${priceObject.price}`;
         valueToReturn.stock = priceObject.inventory_level;
         valueToReturn.set = cardObject.set_name;
     } catch (e) {
