@@ -27,7 +27,7 @@ async function parsePrices(htmlString: string, cardObject: Card, isFoil = false)
     const foundIds: Array<number> = [];
     htmlPage(`tr[data-id]`).each(function (index, element) {
         const dataName = element.attribs['data-name'].toLowerCase();
-        if ((dataName.includes(cardObject.name.toLowerCase()) && dataName.includes(cardObject.set.toLowerCase()) && dataName.includes(cardObject.collector_number.toString())) && isFoil ? dataName.includes(foilIndicator) : dataName.includes(normalIndicator)) {
+        if ((dataName.includes(cardObject.name.toLowerCase()) && dataName.includes(cardObject.set.toLowerCase()) && dataName.includes(cardObject.collector_number.toString())) && (isFoil ? dataName.includes(foilIndicator) : dataName.includes(normalIndicator))) {
             const elemId = Number(element.attribs['data-id']);
             if (!Number.isNaN(elemId)) {
                 foundIds.push(elemId);
