@@ -10,7 +10,7 @@ import { LOGS } from './strings';
 import ImageHelper from './database/image-helper';
 import { Card } from 'scryfall-sdk';
 import { ImageCache } from 'image-cache';
-import VK from 'vk-io';
+import VK, { PhotoAttachment } from 'vk-io';
 
 
 export function checkAgainstGoldfishDict(setName: string, isFoil = false): string {
@@ -69,4 +69,41 @@ export async function getGoldfishPriceGraph(vkApi: VK, preparedCardName: string,
         console.error(LOGS.GOLDGISH_IMAGE_DELETED);
         return undefined;
     }
+}
+
+export async function getGoldfishDeckImage(vkApi: VK, deckId: number): Promise<PhotoAttachment> {
+
+    const imageName = `${deckId}${Date.now()}.png`;
+
+    try {
+        const instance = await phantom.create([], {
+            logLevel: 'error',
+        });
+        const page = await instance.createPage();
+        const url = `${API_LINKS.MTGGOLDFISH_DECK_VISUAL}${deckId}`;
+        await page.open(url);
+        const clipRect = await page.evaluate(function () {
+            return document.querySelector('.deck-visual-graphic-area')
+                .getBoundingClientRect();
+        });
+        page.property('clipRect', {
+            top: clipRect.top,
+            left: clipRect.left,
+            width: clipRect.width,
+            height: clipRect.height,
+        });
+        page.render(imageName);
+        await instance.exit();
+        const photoObject = await vkApi.upload.messagePhoto({source: {value: path.resolve(imageName)}});
+        console.log(LOGS.GOLDGISH_IMAGE_DELETED);
+        return photoObject;
+    } catch (e) {
+        console.log(e);
+        console.error(LOGS.GOLDGISH_IMAGE_DELETED);
+        return undefined;
+    } finally {
+        fs.unlinkSync(imageName);
+
+    }
+
 }

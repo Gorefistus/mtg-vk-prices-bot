@@ -22,6 +22,7 @@ import { TopDeckAuctionWorker } from './workers/topdeck-auction-worker';
 // @ts-ignore
 import stats from 'bot-metrica';
 import HelpCommand from './bot-commands/help';
+import GoldfishDeckPresenter from './bot-commands/goldfish-deck-presenter';
 
 // THIS IS JUST NEEDED SO HEROKU WON"T STOP OUR APPLICATION
 const app = express();
@@ -75,6 +76,7 @@ const startBot = (vkBotApi: VK) => {
     const yaStats = stats(process.env.YA_TOKEN || creds.yandexToken || 'place your ya metrika token here');
 
     const commandArray: Array<CardCommand> = [
+        new GoldfishDeckPresenter(vkBotApi),
         new ArtCommand(vkBotApi),
         new AdministrationCommand(vkBotApi),
         new AdvancedSearchCommand(vkBotApi),

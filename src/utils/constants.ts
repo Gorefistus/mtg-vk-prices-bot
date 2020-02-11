@@ -78,6 +78,7 @@ export enum API_LINKS {
     TOPDECK_AUCTIONS_FINISHED_ = 'https://topdeck.ru/apps/toptrade/auctions/finished',
     TOPDECK_AUCTIONS_FINISHED_SEARCH = 'https://topdeck.ru/apps/toptrade/api-v1/auctions/search?q=',
     MTGGOLDFISH_PRICE = 'https://www.mtggoldfish.com/price/',
+    MTGGOLDFISH_DECK_VISUAL = 'https://www.mtggoldfish.com/deck/visual/',
     SCRY_API = 'https://api.scryfall.com/cards/search?q=',
     WIKI_MTG = 'https://mtg.gamepedia.com/api.php',
 }
