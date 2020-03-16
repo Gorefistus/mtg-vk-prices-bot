@@ -80,7 +80,7 @@ export default class WatchAuctionsCommand extends BasicCommand {
             }
 
             if (user) {
-                if (user.watchlist.length > 4) {
+                if (user.watchlist.length > 14) {
                     return this.processError(msg, ERRORS.AUCTIONS_TOO_MUCH);
                 }
                 if (auctionQuery.length < 4) {
