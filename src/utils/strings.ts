@@ -29,6 +29,11 @@ export enum ERRORS {
 
     NO_PRINTINGS = 'Было найдено 0 изданий этой карты по этому сету',
 
+    ROLL_WRONG_FORMAT = 'Введен неверный формат команды, напишете !help чтобы посомтерть документацию',
+    ROLL_ZERO_VALUES = 'Значение не может быть меньше или равно 0',
+    ROLL_BIG_VALUES = 'Значение не может быть больше 50',
+    ROLL_MAX_MIN = 'Значение минимума больше чем максимума',
+
     GENERAL_ERROR = 'Произошла ошибка в обработке вашего запроса, попробуйте повторить запрос позднее'
 }
 
@@ -104,6 +109,7 @@ export enum FORMATS {
     PIONEER = 'Pioneer',
     PENNY = 'Penny Dreadful',
     MTGO_COMMANDER = 'MTGO 1v1 Commander',
+    HISTORIC = 'Historic',
 }
 
 export enum KEYBOARD {

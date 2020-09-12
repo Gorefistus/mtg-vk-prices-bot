@@ -41,9 +41,10 @@
     "moment": "^2.24.0",
     "mongodb": "^3.2.3",
     "phantom": "^6.2.0",
+    "random-js": "^2.1.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
-    "scryfall-sdk": "^1.5.1",
+    "scryfall-sdk": "^2.0.0",
     "vk-io": "^4.0.0-rc.17",
     "wikijs": "^4.13.0"
   },

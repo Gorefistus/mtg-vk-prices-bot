@@ -3,6 +3,8 @@ export enum REGEX_CONSTANTS {
     'PREFIX' = '!',
     'POSTFIX' = 'n',
     'REGEX_FLAGS' = 'im',
+    'DICE' = '(\\d+)(d)(\\d+)',
+    'NUMBER' = '(\\d+)(-)(\\d+)'
 }
 
 

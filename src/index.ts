@@ -23,6 +23,7 @@ import { TopDeckAuctionWorker } from './workers/topdeck-auction-worker';
 import stats from 'bot-metrica';
 import HelpCommand from './bot-commands/help';
 import GoldfishDeckPresenter from './bot-commands/goldfish-deck-presenter';
+import RollCommand from './bot-commands/roll';
 
 // THIS IS JUST NEEDED SO HEROKU WON"T STOP OUR APPLICATION
 const app = express();
@@ -88,6 +89,7 @@ const startBot = (vkBotApi: VK) => {
         new OracleCommand(vkBotApi),
         new LegalityCommand(vkBotApi),
         new WatchAuctionsCommand(vkBotApi),
+        new RollCommand(vkBotApi),
         new WikiCommand(vkBotApi),
         new HelpCommand(vkBotApi),
         new NotFoundCommand(vkBotApi), // this command should always trigger last
