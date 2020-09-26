@@ -39,7 +39,13 @@ export async function getGoldfishPriceGraph(vkApi: VK, preparedCardName: string,
         const url = `${API_LINKS.MTGGOLDFISH_PRICE}${cardSetUrl}/${cardNameUrl}#paper`;
         await captureWebsite.file(url, imageName, {
             element: '.price-card-history-container',
-            scrollToElement: '.price-card-history-container'
+            scrollToElement: '.price-card-history-container',
+            launchOptions: {
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox'
+                ]
+            }
         });
         const photoObject = await vkApi.upload.messagePhoto({source: {value: path.resolve(imageName)}});
         const cacheObject = await ImageHelper.createItem({
@@ -67,7 +73,13 @@ export async function getGoldfishDeckImage(vkApi: VK, deckId: number): Promise<P
         await captureWebsite.file(url, imageName, {
             height: 2500,
             element: '.deck-visual-graphic-area',
-            scrollToElement: '.deck-visual-graphic-area'
+            scrollToElement: '.deck-visual-graphic-area',
+            launchOptions: {
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox'
+                ]
+            }
         });
         const photoObject = await vkApi.upload.messagePhoto({source: {value: path.resolve(imageName)}});
         console.log(LOGS.GOLDGISH_IMAGE_DELETED);
