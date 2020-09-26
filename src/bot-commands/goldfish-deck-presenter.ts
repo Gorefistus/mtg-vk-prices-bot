@@ -25,7 +25,7 @@ export default class GoldfishDeckPresenter extends BasicCommand {
         const image = await getGoldfishDeckImage(this.vkBotApi, id);
         const attachment = `photo${image.ownerId}_${image.id},`;
 
-        return msg.reply('', {attachment});
+        // return msg.reply('', {attachment});
 
     }
 }

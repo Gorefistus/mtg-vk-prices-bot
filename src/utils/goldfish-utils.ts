@@ -1,6 +1,7 @@
 import * as path from 'path';
 import fs from 'fs';
 import phantom from 'phantom';
+import captureWebsite from 'capture-website';
 
 
 import GoldfishDict from './goldfish-set-dictionary';
@@ -34,26 +35,13 @@ export async function getGoldfishPriceGraph(vkApi: VK, preparedCardName: string,
     const imageName = `${cardObject.set_name}${preparedCardName}${Date.now()}.png`;
 
     try {
-        const instance = await phantom.create([], {
-            logLevel: 'error',
-        });
-        const page = await instance.createPage();
         const cardNameUrl = Utils.replaceAll(Utils.removeAllSymbols(preparedCardName, [',', `'`]), ' ', '+');
         const cardSetUrl = Utils.replaceAll(Utils.removeAllSymbols(checkAgainstGoldfishDict(cardObject.set_name), [',', `'`]), ' ', '+');
         const url = `${API_LINKS.MTGGOLDFISH_PRICE}${cardSetUrl}/${cardNameUrl}#paper`;
-        await page.open(url);
-        const clipRect = await page.evaluate(function () {
-            return document.querySelector('#tab-paper')
-                .getBoundingClientRect();
+        await captureWebsite.file(url, imageName, {
+            element: '.price-card-history-container',
+            scrollToElement: '.price-card-history-container'
         });
-        page.property('clipRect', {
-            top: clipRect.top,
-            left: clipRect.left,
-            width: clipRect.width,
-            height: clipRect.height,
-        });
-        page.render(imageName);
-        await instance.exit();
         const photoObject = await vkApi.upload.messagePhoto({source: {value: path.resolve(imageName)}});
         const cacheObject = await ImageHelper.createItem({
             cardId: cardObject.illustration_id,
@@ -63,7 +51,7 @@ export async function getGoldfishPriceGraph(vkApi: VK, preparedCardName: string,
         });
         fs.unlinkSync(imageName);
         console.log(LOGS.GOLDGISH_IMAGE_DELETED, cacheObject);
-        return undefined; // cacheObject;
+        return cacheObject;
     } catch (e) {
         console.log(e);
         console.error(LOGS.GOLDGISH_IMAGE_DELETED);
@@ -76,24 +64,12 @@ export async function getGoldfishDeckImage(vkApi: VK, deckId: number): Promise<P
     const imageName = `${deckId}${Date.now()}.png`;
 
     try {
-        const instance = await phantom.create([], {
-            logLevel: 'error',
-        });
-        const page = await instance.createPage();
         const url = `${API_LINKS.MTGGOLDFISH_DECK_VISUAL}${deckId}`;
-        await page.open(url);
-        const clipRect = await page.evaluate(function () {
-            return document.querySelector('.deck-visual-graphic-area')
-                .getBoundingClientRect();
+        await captureWebsite.file(url, imageName, {
+            height: 2500,
+            element: '.deck-visual-graphic-area',
+            scrollToElement: '.deck-visual-graphic-area'
         });
-        page.property('clipRect', {
-            top: clipRect.top,
-            left: clipRect.left,
-            width: clipRect.width,
-            height: clipRect.height,
-        });
-        page.render(imageName);
-        await instance.exit();
         const photoObject = await vkApi.upload.messagePhoto({source: {value: path.resolve(imageName)}});
         console.log(LOGS.GOLDGISH_IMAGE_DELETED);
         return photoObject;
@@ -102,7 +78,7 @@ export async function getGoldfishDeckImage(vkApi: VK, deckId: number): Promise<P
         console.error(LOGS.GOLDGISH_IMAGE_DELETED);
         return undefined;
     } finally {
-        fs.unlinkSync(imageName);
+        // fs.unlinkSync(imageName);
 
     }
 
