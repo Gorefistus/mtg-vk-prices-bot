@@ -72,13 +72,13 @@ export default class PriceCommand extends BasicCommand {
             if (priceFromCache) {
                 priceImageFromCache = await ImageHelper.getItem({cardId: foundCard.illustration_id, trade: true});
                 if (!priceImageFromCache) {
-                    priceImageFromCache = await getGoldfishPriceGraph(this.vkBotApi, foundCardName, foundCard);
+                    priceImageFromCache = undefined; // await getGoldfishPriceGraph(this.vkBotApi, foundCardName, foundCard);
                 }
 
                 this.sendPriceMessage(foundCard, msg, cardName, priceFromCache.scgPrice, priceFromCache.topdeckPrice, priceImageFromCache);
             } else {
                 const rawPriceObject = <{ scg: SCGPrice, topdeck: TopDeckPriceCache }>{};
-                const image = await getGoldfishPriceGraph(this.vkBotApi, foundCardName, foundCard);
+                const image = undefined; // await getGoldfishPriceGraph(this.vkBotApi, foundCardName, foundCard);
 
                 //// SCG PRICES SCRAPING START
                 try {
