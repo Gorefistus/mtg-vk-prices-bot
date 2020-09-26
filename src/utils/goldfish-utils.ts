@@ -1,6 +1,5 @@
 import * as path from 'path';
 import fs from 'fs';
-import phantom from 'phantom';
 import captureWebsite from 'capture-website';
 
 
