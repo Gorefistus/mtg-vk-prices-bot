@@ -4,8 +4,7 @@
   "description": "",
   "private": true,
   "engines": {
-    "node": "10.3.0",
-    "npm": "6.x"
+    "node": "12.x"
   },
   "scripts": {
     "start": "node dist/src/index.js",
