@@ -89,8 +89,7 @@ export async function getGoldfishDeckImage(vkApi: VK, deckId: number): Promise<P
         console.error(LOGS.GOLDGISH_IMAGE_DELETED);
         return undefined;
     } finally {
-        // fs.unlinkSync(imageName);
-
+        fs.unlinkSync(imageName);
     }
 
 }

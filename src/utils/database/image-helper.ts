@@ -18,7 +18,9 @@ class ImageHelper implements DbEntityInterface {
     async createItem(item: FilterQuery<ImageCache>): Promise<ImageCache> {
         if (item.photoObject && item.cardObject) {
             // broken fields for mongo serialization, also useless for our app
+            // @ts-ignore
             delete item.photoObject.$filled;
+            // @ts-ignore
             delete item.photoObject.vk;
             if (!item.cacheDate) {
                 item.cacheDate = Date.now();

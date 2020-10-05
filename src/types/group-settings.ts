@@ -51,6 +51,7 @@ export class GroupSettingsEntry implements GroupSettings {
         this.admins = admins ? admins : [];
         const defaultAvailableCommands: { [p: string]: Command } = {};
         for (const key in COMMAND_IDS) {
+            // @ts-ignore
             defaultAvailableCommands[COMMAND_IDS[key]] = {commandId: COMMAND_IDS[key], isEnabled: true};
         }
         this.availableCommands = availableCommands ? availableCommands : defaultAvailableCommands;

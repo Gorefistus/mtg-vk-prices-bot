@@ -64,6 +64,7 @@ export default class WatchAuctionsCommand extends BasicCommand {
                         const isSucc = await AuctionsHelper.updateItem({userId: msg.senderId}, {
                             $set: {
                                 watchlist: user.watchlist,
+                                // @ts-ignore
                                 foundAuctions: user.foundAuctions,
                                 cacheDate: Date.now()
                             }

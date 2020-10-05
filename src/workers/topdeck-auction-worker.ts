@@ -71,6 +71,7 @@ export function TopDeckAuctionWorker(vkApi: VK) {
                     AuctionsHelper.updateItem({userId: auctionUser.userId}, {
                         $set: {
                             cacheDate: Date.now(),
+                            // @ts-ignore
                             foundAuctions: auctionUser.foundAuctions
                         }
                     });

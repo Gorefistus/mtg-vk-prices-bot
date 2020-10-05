@@ -92,6 +92,7 @@ export default class PriceCommand extends BasicCommand {
                 //// TOPDECK PRICES SCRAPING START
                 try {
                     // request lib instead of axios because axios doesn't support CORS bypassing
+                    // @ts-ignore
                     const topDeckPrices = <Array<TopDeckPrice>>(await request({
                         method: 'GET',
                         uri: `${API_LINKS.TOPDECK_PRICE}${encodeURIComponent(foundCardName)}`,
