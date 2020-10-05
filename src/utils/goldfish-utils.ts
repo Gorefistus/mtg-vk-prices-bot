@@ -55,7 +55,7 @@ export async function getGoldfishPriceGraph(vkApi: VK, preparedCardName: string,
             trade: true
         });
         fs.unlinkSync(imageName);
-        console.log(LOGS.GOLDGISH_IMAGE_DELETED, cacheObject);
+        console.log(LOGS.GOLDGISH_IMAGE_DELETED);
         return cacheObject;
     } catch (e) {
         console.log(e);
