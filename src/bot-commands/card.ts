@@ -148,8 +148,9 @@ export default class CardCommand extends BasicCommand {
                     attachment = `${attachment}photo${cardImage.photoObject.ownerId}_${cardImage.photoObject.id},`;
                 });
 
+                console.log(attachment);
                 const keyboard = splittedCardNames.length === 1 ? getRecommendation(splittedCardNames[0], this.shortName, PEER_TYPES.GROUP !== msg.peerType) : undefined;
-
+                console.log(keyboard);
                 if (keyboard) {
                     msg.send('', {attachment, keyboard: keyboard});
                 } else {

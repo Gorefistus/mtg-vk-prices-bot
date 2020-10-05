@@ -39,13 +39,12 @@ async function parsePrices(htmlString: string, cardObject: Card, isFoil = false)
             return undefined;
         }
         const idToUse = foundIds[0];
-        const priceObjectRequest = await axios.get(`https://newstarcityconnector.herokuapp.com/eyApi/products/${idToUse}/variants`);
-        // @ts-ignore
-        const priceObject = priceObjectRequest.data.response.data.find((scgPrice) => {
-            return scgPrice.option_values[0].label.toLowerCase() === nm;
-        });
-        valueToReturn.value = `$${priceObject.price}`;
-        valueToReturn.stock = priceObject.inventory_level;
+        const priceObjectRequest = await axios.get(`https://ajax.starcitygames.com/e4c8c2dip/${idToUse}/`);
+        const priceObject = priceObjectRequest.data.p[idToUse];
+        const highestSCGPriceKey = Object.keys(priceObject)[Object.keys(priceObject).length - 1];
+
+        valueToReturn.value = `$${priceObject.p[highestSCGPriceKey]}`;
+        valueToReturn.stock = priceObject.i[highestSCGPriceKey];
         valueToReturn.set = cardObject.set_name;
     } catch (e) {
         valueToReturn = undefined;
