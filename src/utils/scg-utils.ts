@@ -38,13 +38,14 @@ async function parsePrices(htmlString: string, cardObject: Card, isFoil = false)
         if (foundIds.length === 0) {
             return undefined;
         }
+        console.log(foundIds);
         const idToUse = foundIds[0];
         const priceObjectRequest = await axios.get(`https://ajax.starcitygames.com/e4c8c2dip/${idToUse}/`);
         const priceObject = priceObjectRequest.data.p[idToUse];
         const highestSCGPriceKey = Object.keys(priceObject)[Object.keys(priceObject).length - 1];
 
-        valueToReturn.value = `$${priceObject.p[highestSCGPriceKey]}`;
-        valueToReturn.stock = priceObject.i[highestSCGPriceKey];
+        valueToReturn.value = `$${priceObjectRequest.data.p[idToUse][highestSCGPriceKey]}`;
+        valueToReturn.stock = priceObjectRequest.data.i[idToUse][highestSCGPriceKey];
         valueToReturn.set = cardObject.set_name;
     } catch (e) {
         valueToReturn = undefined;
