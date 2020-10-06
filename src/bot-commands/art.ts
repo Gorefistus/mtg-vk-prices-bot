@@ -9,7 +9,7 @@ import ImageHelper from '../utils/database/image-helper';
 import axios from 'axios';
 import fs from 'fs';
 import * as path from 'path';
-import BootBot, { FBMessagePayload } from 'bootBot';
+import BootBot, { FBMessagePayload } from 'bootbot';
 
 export default class ArtCommand extends BasicCommand {
 

@@ -2,7 +2,7 @@ import VK, { MessageContext } from 'vk-io';
 import express from 'express';
 import * as path from 'path';
 import http from 'http';
-import BootBot, { FBMessagePayload } from 'bootBot';
+import BootBot, { FBMessagePayload } from 'bootbot';
 
 import CardCommand from './bot-commands/card';
 import NotFoundCommand from './bot-commands/not-found';
@@ -51,7 +51,7 @@ const vkApi = new VK({
 
 });
 
-const bootBot = new BootBot({
+const bootbot = new BootBot({
     accessToken: process.env.FB_TOKEN || 'place your token here',
     verifyToken: process.env.FB_VERIFY || 'place your token here',
     appSecret: process.env.FB_APPSECRET ||  'place your token here',
@@ -131,7 +131,7 @@ const startBot = (vkBotApi: VK, fbBotApi: BootBot) => {
     fbBotApi.on('postback', (payload: FBMessagePayload, chat) => {
         checkRegexFacebook(payload, commandArray);
     });
-    bootBot.start();
+    bootbot.start();
 
     console.log('Bot Has Started');
 };
@@ -140,4 +140,4 @@ function launchWorkers(vkApi: VK) {
     TopDeckAuctionWorker(vkApi);
 }
 
-startBot(vkApi, bootBot);
+startBot(vkApi, bootbot);

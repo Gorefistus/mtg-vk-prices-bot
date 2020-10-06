@@ -3,7 +3,7 @@ import VK, { MessageContext } from 'vk-io';
 import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { ERRORS } from '../utils/strings';
 import  { Random } from 'random-js';
-import BootBot from 'bootBot';
+import BootBot from 'bootbot';
 
 
 export default class RollCommand extends BasicCommand {

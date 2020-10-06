@@ -7,7 +7,7 @@ import { API_LINKS, PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { getCardByName } from '../utils/scryfall-utils';
 import { ERRORS, GENERAL } from '../utils/strings';
 import { getLanguageByLangCode } from '../utils/utils';
-import BootBot from 'bootBot';
+import BootBot from 'bootbot';
 
 export default class PrintingLanguagesCommand extends BasicCommand {
 

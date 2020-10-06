@@ -3,7 +3,7 @@ import VK, { MessageContext } from 'vk-io';
 import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { AUCTIONS, ERRORS } from '../utils/strings';
 import AuctionsHelper from '../utils/database/auctions-helper';
-import BootBot from 'bootBot';
+import BootBot from 'bootbot';
 
 
 export default class WatchAuctionsCommand extends BasicCommand {

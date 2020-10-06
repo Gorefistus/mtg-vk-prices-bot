@@ -4,7 +4,7 @@ import { LEGALITY, PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import * as STRINGS from '../utils/strings';
 import { ERRORS, ERRORS_EN } from '../utils/strings';
 import { getCardByName } from '../utils/scryfall-utils';
-import BootBot, { FBMessagePayload } from 'bootBot';
+import BootBot, { FBMessagePayload } from 'bootbot';
 
 
 export default class LegalityCommand extends BasicCommand {

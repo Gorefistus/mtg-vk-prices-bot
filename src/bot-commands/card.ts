@@ -12,7 +12,7 @@ import ImageHelper from '../utils/database/image-helper';
 import { ImageCache } from 'image-cache';
 import BasicCommand from './basic-command';
 import { getRecommendation } from '../utils/recommendation';
-import BootBot, { FBMessagePayload } from 'bootBot';
+import BootBot, { FBMessagePayload } from 'bootbot';
 
 
 export default class CardCommand extends BasicCommand {

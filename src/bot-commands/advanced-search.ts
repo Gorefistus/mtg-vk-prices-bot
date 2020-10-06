@@ -6,7 +6,7 @@ import VK, { MessageContext } from 'vk-io';
 import BasicCommand from './basic-command';
 import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { ERRORS, GENERAL } from '../utils/strings';
-import BootBot from 'bootBot';
+import BootBot from 'bootbot';
 
 
 export default class AdvancedSearchCommand extends BasicCommand {

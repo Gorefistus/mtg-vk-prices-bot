@@ -15,7 +15,7 @@ import { SCGPrice, TopDeckPriceCache } from 'price-cache';
 import { ImageCache } from 'image-cache';
 import { getGoldfishPriceGraph } from '../utils/goldfish-utils';
 import { getRecommendation } from '../utils/recommendation';
-import BootBot, { FBMessagePayload } from 'bootBot';
+import BootBot, { FBMessagePayload } from 'bootbot';
 
 
 export default class PriceCommand extends BasicCommand {

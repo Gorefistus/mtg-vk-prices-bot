@@ -1,7 +1,7 @@
 import BasicCommand from './basic-command';
 import VK, { MessageContext } from 'vk-io';
 import { REGEX_CONSTANTS } from '../utils/constants';
-import BootBot, { FBMessagePayload } from 'bootBot';
+import BootBot, { FBMessagePayload } from 'bootbot';
 
 
 export default class HelpCommand extends BasicCommand {

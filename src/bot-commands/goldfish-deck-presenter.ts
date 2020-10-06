@@ -1,7 +1,7 @@
 import BasicCommand from './basic-command';
 import VK, { MessageContext } from 'vk-io';
 import { getGoldfishDeckImage } from '../utils/goldfish-utils';
-import BootBot from 'bootBot';
+import BootBot from 'bootbot';
 
 export default class GoldfishDeckPresenter extends BasicCommand {
 

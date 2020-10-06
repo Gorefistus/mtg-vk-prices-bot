@@ -4,7 +4,7 @@ import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { getCardByName } from '../utils/scryfall-utils';
 import { ERRORS, ERRORS_EN, GENERAL_EN } from '../utils/strings';
 import { getRecommendation } from '../utils/recommendation';
-import BootBot, { FBMessagePayload } from 'bootBot';
+import BootBot, { FBMessagePayload } from 'bootbot';
 import { Card } from 'scryfall-sdk';
 
 

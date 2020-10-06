@@ -2,8 +2,8 @@ import { CommandInterface } from 'command';
 import VK, { MessageContext } from 'vk-io';
 import { REGEX_CONSTANTS } from '../utils/constants';
 import { ERRORS, ERRORS_EN } from '../utils/strings';
-import BootBot from 'bootBot';
-import { FBMessagePayload } from 'bootBot';
+import BootBot from 'bootbot';
+import { FBMessagePayload } from 'bootbot';
 
 
 export default class BasicCommand implements CommandInterface {

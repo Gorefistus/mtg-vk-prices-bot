@@ -3,7 +3,7 @@ import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import AdministrationHelper from '../utils/database/administration-helper';
 import { ERRORS } from '../utils/strings';
 import BasicCommand from './basic-command';
-import BootBot from 'bootBot';
+import BootBot from 'bootbot';
 
 
 export default class AdministrationCommand extends BasicCommand {

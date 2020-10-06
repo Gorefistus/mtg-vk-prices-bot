@@ -6,7 +6,7 @@ import { AUCTIONS, ERRORS } from '../utils/strings';
 import { TopdeckAuction, TopdeckEndedAuction } from 'topdeck-auction';
 import * as moment from 'moment';
 import BasicCommand from './basic-command';
-import BootBot from 'bootBot';
+import BootBot from 'bootbot';
 
 
 export default class AuctionsCommand extends BasicCommand {

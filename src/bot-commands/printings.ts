@@ -6,7 +6,7 @@ import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { ERRORS, GENERAL } from '../utils/strings';
 import { getCardByName } from '../utils/scryfall-utils';
 import { Card } from 'scryfall-sdk';
-import BootBot from 'bootBot';
+import BootBot from 'bootbot';
 
 
 export default class PrintingsCommand extends BasicCommand {

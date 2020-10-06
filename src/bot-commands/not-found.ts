@@ -2,7 +2,7 @@ import VK, { MessageContext } from 'vk-io';
 import BasicCommand from './basic-command';
 import { PEER_TYPES } from '../utils/constants';
 import { ERRORS, ERRORS_EN } from '../utils/strings';
-import BootBot, { FBMessagePayload } from 'bootBot';
+import BootBot, { FBMessagePayload } from 'bootbot';
 
 
 export default class NotFoundCommand extends BasicCommand {
