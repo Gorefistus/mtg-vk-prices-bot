@@ -5,6 +5,7 @@ import VK, { MessageContext } from 'vk-io';
 import BasicCommand from './basic-command';
 import { API_LINKS, PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { ERRORS, GENERAL } from '../utils/strings';
+import BootBot from 'bootBot';
 
 export default class WikiCommand extends BasicCommand {
     fullName: string; // wiki
@@ -13,8 +14,8 @@ export default class WikiCommand extends BasicCommand {
     shortName: string;  // w
     vkBotApi: VK;
 
-    constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
-        super(vkApi, regex, regexGroup);
+    constructor(vkApi: VK, fbApi: BootBot, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, fbApi, regex, regexGroup);
         this.fullName = 'wiki';
         this.shortName = 'w';
         if (regex) {

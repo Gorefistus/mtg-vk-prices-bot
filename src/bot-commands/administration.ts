@@ -3,6 +3,7 @@ import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import AdministrationHelper from '../utils/database/administration-helper';
 import { ERRORS } from '../utils/strings';
 import BasicCommand from './basic-command';
+import BootBot from 'bootBot';
 
 
 export default class AdministrationCommand extends BasicCommand {
@@ -13,8 +14,8 @@ export default class AdministrationCommand extends BasicCommand {
     vkBotApi: VK;
 
 
-    constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
-        super(vkApi, regex, regexGroup);
+    constructor(vkApi: VK, fbApi: BootBot, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, fbApi, regex, regexGroup);
         this.vkBotApi = vkApi;
         this.fullName = 'administration';
         this.shortName = 'ad';

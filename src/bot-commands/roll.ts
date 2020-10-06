@@ -3,6 +3,7 @@ import VK, { MessageContext } from 'vk-io';
 import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { ERRORS } from '../utils/strings';
 import  { Random } from 'random-js';
+import BootBot from 'bootBot';
 
 
 export default class RollCommand extends BasicCommand {
@@ -15,8 +16,8 @@ export default class RollCommand extends BasicCommand {
     vkBotApi: VK;
 
 
-    constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
-        super(vkApi, regex, regexGroup);
+    constructor(vkApi: VK, fbApi: BootBot, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, fbApi,  regex, regexGroup);
         this.vkBotApi = vkApi;
         this.fullName = 'roll';
         this.shortName = 'r';

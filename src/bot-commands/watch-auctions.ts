@@ -3,6 +3,7 @@ import VK, { MessageContext } from 'vk-io';
 import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { AUCTIONS, ERRORS } from '../utils/strings';
 import AuctionsHelper from '../utils/database/auctions-helper';
+import BootBot from 'bootBot';
 
 
 export default class WatchAuctionsCommand extends BasicCommand {
@@ -13,8 +14,8 @@ export default class WatchAuctionsCommand extends BasicCommand {
     shortName: string;  // wa
     vkBotApi: VK;
 
-    constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
-        super(vkApi, regex, regexGroup);
+    constructor(vkApi: VK, fbApi: BootBot, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, fbApi, regex, regexGroup);
         this.fullName = 'watchAuctions';
         this.shortName = 'wa';
         if (regex) {

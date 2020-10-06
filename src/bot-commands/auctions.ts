@@ -6,6 +6,7 @@ import { AUCTIONS, ERRORS } from '../utils/strings';
 import { TopdeckAuction, TopdeckEndedAuction } from 'topdeck-auction';
 import * as moment from 'moment';
 import BasicCommand from './basic-command';
+import BootBot from 'bootBot';
 
 
 export default class AuctionsCommand extends BasicCommand {
@@ -16,8 +17,8 @@ export default class AuctionsCommand extends BasicCommand {
     vkBotApi: VK;
 
 
-    constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
-        super(vkApi, regex, regexGroup);
+    constructor(vkApi: VK, fbApi: BootBot,  regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, fbApi, regex, regexGroup);
         this.vkBotApi = vkApi;
         this.fullName = 'auctions';
         this.shortName = 'ac';

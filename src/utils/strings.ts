@@ -37,6 +37,19 @@ export enum ERRORS {
     GENERAL_ERROR = 'Произошла ошибка в обработке вашего запроса, попробуйте повторить запрос позднее'
 }
 
+export enum ERRORS_EN {
+    CARD_NO_CARD = 'No card name',
+    CARD_NOT_FOUND = 'One or more were not found',
+    CARDS_NOT_FOUND = 'This card were not found:',
+    CARDS_SEARCH_NOT_FOUND = 'No cards found for your request',
+    PRICE_NO_INFO = 'No information',
+
+    COMMAND_NOT_FOUND = 'Command not found, type !help for a list of all available commands',
+
+    GENERAL_ERROR = 'Error occurred processing your request, please try again later',
+
+}
+
 export enum LOGS {
     STARCITY_PRICE_REQUEST_ERROR = 'StarCityRequest price request has failed \n',
     TOPDECK_PRICE_REQUEST_ERROR = 'TopDeck price request has failed \n',
@@ -71,6 +84,17 @@ export enum GENERAL {
     LANGUAGE = 'Язык',
 }
 
+export enum GENERAL_EN {
+    TOTAL = 'Total',
+    PRICE_FOR =  'Price for',
+    STOCK = 'Stock',
+
+    VIEW_IMAGE = 'View card image',
+
+    BUY_TCG = 'Buy on TCG',
+    BUY_CARDHOARDER = 'Buy on Cardhoarder',
+}
+
 export enum LANGUAGES {
     LANG_RUS = 'Русский',
     LANG_ENG = 'Английский',
@@ -97,6 +121,13 @@ export enum LEGALITY {
     NOT_LEGAL = 'Нелегальна 🚫',
     BANNED = 'Забанена ⛔',
     RESTRICTED = 'Порестрикчена ❗',
+}
+
+export enum LEGALITY_EN {
+    LEGAL = 'Legal ✅',
+    NOT_LEGAL = 'Not legal 🚫',
+    BANNED = 'Banned ⛔',
+    RESTRICTED = 'Restricted ❗',
 }
 
 export enum FORMATS {

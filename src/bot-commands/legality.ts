@@ -2,8 +2,9 @@ import BasicCommand from './basic-command';
 import VK, { MessageContext } from 'vk-io';
 import { LEGALITY, PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import * as STRINGS from '../utils/strings';
-import { ERRORS } from '../utils/strings';
+import { ERRORS, ERRORS_EN } from '../utils/strings';
 import { getCardByName } from '../utils/scryfall-utils';
+import BootBot, { FBMessagePayload } from 'bootBot';
 
 
 export default class LegalityCommand extends BasicCommand {
@@ -14,11 +15,12 @@ export default class LegalityCommand extends BasicCommand {
     vkBotApi: VK;
 
 
-    constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
-        super(vkApi, regex, regexGroup);
+    constructor(vkApi: VK, fbApi: BootBot, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, fbApi, regex, regexGroup);
         this.vkBotApi = vkApi;
         this.fullName = 'legality';
         this.shortName = 'l';
+        this.fbApi = fbApi;
         if (regex) {
             this.regex = regex;
         } else {
@@ -70,18 +72,50 @@ ${STRINGS.FORMATS.VINTAGE}: ${this.getLegality(foundCard.legalities.vintage)}
     }
 
 
-    getLegality(legality: string): string {
+    async processCommandFacebook(payload: FBMessagePayload): Promise<any> {
+        const commandString = payload?.message?.text || payload?.postback?.payload;
+        const cardName = commandString.match(this.regex)[3];
+        try {
+            const foundCard = await getCardByName(cardName);
+            let legalityString = `Legality of ${foundCard.printed_name ? foundCard.printed_name : foundCard.name} in formats:\n`;
+
+            legalityString = `${legalityString}
+${STRINGS.FORMATS.STANDARD}: ${this.getLegality(foundCard.legalities.standard, true)}
+${STRINGS.FORMATS.MODERN}: ${this.getLegality(foundCard.legalities.modern, true)}
+${STRINGS.FORMATS.LEGACY}: ${this.getLegality(foundCard.legalities.legacy, true)}
+${STRINGS.FORMATS.PIONEER}: ${this.getLegality(foundCard.legalities.pioneer, true)}
+${STRINGS.FORMATS.HISTORIC}: ${this.getLegality(foundCard.legalities.historic, true)}
+${STRINGS.FORMATS.PAUPER}: ${this.getLegality(foundCard.legalities.pauper, true)}
+${STRINGS.FORMATS.PENNY}: ${this.getLegality(foundCard.legalities.penny, true)}
+${STRINGS.FORMATS.COMMANDER}: ${this.getLegality(foundCard.legalities.commander, true)}
+${STRINGS.FORMATS.VINTAGE}: ${this.getLegality(foundCard.legalities.vintage, true)}
+            `;
+
+            this.fbApi.say(payload.sender.id, legalityString);
+        } catch (e) {
+            console.log(e);
+            if (!e) {
+                return this.processErrorFacebook(payload, ERRORS_EN.CARD_NOT_FOUND);
+            }
+            return this.processErrorFacebook(payload);
+        }
+
+
+    }
+
+    getLegality(legality: string, isEn = false): string {
+        const legalityDictionary = isEn ? STRINGS.LEGALITY_EN : STRINGS.LEGALITY;
         switch (legality) {
             case LEGALITY.LEGAL:
-                return STRINGS.LEGALITY.LEGAL;
+                return legalityDictionary.LEGAL;
             case LEGALITY.BANNED:
-                return STRINGS.LEGALITY.BANNED;
+                return legalityDictionary.BANNED;
             case LEGALITY.NOT_LEGAL:
-                return STRINGS.LEGALITY.NOT_LEGAL;
+                return legalityDictionary.NOT_LEGAL;
             case LEGALITY.RESTRICTED:
-                return STRINGS.LEGALITY.RESTRICTED;
+                return legalityDictionary.RESTRICTED;
             default:
-                return STRINGS.LEGALITY.NOT_LEGAL;
+                return legalityDictionary.NOT_LEGAL;
         }
     }
 }

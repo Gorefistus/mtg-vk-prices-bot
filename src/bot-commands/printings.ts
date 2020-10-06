@@ -6,6 +6,7 @@ import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { ERRORS, GENERAL } from '../utils/strings';
 import { getCardByName } from '../utils/scryfall-utils';
 import { Card } from 'scryfall-sdk';
+import BootBot from 'bootBot';
 
 
 export default class PrintingsCommand extends BasicCommand {
@@ -16,8 +17,8 @@ export default class PrintingsCommand extends BasicCommand {
     shortName: string;  // pr
     vkBotApi: VK;
 
-    constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
-        super(vkApi, regex, regexGroup);
+    constructor(vkApi: VK, fbApi: BootBot, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, fbApi,  regex, regexGroup);
         this.fullName = 'printings';
         this.shortName = 'pr';
         if (regex) {
