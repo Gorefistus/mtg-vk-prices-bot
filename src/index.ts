@@ -131,7 +131,9 @@ const startBot = (vkBotApi: VK, fbBotApi: BootBot) => {
     fbBotApi.on('postback', (payload: FBMessagePayload, chat) => {
         checkRegexFacebook(payload, commandArray);
     });
-    bootbot.start();
+
+    // @ts-ignore
+    app.use(bootbot.middleware());
 
     console.log('Bot Has Started');
 };
