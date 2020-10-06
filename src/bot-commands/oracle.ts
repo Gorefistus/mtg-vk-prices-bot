@@ -2,8 +2,10 @@ import BasicCommand from './basic-command';
 import VK, { MessageContext } from 'vk-io';
 import { PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { getCardByName } from '../utils/scryfall-utils';
-import { ERRORS } from '../utils/strings';
+import { ERRORS, ERRORS_EN, GENERAL_EN } from '../utils/strings';
 import { getRecommendation } from '../utils/recommendation';
+import BootBot, { FBMessagePayload } from 'bootBot';
+import { Card } from 'scryfall-sdk';
 
 
 export default class OracleCommand extends BasicCommand {
@@ -13,10 +15,11 @@ export default class OracleCommand extends BasicCommand {
     public regex: RegExp;
     public regexGroup: RegExp;
 
-    constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
-        super(vkApi, regex, regexGroup);
+    constructor(vkApi: VK, fbApi: BootBot, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, fbApi,  regex, regexGroup);
         this.fullName = 'oracle';
         this.shortName = 'o';
+        this.fbApi = fbApi;
         if (regex) {
             this.regex = regex;
         } else {
@@ -43,28 +46,7 @@ export default class OracleCommand extends BasicCommand {
         try {
             const foundCard = await getCardByName(cardName);
 
-            let oracleText = '';
-            if (foundCard.card_faces && foundCard.card_faces.length > 0) {
-                foundCard.card_faces.forEach(card_face => {
-oracleText = `${oracleText}
-${card_face.name} oracle text:
-Mana cost: ${card_face.mana_cost.length > 0 ? card_face.mana_cost : `None`} (CMC = ${foundCard.cmc})
-${card_face.type_line}\n
-${card_face.oracle_text}
-${card_face.loyalty ? `Starting loyalty: ${card_face.loyalty}` : ''}\n
-${card_face.power ? `🗡: ${card_face.power}` : ''} ${card_face.toughness ? `🛡: ${card_face.toughness}` : ''}
-                    `;
-                });
-            } else {
-                oracleText = `${oracleText}
-${foundCard.name} oracle text:
-Mana cost: ${foundCard.mana_cost.length > 0 ? foundCard.mana_cost : `None`} (CMC = ${foundCard.cmc})
-${foundCard.type_line}\n
-${foundCard.oracle_text}
-${foundCard.loyalty ? `Starting loyalty: ${foundCard.loyalty}` : ''}\n
-${foundCard.power ? `🗡: ${foundCard.power}` : ''} ${foundCard.toughness ? `🛡: ${foundCard.toughness}` : ''}
-                    `;
-            }
+            const oracleText = this.getOracleString(foundCard);
             const keyboard = cardName ? getRecommendation(cardName, this.shortName, PEER_TYPES.GROUP !== msg.peerType) : undefined;
 
             if (keyboard) {
@@ -81,6 +63,57 @@ ${foundCard.power ? `🗡: ${foundCard.power}` : ''} ${foundCard.toughness ? `�
             return this.processError(msg);
         }
 
+    }
+
+
+    async processCommandFacebook(payload: FBMessagePayload): Promise<any> {
+        const commandString = payload?.message?.text || payload?.postback?.payload;
+
+        const cardName = commandString.match(this.regex)[3];
+        try {
+            const foundCard = await getCardByName(cardName);
+            const oracleText = this.getOracleString(foundCard);
+            return this.fbApi.say(payload.sender.id, {
+                text: oracleText, buttons: [{
+                    type: 'postback',
+                    title: GENERAL_EN.VIEW_IMAGE,
+                    payload: `!c ${foundCard.name}[${foundCard.set}]`,
+                }]
+            });
+        } catch (e) {
+            if (!e) {
+                return this.processErrorFacebook(payload, ERRORS_EN.CARD_NOT_FOUND);
+            }
+            console.log(e);
+            return this.processErrorFacebook(payload);
+        }
+
+    }
+
+    getOracleString(card: Card): string {
+        let oracleText = '';
+        if (card.card_faces && card.card_faces.length > 0) {
+            card.card_faces.forEach(card_face => {
+                oracleText = `${oracleText}
+${card_face.name} oracle text:\n
+Mana cost: ${card_face.mana_cost.length > 0 ? card_face.mana_cost : `None`} (CMC = ${card.cmc})
+${card_face.type_line}\n
+${card_face.oracle_text}
+${card_face.loyalty ? `Starting loyalty: ${card_face.loyalty}` : ''}\n
+${card_face.power ? `🗡: ${card_face.power}` : ''} ${card_face.toughness ? `🛡: ${card_face.toughness}` : ''}
+                    `;
+            });
+        } else {
+            oracleText = `${oracleText}
+${card.name} oracle text:\n
+Mana cost: ${card.mana_cost.length > 0 ? card.mana_cost : `None`} (CMC = ${card.cmc})
+${card.type_line}\n
+${card.oracle_text}
+${card.loyalty ? `Starting loyalty: ${card.loyalty}` : ''}\n
+${card.power ? `🗡: ${card.power}` : ''} ${card.toughness ? `🛡: ${card.toughness}` : ''}
+                    `;
+        }
+        return oracleText;
     }
 }
 

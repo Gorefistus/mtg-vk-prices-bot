@@ -1,6 +1,7 @@
 import BasicCommand from './basic-command';
 import VK, { MessageContext } from 'vk-io';
 import { REGEX_CONSTANTS } from '../utils/constants';
+import BootBot, { FBMessagePayload } from 'bootBot';
 
 
 export default class HelpCommand extends BasicCommand {
@@ -11,9 +12,10 @@ export default class HelpCommand extends BasicCommand {
     shortName: string;  // help
     vkBotApi: VK;
 
-    constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
-        super(vkApi, regex, regexGroup);
+    constructor(vkApi: VK, fbApi: BootBot, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, fbApi,  regex, regexGroup);
         this.fullName = 'help';
+        this.fbApi = fbApi;
         if (regex) {
             this.regex = regex;
         } else {
@@ -45,5 +47,16 @@ export default class HelpCommand extends BasicCommand {
             'Тема на топдеке для отзывов и предложений:\n https://topdeck.ru/forums/topic/121143-mtgpricebot-%D0%B1%D0%BE%D1%82-%D0%B4%D0%BB%D1%8F-%D0%B2%D0%B0%D1%88%D0%B5%D0%B3%D0%BE-vk-%D1%87%D0%B0%D1%82%D0%B8%D0%BA%D0%B0/\n' +
             'Группа VK: https://vk.com/mtgbot';
         msg.send(helpString);
+    }
+
+    async processCommandFacebook(payload: FBMessagePayload): Promise<any> {
+        const helpString = 'Available commands: \n' +
+            '!card (c) card_name [SET_EXPANSION_CODE] ; card_name [SET_EXPANSION_CODE] - shows image(s) of the requested card(s), up to ten per message. Example: !c dark confidant; search for az [xln]\n\n' +
+            '!price (p) card_name [SET_EXPANSION_CODE] - shows TCG, MTGO, StarCityGames prices for requested card. Example: !p wasteland\n\n' +
+            '!art (a) card_name [SET_EXPANSION_CODE] ; card_name [SET_EXPANSION_CODE] - shows art image(s) of the requested card(s), up to ten per message. Example: !a dark confidant; search for az [xln]\n\n' +
+            '!oracle (o) card_name - shows oracle text for requested card\n\n' +
+            '!legality (l) card_name - show legality for requested card in most popular formats \n\n' +
+            '!!! Parameters in parentheses ARE optional !!!';
+        return this.fbApi.say(payload.sender.id, helpString);
     }
 }

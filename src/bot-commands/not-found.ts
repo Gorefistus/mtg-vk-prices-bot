@@ -1,7 +1,8 @@
 import VK, { MessageContext } from 'vk-io';
 import BasicCommand from './basic-command';
 import { PEER_TYPES } from '../utils/constants';
-import { ERRORS } from '../utils/strings';
+import { ERRORS, ERRORS_EN } from '../utils/strings';
+import BootBot, { FBMessagePayload } from 'bootBot';
 
 
 export default class NotFoundCommand extends BasicCommand {
@@ -11,10 +12,11 @@ export default class NotFoundCommand extends BasicCommand {
     regex: RegExp;
     vkBotApi: VK;
 
-    constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
-        super(vkApi, regex, regexGroup);
+    constructor(vkApi: VK, fbApi: BootBot, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, fbApi, regex, regexGroup);
         this.shortName = 'uc';
         this.vkBotApi = vkApi;
+        this.fbApi = fbApi;
         if (regex) {
             this.regex = regex;
         } else {
@@ -32,6 +34,14 @@ export default class NotFoundCommand extends BasicCommand {
         }
     }
 
+
+    async processCommandFacebook(payload: FBMessagePayload): Promise<any> {
+        // @ts-ignore
+        if (payload.postback.payload === 'BOOTBOT_GET_STARTED') {
+            return;
+        }
+        return this.processErrorFacebook(payload, ERRORS_EN.COMMAND_NOT_FOUND);
+    }
 
     isCommandAvailable(): boolean {
         return true;

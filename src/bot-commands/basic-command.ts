@@ -1,7 +1,9 @@
 import { CommandInterface } from 'command';
 import VK, { MessageContext } from 'vk-io';
 import { REGEX_CONSTANTS } from '../utils/constants';
-import { ERRORS } from '../utils/strings';
+import { ERRORS, ERRORS_EN } from '../utils/strings';
+import BootBot from 'bootBot';
+import { FBMessagePayload } from 'bootBot';
 
 
 export default class BasicCommand implements CommandInterface {
@@ -10,9 +12,10 @@ export default class BasicCommand implements CommandInterface {
     regexGroup: RegExp;
     shortName: string;
     vkBotApi: VK;
+    fbApi: BootBot;
 
 
-    constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
+    constructor(vkApi: VK, fbApi: BootBot, regex?: RegExp, regexGroup?: RegExp) {
         this.vkBotApi = vkApi;
         this.fullName = 'BASIC';
         this.shortName = 'BC';
@@ -41,8 +44,19 @@ export default class BasicCommand implements CommandInterface {
         return undefined;
     }
 
+    async processCommandFacebook(payload: FBMessagePayload): Promise<any> {
+        return undefined;
+    }
+
     processError(msg: MessageContext, errorMsg = ERRORS.GENERAL_ERROR): void {
         msg.reply(errorMsg);
+    }
+
+    processErrorFacebook(payload: FBMessagePayload, errorMsg = ERRORS_EN.GENERAL_ERROR): void {
+        if (!this.fbApi) {
+            return undefined;
+        }
+        this.fbApi.say(payload.sender.id, errorMsg);
     }
 
 }

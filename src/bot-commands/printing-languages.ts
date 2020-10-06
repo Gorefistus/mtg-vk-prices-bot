@@ -7,6 +7,7 @@ import { API_LINKS, PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { getCardByName } from '../utils/scryfall-utils';
 import { ERRORS, GENERAL } from '../utils/strings';
 import { getLanguageByLangCode } from '../utils/utils';
+import BootBot from 'bootBot';
 
 export default class PrintingLanguagesCommand extends BasicCommand {
 
@@ -16,8 +17,8 @@ export default class PrintingLanguagesCommand extends BasicCommand {
     shortName: string;  // pl
     vkBotApi: VK;
 
-    constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
-        super(vkApi, regex, regexGroup);
+    constructor(vkApi: VK, fbApi: BootBot, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, fbApi, regex, regexGroup);
         this.fullName = 'printing:anguages';
         this.shortName = 'pl';
         if (regex) {

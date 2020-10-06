@@ -1,11 +1,12 @@
 import BasicCommand from './basic-command';
 import VK, { MessageContext } from 'vk-io';
 import { getGoldfishDeckImage } from '../utils/goldfish-utils';
+import BootBot from 'bootBot';
 
 export default class GoldfishDeckPresenter extends BasicCommand {
 
-    constructor(vkApi: VK, regex?: RegExp, regexGroup?: RegExp) {
-        super(vkApi, regex, regexGroup);
+    constructor(vkApi: VK, fbApi: BootBot, regex?: RegExp, regexGroup?: RegExp) {
+        super(vkApi, fbApi, regex, regexGroup);
         this.vkBotApi = vkApi;
         this.fullName = 'gd';
         this.shortName = 'gd';
