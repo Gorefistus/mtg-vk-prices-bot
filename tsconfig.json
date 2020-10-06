@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "outDir": "dist",
     "baseUrl": ".",
-    "typeRoots": [ "./types", "./node_modules/@types"],
+    "typeRoots": [ "./src/types", "./node_modules/@types"],
     "paths": {
       "*": [
         "node_modules/*",

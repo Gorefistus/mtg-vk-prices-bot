@@ -216,3 +216,4 @@ declare class BootBot {
 }
 
 export = BootBot;
+declare module 'bootBot';
