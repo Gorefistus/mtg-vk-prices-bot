@@ -37,7 +37,7 @@ export default class NotFoundCommand extends BasicCommand {
 
     async processCommandFacebook(payload: FBMessagePayload): Promise<any> {
         // @ts-ignore
-        if (payload.postback.payload === 'BOOTBOT_GET_STARTED') {
+        if (payload?.postback?.payload === 'BOOTBOT_GET_STARTED') {
             return;
         }
         return this.processErrorFacebook(payload, ERRORS_EN.COMMAND_NOT_FOUND);
