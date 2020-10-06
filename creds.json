@@ -1,8 +1,8 @@
 {
     "blank": 0,
-    "vkToken": "8317a2d742c303b79c826095f7d5da633b196dcfcc24535662ba47c264fc3b6874732440c1eb71fa20c67",
+    "vkToken": "17",
     "groupId": 168593903,
     "yandexToken": 1,
-    "dbUrl":"mongodb://bot_v2:Qweasd123@ds047146.mlab.com:47146/heroku_wvf8h01b",
-    "dbName": "heroku_wvf8h01b",
+    "dbUrl":"1",
+    "dbName": "1",
 }
