@@ -2,9 +2,12 @@ import { Keyboard, IKeyboardProxyButton } from 'vk-io';
 import { ColorIndexes, COMMAND_IDS } from './constants';
 import { KEYBOARD } from './strings';
 
-export function getRecommendation(request: string, type: string): Keyboard {
+export function getRecommendation(request: string, type: string, doNotShow = false): Keyboard {
+    if (doNotShow) {
+        return undefined;
+    }
+    
     const keyboardRow = <Array<IKeyboardProxyButton>>[];
-
 
     Object.keys(COMMAND_IDS).filter(command => command !== type).forEach((command, index) => {
         keyboardRow.push(Keyboard.textButton({
