@@ -82,6 +82,8 @@ const checkRegexFacebook = (payload: FBMessagePayload, commands: Array<CardComma
     for (const command of commands) {
         if (command.checkRegex(commandString)) {
             command.processCommandFacebook(payload);
+            bootbot.sendTypingIndicator(payload.sender.id, 300);
+            break;
         }
     }
 };
