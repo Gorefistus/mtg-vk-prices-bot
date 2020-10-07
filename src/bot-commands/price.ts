@@ -195,7 +195,7 @@ export default class PriceCommand extends BasicCommand {
 
         const attachment = image ? `photo${image.photoObject.ownerId}_${image.photoObject.id}` : undefined;
 
-        const keyboard = cardName ? getRecommendation(cardName, this.shortName, PEER_TYPES.GROUP !== msg.peerType) : undefined;
+        const keyboard = cardName ? getRecommendation(cardName, this.shortName) : undefined;
 
         if (keyboard) {
             msg.send(priceString, {attachment, keyboard: keyboard});

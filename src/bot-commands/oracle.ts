@@ -47,7 +47,7 @@ export default class OracleCommand extends BasicCommand {
             const foundCard = await getCardByName(cardName);
 
             const oracleText = this.getOracleString(foundCard);
-            const keyboard = cardName ? getRecommendation(cardName, this.shortName, PEER_TYPES.GROUP !== msg.peerType) : undefined;
+            const keyboard = cardName ? getRecommendation(cardName, this.shortName) : undefined;
 
             if (keyboard) {
                 msg.send(oracleText, {keyboard: keyboard});
