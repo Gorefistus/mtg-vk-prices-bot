@@ -6,7 +6,7 @@ export function getRecommendation(request: string, type: string, doNotShow = fal
     if (doNotShow) {
         return undefined;
     }
-    
+
     const keyboardRow = <Array<IKeyboardProxyButton>>[];
 
     Object.keys(COMMAND_IDS).filter(command => command !== type).forEach((command, index) => {
