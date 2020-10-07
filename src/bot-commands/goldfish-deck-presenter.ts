@@ -20,13 +20,15 @@ export default class GoldfishDeckPresenter extends BasicCommand {
 
     async processCommand(msg: MessageContext): Promise<any> {
 
-        const link = msg.text.match(this.regex)[0];
+        const commandString = msg.messagePayload ? msg.messagePayload.command : msg.text;
+
+        const link = commandString.match(this.regex)[0];
         const id = Number.parseInt(link.match(/\d+/)[0]);
 
         const image = await getGoldfishDeckImage(this.vkBotApi, id);
         const attachment = `photo${image.ownerId}_${image.id},`;
 
-        // return msg.reply('', {attachment});
+        return msg.reply('', {attachment});
 
     }
 }
