@@ -43,7 +43,7 @@ async function parsePrices(htmlString: string, cardObject: Card, isFoil = false)
         const priceObjectRequest = await axios.get(`https://ajax.starcitygames.com/e4c8c2dip/${idToUse}/`);
         const priceObject = priceObjectRequest.data.p[idToUse];
         const priceObjectKeys = Object.keys(priceObject);
-        const highestSCGPriceKey = priceObjectKeys.reduce((currentHighestKey, priceKey)=> priceObject[priceKey] > priceObject[currentHighestKey] ? priceKey: currentHighestKey, priceObjectKeys[0]);
+        const highestSCGPriceKey = priceObjectKeys.reduce((currentHighestKey, priceKey) => priceObject[priceKey] > priceObject[currentHighestKey] ? priceKey : currentHighestKey, priceObjectKeys[0]);
 
         valueToReturn.value = `$${priceObjectRequest.data.p[idToUse][highestSCGPriceKey]}`;
         valueToReturn.stock = priceObjectRequest.data.i[idToUse][highestSCGPriceKey];
