@@ -79,8 +79,9 @@ export default class PriceCommand extends BasicCommand {
 
                 //// SCG PRICES SCRAPING START
                 try {
-                    const starCityPage = await axios.get(`${API_LINKS.STAR_CITY_PRICE}${encodeURIComponent(foundCardName)}`, {headers: {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}});
+                    const starCityPage = await axios.get(`${API_LINKS.STAR_CITY_PRICE}${encodeURIComponent(foundCardName)}&mpp=48`, {headers: {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}});
                     const scgPrice = await getStartCityPrices(starCityPage.data.toString(), foundCard);
+                    console.log(scgPrice);
                     rawPriceObject.scg = scgPrice;
                 } catch (e) {
                     console.error(LOGS.STARCITY_PRICE_REQUEST_ERROR, e);
@@ -98,7 +99,7 @@ export default class PriceCommand extends BasicCommand {
                         json: true,
                     }));
                     const filterByNameAndPrice = topDeckPrices.filter(price => {
-                        if (rawPriceObject.scg) {
+                        if (rawPriceObject.scg?.normal) {
                             const scgPriceInNumber = parseFloat(rawPriceObject.scg.normal.value.split('$')[1]);
                             return price.name.toLowerCase() === foundCardName.toLowerCase() && price.cost > scgPriceInNumber * 25;
                         }

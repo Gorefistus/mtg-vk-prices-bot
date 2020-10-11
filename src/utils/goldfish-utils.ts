@@ -40,6 +40,8 @@ export async function getGoldfishPriceGraph(vkApi: VK, preparedCardName: string,
         await captureWebsite.file(url, imageName, {
             element: '.price-card-history-container',
             scrollToElement: '.price-card-history-container',
+            timeout: 10,
+            delay: 1,
             launchOptions: {
                 args: [
                     '--no-sandbox',

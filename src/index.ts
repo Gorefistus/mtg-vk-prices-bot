@@ -51,6 +51,7 @@ const vkApi = new VK({
 
 });
 
+
 const bootbot = new BootBot({
     accessToken: process.env.FB_TOKEN || 'place your token here',
     verifyToken: process.env.FB_VERIFY || 'place your token here',
