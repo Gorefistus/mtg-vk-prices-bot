@@ -1,7 +1,6 @@
 import { Card } from 'scryfall-sdk';
 import cheerio from 'cheerio';
 import axios from 'axios';
-import fs from 'fs';
 
 import { SCGPrice, ScgPriceObj } from 'price-cache';
 

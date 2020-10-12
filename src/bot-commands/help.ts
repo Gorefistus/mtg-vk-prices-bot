@@ -57,6 +57,10 @@ export default class HelpCommand extends BasicCommand {
             '!oracle (o) card_name - shows oracle text for requested card\n\n' +
             '!legality (l) card_name - show legality for requested card in most popular formats \n\n' +
             '!!! Parameters in parentheses ARE optional !!!';
-        return this.fbApi.say(payload.sender.id, helpString);
+        this.fbApi.say(payload.sender.id, helpString);
+        return this.fbApi.say(payload.sender.id, {
+            text: ' Try out this commands!',
+            quickReplies: ['!c dark conf[rav]', '!o black lotus', '!p death shadow']
+        });
     }
 }
