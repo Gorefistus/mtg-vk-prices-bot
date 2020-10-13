@@ -1,5 +1,5 @@
 import BasicCommand from './basic-command';
-import VK, { MessageContext } from 'vk-io';
+import VK, { ButtonColor, Keyboard, MessageContext } from 'vk-io';
 import { REGEX_CONSTANTS } from '../utils/constants';
 import BootBot, { FBMessagePayload } from 'bootbot';
 
@@ -45,8 +45,17 @@ export default class HelpCommand extends BasicCommand {
             'Пример запроса: !c темный наперсник \n\n\n' +
             'Пример запроса WatchAuctions: !wa jace mind sculptor - это добавит новый поисковой запрос. !wa -r 1 - этот запрос удалит имеющий у вас запрос на jace mind scluptor. Чтобы посмотреть индексы запросов, вызовите команду с флагом -l \n\n' +
             'Тема на топдеке для отзывов и предложений:\n https://topdeck.ru/forums/topic/121143-mtgpricebot-%D0%B1%D0%BE%D1%82-%D0%B4%D0%BB%D1%8F-%D0%B2%D0%B0%D1%88%D0%B5%D0%B3%D0%BE-vk-%D1%87%D0%B0%D1%82%D0%B8%D0%BA%D0%B0/\n' +
-            'Группа VK: https://vk.com/mtgbot';
-        msg.send(helpString);
+            'Группа VK: https://vk.com/mtgbot\n\n\n' +
+            'Попробуйте эти команды чтобы начать: \n';
+        msg.send(helpString, {
+            keyboard: Keyboard.keyboard([[Keyboard.textButton({
+                label: '!c удар молнии',
+                color: ButtonColor.POSITIVE,
+            }), Keyboard.textButton({
+                label: '!p крокса титан',
+                color: ButtonColor.PRIMARY
+            })]]).inline(true)
+        });
     }
 
     async processCommandFacebook(payload: FBMessagePayload): Promise<any> {
