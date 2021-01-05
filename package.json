@@ -31,7 +31,7 @@
     "@types/franc": "^4.0.0",
     "@types/mongodb": "^3.1.26",
     "@types/request-promise-native": "^1.0.16",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "bootbot": "github:Charca/bootbot#pull/195/head",
     "bot-metrica": "^1.0.2",
     "capture-website": "^1.2.1",
