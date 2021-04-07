@@ -65,18 +65,10 @@ export default class PriceCommand extends BasicCommand {
                 foundCardName = foundCard.name.split('//')[0].trim();
             }
             const priceFromCache = await PriceHelper.getItem({cardId: foundCard.id});
-            let priceImageFromCache;
             if (priceFromCache) {
-                priceImageFromCache = await ImageHelper.getItem({cardId: foundCard.illustration_id, trade: true});
-                if (!priceImageFromCache) {
-                    priceImageFromCache = await getGoldfishPriceGraph(this.vkBotApi, foundCardName, foundCard);
-                }
-
-                this.sendPriceMessage(foundCard, msg, cardName, priceFromCache.scgPrice, priceFromCache.topdeckPrice, priceImageFromCache);
+                this.sendPriceMessage(foundCard, msg, cardName, priceFromCache.scgPrice, priceFromCache.topdeckPrice);
             } else {
                 const rawPriceObject = <{ scg: SCGPrice, topdeck: TopDeckPriceCache }>{};
-                const image =  await getGoldfishPriceGraph(this.vkBotApi, foundCardName, foundCard);
-
                 //// SCG PRICES SCRAPING START
                 try {
                     const starCityPage = await axios.get(`${API_LINKS.STAR_CITY_PRICE}${encodeURIComponent(foundCardName)}&mpp=48`, {headers: {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}});
@@ -125,7 +117,7 @@ export default class PriceCommand extends BasicCommand {
                         topdeckPrice: rawPriceObject.topdeck
                     });
                 }
-                this.sendPriceMessage(foundCard, msg, cardName, rawPriceObject.scg, rawPriceObject.topdeck, image);
+                this.sendPriceMessage(foundCard, msg, cardName, rawPriceObject.scg, rawPriceObject.topdeck);
             }
         } catch (e) {
             if (!e) {
@@ -179,7 +171,7 @@ export default class PriceCommand extends BasicCommand {
         }
     }
 
-    sendPriceMessage(card: Card, msg: MessageContext, cardName: string, scgPrice?: SCGPrice, topDeckPriceCache?: TopDeckPriceCache, image?: ImageCache) {
+    sendPriceMessage(card: Card, msg: MessageContext, cardName: string, scgPrice?: SCGPrice, topDeckPriceCache?: TopDeckPriceCache) {
         let priceString = `${GENERAL.PRICE_FOR} ${card.printed_name ? card.printed_name : card.name} [${card.set_name}]:\n`;
         // TCG
         priceString = `${priceString} TCG: ${card.prices.usd ? `$${card.prices.usd}` : ERRORS.PRICE_NO_INFO}\n`;
@@ -194,14 +186,12 @@ export default class PriceCommand extends BasicCommand {
         // TopDeck
         priceString = `${priceString} ${topDeckPriceCache ? `${GENERAL.PRICES_TOPDECK}: ${topDeckPriceCache.value} RUB` : `TopDeck: ${ERRORS.PRICE_NO_INFO}`}\n`;
 
-        const attachment = image ? `photo${image.photoObject.ownerId}_${image.photoObject.id}` : undefined;
-
         const keyboard = cardName ? getRecommendation(cardName, this.shortName, msg.hasMessagePayload) : undefined;
 
         if (keyboard) {
-            msg.send(priceString, {attachment, keyboard: keyboard});
+            msg.send(priceString, { keyboard: keyboard});
         } else {
-            msg.send(priceString, {attachment});
+            msg.send(priceString);
         }
     }
 
