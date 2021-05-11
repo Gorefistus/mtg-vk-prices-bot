@@ -20,11 +20,18 @@ import WikiCommand from './bot-commands/wiki';
 import PrintingLanguagesCommand from './bot-commands/printing-languages';
 import WatchAuctionsCommand from './bot-commands/watch-auctions';
 import { TopDeckAuctionWorker } from './workers/topdeck-auction-worker';
+import moment from 'moment';
 // @ts-ignore
 import stats from 'bot-metrica';
 import HelpCommand from './bot-commands/help';
 import GoldfishDeckPresenter from './bot-commands/goldfish-deck-presenter';
 import RollCommand from './bot-commands/roll';
+import SetAdmin from './bot-commands/setAdmin';
+import RemoveAdmin from './bot-commands/removeAdmin';
+import Schedule from './bot-commands/schedule';
+import SetSchedule from './bot-commands/setSchedule';
+
+moment().locale('ru');
 
 // THIS IS JUST NEEDED SO HEROKU WON"T STOP OUR APPLICATION
 const app = express();
@@ -111,6 +118,10 @@ const startBot = (vkBotApi: VK, fbBotApi: BootBot) => {
         new RollCommand(vkBotApi, fbBotApi),
         new WikiCommand(vkBotApi, fbBotApi),
         new HelpCommand(vkBotApi, fbBotApi),
+        new SetAdmin(vkBotApi, fbBotApi),
+        new RemoveAdmin(vkBotApi, fbBotApi),
+        new Schedule(vkBotApi, fbBotApi),
+        new SetSchedule(vkBotApi, fbBotApi),
         new NotFoundCommand(vkBotApi, fbBotApi), // this command should always trigger last
     ];
 

@@ -8,12 +8,9 @@ import { API_LINKS, PEER_TYPES, REGEX_CONSTANTS } from '../utils/constants';
 import { getCardByName } from '../utils/scryfall-utils';
 import { ERRORS, ERRORS_EN, GENERAL, GENERAL_EN, LOGS } from '../utils/strings';
 import PriceHelper from '../utils/database/price-helper';
-import ImageHelper from '../utils/database/image-helper';
 import { getStartCityPrices } from '../utils/scg-utils';
 import { TopDeckPrice } from 'topdeck-price';
 import { SCGPrice, TopDeckPriceCache } from 'price-cache';
-import { ImageCache } from 'image-cache';
-import { getGoldfishPriceGraph } from '../utils/goldfish-utils';
 import { getRecommendation } from '../utils/recommendation';
 import BootBot, { FBMessagePayload } from 'bootbot';
 

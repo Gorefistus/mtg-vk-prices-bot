@@ -40,14 +40,21 @@ export default class AdministrationCommand extends BasicCommand {
         if (!this.isCommandAvailable(msg)) {
             this.processError(msg, ERRORS.REQUEST_TOO_SHORT);
         }
-        let adminObject = await AdministrationHelper.getItem({groupId: msg.peerId});
-        if (!adminObject) {
-            adminObject = await AdministrationHelper.createItem({groupId: msg.peerId, ownerId: msg.senderId});
-        }
-        console.log(adminObject.bannedUsers[msg.senderId]);
-        const user = adminObject.bannedUsers[msg.senderId];
-        if (user && user.allDisabled) {
-            this.processError(msg, ERRORS.BAN_MESSAGE_PLACEHOLDER);
+        try {
+            const adminObject = await AdministrationHelper.getOrCreateGroupSettings({
+                groupId: msg.peerId,
+                ownerId: msg.senderId
+            });
+            const owner = (await this.vkBotApi.api.users.get({user_ids: adminObject.ownerId.toString()}))[0];
+            const admins = await this.vkBotApi.api.users.get({user_ids: adminObject.admins.map(userId => userId.toString())});
+            let replyString = `Главный администратор: @id${owner.id} (${owner.first_name} ${owner.last_name}) `;
+            admins.forEach(admin => {
+                replyString = replyString + `\nАдминистратор:  @id${admin.id} (${admin.first_name} ${admin.last_name})`;
+            });
+            return msg.reply(replyString);
+        } catch (e) {
+            console.log(e);
+            return this.processError(msg);
         }
     }
 
