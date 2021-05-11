@@ -15,7 +15,7 @@ export interface GroupSettings {
         [key: number]: BannedUser
     };
 
-    schedule?: string,
+    schedule?: string;
 
 }
 
